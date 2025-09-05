@@ -1,2 +1,227 @@
-<h1>Hello, Ellyraia!</h1>
-<p>Сайт работает 🚀</p>
+~N, [9/5/2025 8:59 PM]
+<!DOCTYPE html><html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ellyraia — Music • Video • Sci‑Fi</title>
+  <meta name="description" content="Ellyraia — музыка на заказ, песни, видеопромы, sci‑fi визуалы. Контакты, услуги и реквизиты на одной странице." />
+  <style>
+    /* --- Reset / base --- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: #e9ecff; background: radial-gradient(1200px 600px at 10% 10%, #1e2240, #0a0b14 60%), radial-gradient(800px 400px at 90% 20%, rgba(70, 24, 120, 0.6), transparent 60%), radial-gradient(900px 500px at 10% 90%, rgba(15, 105, 165, 0.45), transparent 60%), #07080f;
+      line-height: 1.6; overflow-x: hidden;
+    }
+    :root{
+      --accent: #a586ff;     /* фиолетовый неон */
+      --accent-2:#63c7ff;    /* холодный голубой */
+      --accent-3:#ffd36e;    /* мягкое золото */
+      --muted: #a8b0d6;
+      --card: rgba(255,255,255,.06);
+      --glass: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      --border: rgba(255,255,255,.18);
+      --shadow: 0 10px 40px rgba(0,0,0,.4), 0 0 40px rgba(99,199,255,.08) inset;
+    }a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+/* --- Glow grid background --- */
+.grid {
+  position: fixed; inset: -10vh -10vw; pointer-events: none; z-index: -1;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(165,134,255,.25), transparent 40%),
+    radial-gradient(circle at 80% 15%, rgba(99,199,255,.2), transparent 35%),
+    radial-gradient(circle at 10% 85%, rgba(255,211,110,.18), transparent 40%);
+  filter: blur(40px) saturate(120%);
+}
+
+/* --- Header --- */
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0 8px; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.logo {
+  width: 44px; height: 44px; border-radius: 14px; background: var(--glass);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  display: grid; place-items: center; position: relative; overflow: hidden;
+}
+.logo::after {
+  content: ""; position: absolute; inset: 0; background: radial-gradient(120px 60px at 50% 0%, rgba(255,255,255,.18), transparent 60%);
+}
+.logo svg { width: 26px; height: 26px; filter: drop-shadow(0 0 8px rgba(165,134,255,.7)); }
+.title { font-weight: 700; letter-spacing: .5px; line-height: 1.1; }
+.title small { display:block; font-weight: 500; color: var(--muted); margin-top: 2px; }
+
+/* --- Hero --- */
+.hero { margin-top: 42px; display: grid; gap: 18px; }
+.hero h1 { font-size: clamp(30px, 5vw, 56px); line-height: 1.05; margin: 0; letter-spacing: .2px; }
+.hero .accent { background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3)); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 20px rgba(99,199,255,.25); }
+.hero p { max-width: 760px; color: var(--muted); margin: 6px 0 0; font-size: clamp(15px, 2vw, 18px); }
+
+.cta {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px;
+}
+.btn {
+  padding: 12px 18px; border-radius: 16px; border: 1px solid var(--border);
+  background: var(--glass); box-shadow: var(--shadow); backdrop-filter: blur(6px);
+  font-weight: 600; letter-spacing: .2px; transition: transform .2s ease, box-shadow .2s ease; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(165,134,255,.25), var(--shadow); text-decoration: none; }
+
+~N, [9/5/2025 8:59 PM]
+/* --- Sections --- */
+section { margin: 56px 0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 18px; }
+.card { background: var(--glass); border: 1px solid var(--border); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); }
+.card h3 { margin: 0 0 8px; font-size: 20px; }
+.muted { color: var(--muted); }
+.price { font-weight: 700; font-size: 18px; margin-top: 10px; }
+
+/* --- Contact / details --- */
+.details { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.detail-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--glass); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+
+.kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; background: rgba(255,255,255,.07); border: 1px solid var(--border); padding: 4px 8px; border-radius: 8px; }
+
+/* --- Footer --- */
+footer { margin: 64px 0 24px; color: var(--muted); font-size: 14px; display:flex; justify-content: space-between; gap:12px; flex-wrap: wrap; }
+
+/* --- Small helper glow lines --- */
+.line { position: relative; }
+.line::after{
+  content:""; position:absolute; left:0; right:0; bottom:-10px; height:1px; background: linear-gradient(90deg, transparent, rgba(165,134,255,.5), transparent);
+  filter: drop-shadow(0 0 6px rgba(165,134,255,.6));
+}
+
+/* --- Media tweaks --- */
+@media (min-width: 760px){ .details { grid-template-columns: 1fr 1fr; } }
+
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Логометка: буква E как абстрактный неон -->
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#a586ff"/>
+                <stop offset=".6" stop-color="#63c7ff"/>
+                <stop offset="1" stop-color="#ffd36e"/>
+              </linearGradient>
+            </defs>
+            <path d="M16 16h36" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M16 32h28" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M16 48h36" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="title">
+          Ellyraia <small>Music • Video • Sci‑Fi</small>
+        </div>
+      </div>
+      <a class="btn" href="#contact" title="Связаться">Связаться</a>
+    </header><section class="hero">
+  <h1 class="line">Создаю музыку, песни и видео <span class="accent">в атмосфере будущего</span></h1>
+  <p>Ellyraia.official — авторские композиции в стиле рок‑опера / кинематик, озвучка ElevenLabs, визуалы и клипы. Работаю аккуратно и официально. Ниже — контакты, услуги и реквизиты.</p>
+  <div class="cta">
+    <a class="btn" href="#services">Услуги и цены</a>
+    <a class="btn" href="#contact">Контакты</a>
+    <a class="btn" href="#details">Реквизиты</a>
+  </div>
+</section>
+
+<section id="services">
+  <h2 class="line">Услуги</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Авторская песня на заказ</h3>
+      <p class="muted">Идея, текст (RU/EN), вокальная озвучка, сведение, оформление обложки. Передача прав на некоммерческое использование.</p>
+      <div class="price">от 150 €</div>
+    </article>
+    <article class="card">
+      <h3>Музыка для видео / рекламы</h3>
+      <p class="muted">Инструментальные треки, атмосферные саундскейпы, синематика. Точная подгонка по таймкоду.</p>
+      <div class="price">от 120 €</div>
+    </article>
+    <article class="card">
+      <h3>Видео‑визуал / клип</h3>
+
+~N, [9/5/2025 8:59 PM]
+<p class="muted">Монтаж (CapCut), AI‑визуалы, титры. Доставка финала в 4K/1080p, вертикально/горизонтально.</p>
+      <div class="price">от 100 €</div>
+    </article>
+  </div>
+  <p class="muted" style="margin-top:10px">*Цены ориентировочные, точный бюджет — после краткого брифа.</p>
+</section>
+
+<section id="contact">
+  <h2 class="line">Контакты</h2>
+  <div class="details">
+    <div class="detail-item">
+      <!-- mail icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/><path d="m22 8-9.2 6.9a2 2 0 0 1-2.4 0L1 8" stroke="currentColor" stroke-width="1.6"/></svg>
+      <div>
+        <div class="muted">Email</div>
+        <div class="kbd">hello@ellyraia.com</div>
+      </div>
+    </div>
+    <div class="detail-item">
+      <!-- link icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10.5 13.5 8 16a4.243 4.243 0 1 1-6-6l2.5-2.5" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 10.5 16 8a4.243 4.243 0 1 1 6 6l-2.5 2.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.6"/></svg>
+      <div>
+        <div class="muted">Соцсети</div>
+        <div><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">YouTube: Ellyraia.official</a></div>
+      </div>
+    </div>
+    <div class="detail-item">
+      <!-- phone icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 1h2a2 2 0 0 1 2 1.72c.12.9.33 1.77.63 2.61a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.47-1.24a2 2 0 0 1 2.11-.45c.84.3 1.71.51 2.61.63A2 2 0 0 1 22 16.92Z" stroke="currentColor" stroke-width="1.6"/></svg>
+      <div>
+        <div class="muted">Телеграм / WhatsApp</div>
+        <div class="kbd">+371 0000 0000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="details">
+  <h2 class="line">Реквизиты</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Платёжные данные</h3>
+      <p class="muted">IBAN, получатель, банк, назначение платежа. Данные будут видны только здесь на сайте.</p>
+
+<pre class="kbd" style="display:block; white-space: pre-wrap; word-break: break-word;">
+IBAN: LV00BANK0000000000000
+Получатель: Natella Z. (Self‑employed)
+Банк: BANK NAME, Latvia
+Назначение: За авторскую работу (музыка/видео)
+</pre></article>
+    <article class="card">
+      <h3>Юридическая информация</h3>
+      <p class="muted">Для официальных счетов и договоров:</p>
+
+<pre class="kbd" style="display:block; white-space: pre-wrap; word-break: break-word;">
+Статус: Самозанятое лицо (LV)
+Рег. номер: 00000000000
+НДС: —
+Адрес: Riga, Latvia
+Email для договоров: legal@ellyraia.com
+</pre></article>
+  </div>
+</section>
+
+<footer>
+  <div>© <span id="y"></span> Ellyraia. Все права защищены.</div>
+  <div>Домен: ellyraia.com · Сайт на GitHub Pages</div>
+</footer>
+
+  </div>  <script>
+    // текущий год
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script></body>
+</html>
