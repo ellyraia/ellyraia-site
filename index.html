@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ellyraia — Music • Video • Sci-Fi</title>
-<meta name="description" content="Ellyraia — авторская музыка, видео и визуалы. Контакты, услуги и реквизиты.">
-<meta name="theme-color" content="#0b0d1b">
-<link rel="icon" href="assets/Logo.jpg">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Официальный сайт</title>
+<meta name="description" content="Краткое представление, услуги, контакты и реквизиты." />
+<meta name="theme-color" content="#0b0d1b" />
+<meta property="og:title" content="Официальный сайт" />
+<meta property="og:description" content="Краткое представление, услуги, контакты и реквизиты." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/hero.jpg" />
+<link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
 <style>
-/* ===== Base ===== */
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
 :root{
   --bg:#0b0d1b; --fg:#eaf0ff; --muted:#9fb0d8;
   --glass-h:rgba(255,255,255,.10); --glass-l:rgba(255,255,255,.05);
   --border:rgba(255,255,255,.18);
-  --accent:#a586ff; --accent2:#63c7ff; --accent3:#ffd36e;
-  --rad:22px; --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
+  --rad:22px;
+  --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
 }
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
-a{color:var(--accent2);text-decoration:none} a:hover{text-decoration:underline}
+body{margin:0;background:var(--bg);color:var(--fg);
+     font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
+a{color:#63c7ff;text-decoration:none} a:hover{text-decoration:underline}
 .wrap{max-width:1180px;margin:0 auto;padding:24px}
 
 /* Глобальный фон */
@@ -35,9 +38,11 @@ a{color:var(--accent2);text-decoration:none} a:hover{text-decoration:underline}
   animation:drift 25s ease-in-out infinite alternate; filter:saturate(1.05) contrast(1.02);
 }
 @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,88% 88%,0 0}}
-.grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
-  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.7)0,rgba(255,255,255,.7)1px,transparent 1px,transparent 2px),
-                   repeating-linear-gradient(90deg,rgba(255,255,255,.7)0,rgba(255,255,255,.7)1px,transparent 1px,transparent 2px);
+/* Зернистость и звёзды */
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none;display:block}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
+                   repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
   mix-blend-mode:overlay;
 }
 
@@ -46,31 +51,20 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:14px}
 .logo{width:98px;height:98px;border-radius:16px;overflow:hidden;display:grid;place-items:center}
 .logo img{width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 0 10px rgba(165,134,255,.65))}
-.title{display:flex;flex-direction:column;justify-content:center}
-.wordmark{font-weight:800;letter-spacing:.4px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:0 0 18px rgba(120,170,255,.25);font-size:clamp(22px,3.6vw,32px)}
-.title small{color:var(--muted);margin-top:2px}
+.nav{display:flex;gap:12px;flex-wrap:wrap}
 .btn{padding:12px 18px;border-radius:16px;border:1px solid var(--border);
-  background:linear-gradient(180deg,var(--glass-h),var(--glass-l));box-shadow:var(--shadow);
-  backdrop-filter:blur(6px);font-weight:600;letter-spacing:.2px;display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(180deg,var(--glass-h),var(--glass-l));
+  box-shadow:var(--shadow); backdrop-filter:blur(6px);
+  font-weight:600;letter-spacing:.2px;display:inline-flex;align-items:center;gap:10px;
   transition:transform .25s ease, box-shadow .25s ease}
 .btn:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(165,134,255,.28), var(--shadow);text-decoration:none}
 
-/* Hero */
-.hero{margin-top:44px;display:grid;gap:22px;background:url("assets/hero.jpg") center/cover no-repeat;
-  border-radius:24px;padding:56px 44px;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:
-  radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.15), rgba(11,13,27,.78) 70%),
-  linear-gradient(180deg, rgba(11,13,27,.25), rgba(11,13,27,.60));pointer-events:none}
-.hero>*{position:relative}
-.hero-brand{display:grid;gap:10px;justify-items:start}
-.brandname{margin:0;font-weight:900;letter-spacing:.04em;font-size:clamp(40px,8vw,88px);line-height:1.02;
-  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
-  -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 28px rgba(120,170,255,.25)}
-.subtitle{color:var(--muted);font-size:clamp(14px,2.2vw,18px);margin:0}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+/* Hero — только баннер */
+.hero{margin-top:44px;border-radius:24px;padding:0;overflow:hidden;position:relative;min-height:38vh;
+  background:url("assets/hero.jpg") center/cover no-repeat}
+.hero::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
+             linear-gradient(180deg, rgba(11,13,27,.15), rgba(11,13,27,.50));pointer-events:none}
 
 /* Sections */
 section{margin:64px 0}
@@ -80,9 +74,9 @@ section{margin:64px 0}
   filter:drop-shadow(0 0 6px rgba(165,134,255,.7))}
 h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
-.card{background:linear-gradient(180deg,var(--glass-h),var(--glass-l));border:1px solid var(--border);
-  border-radius:var(--rad);padding:20px;box-shadow:var(--shadow);
-  transition:transform .25s ease, box-shadow .25s ease}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.18);border-radius:var(--rad);padding:20px;
+  box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22), var(--shadow)}
 .card h3{margin:0 0 8px;font-size:20px}
 .muted{color:var(--muted)} .price{font-weight:800;margin-top:10px}
@@ -94,42 +88,29 @@ footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify
 </head>
 <body>
 <div class="grad" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 <canvas id="stars" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
 
 <div class="wrap">
   <header>
     <div class="brand">
       <div class="logo" aria-hidden="true">
-        <img src="assets/Logo.jpg" alt="Ellyraia icon">
-      </div>
-      <div class="title">
-        <span class="wordmark">Ellyraia</span>
-        <small>Music • Video • Sci-Fi</small>
+        <img src="assets/Logo.jpg" alt="Логотип">
       </div>
     </div>
-    <nav class="cta">
+    <nav class="nav" aria-label="Основная навигация">
+      <a class="btn" href="#about">Обо мне</a>
       <a class="btn" href="#services">Услуги</a>
       <a class="btn" href="#contact">Контакты</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <div class="hero-brand">
-      <h1 class="brandname">ELLYRAIA</h1>
-      <p class="subtitle">Music • Video • Sci-Fi</p>
-    </div>
-    <div class="cta">
-      <a class="btn" href="#services">Услуги и цены</a>
-      <a class="btn" href="#about">Обо мне</a>
-      <a class="btn" href="#contact">Связаться</a>
-    </div>
-  </section>
+  <section class="hero" aria-label="Баннер"></section>
 
   <section id="about">
     <h2 class="line">Обо мне</h2>
     <div class="cards">
-      <article class="card"><h3>Кто я</h3><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы в эстетике sci-fi. Работаю бережно к идее, предпочитаю спокойную коммуникацию по e-mail.</p></article>
+      <article class="card"><h3>Кто я</h3><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Работаю бережно к идее, предпочитаю спокойную коммуникацию по e-mail.</p></article>
       <article class="card"><h3>Что делаю</h3><p class="muted">Короткие баннер-видео, песни/саундтреки под задачу, лирик-видео и обложки. RU/EN вокальные партии по брифу.</p></article>
     </div>
   </section>
@@ -139,7 +120,7 @@ footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify
     <div class="cards">
       <article class="card"><h3>Mini • Баннер-видео + музыка</h3><p class="muted">15–30 сек. Анимированный баннер/интро под фирменный звук.</p><div class="price">от 70 €</div></article>
       <article class="card"><h3>Standard • Песня + короткое видео</h3><p class="muted">Оригинальная музыка с вокальной озвучкой (RU/EN) и короткий визуал.</p><div class="price">от 150 €</div></article>
-      <article class="card"><h3>Premium • Продакшн под ключ</h3><p class="muted">Полный цикл: авторская песня/саундтрек, визуалы, монтаж, оформление.</p><div class="price">от 300 €</div></article>
+      <article class="card"><h3>Premium • Продакшн под ключ</h3><p class="muted">Полный цикл: музыка/саундтрек, визуалы, монтаж, оформление.</p><div class="price">от 300 €</div></article>
     </div>
   </section>
 
@@ -147,7 +128,7 @@ footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify
     <h2 class="line">Контакты</h2>
     <div class="cards">
       <article class="card"><h3>Email</h3><p class="kbd">hello@ellyraia.com</p></article>
-      <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></article>
+      <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">YouTube-канал</a></article>
     </div>
   </section>
 
@@ -167,7 +148,7 @@ Email: legal@ellyraia.com</pre></article>
   </section>
 
   <footer>
-    <div>© <span id="y"></span> Ellyraia. Все права защищены.</div>
+    <div>© <span id="y"></span>. Все права защищены.</div>
     <div>Домен: ellyraia.com · Сайт на GitHub Pages</div>
   </footer>
 </div>
@@ -193,5 +174,4 @@ tick();
 </script>
 </body>
 </html>
-
 
