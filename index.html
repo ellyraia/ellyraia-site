@@ -19,7 +19,7 @@
       --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
 
-      --header-h:122px;
+      --header-h:122px; /* десктопное «место» под фикс. хедер */
       --page-max:980px;
       --text-max:720px;
       --gutter:clamp(16px,4vw,40px);
@@ -30,7 +30,9 @@
     body{color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden;background:#0b0d1b}
     a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
+    a.btn:hover{text-decoration:none}
 
+    /* Космический фон */
     .space-grad{
       position:fixed;inset:0;z-index:-2;pointer-events:none;
       background:
@@ -42,6 +44,7 @@
     }
     #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
 
+    /* Хедер */
     header{
       position:fixed;top:0;left:0;right:0;z-index:10;
       display:flex;align-items:center;justify-content:space-between;
@@ -60,7 +63,7 @@
       position:relative;isolation:isolate;
       padding:8px 14px;border-radius:13px;border:1px solid var(--border);
       background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));
-      color:var(--fg);font-weight:600;font-size:15px;
+      color:var(--fg);font-weight:600;font-size:15px;white-space:nowrap;
       backdrop-filter:blur(6px);
       box-shadow:0 2px 8px rgba(0,0,0,.25);
       transition:transform .22s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
@@ -72,12 +75,14 @@
       box-shadow:0 4px 20px rgba(165,134,255,.35);
     }
 
+    /* Основной контейнер и плавный фейд на десктопе */
     .page{padding-top:var(--header-h);position:relative}
     .page::before{
       content:"";position:fixed;top:0;left:0;right:0;height:110px;pointer-events:none;z-index:6;
       background:linear-gradient(to bottom, rgba(11,13,27,.95) 0%, rgba(11,13,27,.70) 35%, rgba(11,13,27,0) 100%);
     }
 
+    /* Баннер */
     .hero{
       position:relative;overflow:hidden;border-radius:20px;min-height:38vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
@@ -91,6 +96,7 @@
         linear-gradient(180deg, rgba(11,13,27,.12), rgba(11,13,27,.50));
     }
 
+    /* Секции */
     .wrap{max-width:var(--page-max);margin:0 auto;padding:24px var(--gutter)}
     .text-narrow{max-width:var(--text-max);margin:0 auto}
     section{margin:64px 0;scroll-margin-top:calc(var(--header-h) + 16px)}
@@ -116,27 +122,50 @@
       max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto;
     }
 
+    /* --- МОБИЛЬНАЯ ВЕРСИЯ: логотип сверху по центру, ниже симметричные кнопки 3×1, без переноса --- */
     @media (max-width:768px){
       :root{
-        --header-h:136px;
-        --logo-w:96px;
+        --header-h:176px; /* больше места под колонку (логотип + ряд кнопок) */
+        --logo-w:106px;
         --logo-gap:12px;
       }
-      header{padding:12px var(--gutter)}
-      nav{gap:10px;margin-left:12px;transform:translateY(10px)}
-      .btn{padding:6px 12px;border-radius:12px;font-size:13px}
-      .page::before{display:none}
+      header{
+        padding:12px var(--gutter);
+        flex-direction:column;
+        align-items:center;
+        justify-content:flex-start;
+        gap:10px;
+      }
+      .logo{width:var(--logo-w);height:var(--logo-w)}
+      nav{
+        width:100%;
+        margin-left:0;
+        transform:none;
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+        max-width:520px; /* чтобы ряд не растягивался слишком широко */
+      }
+      .btn{
+        padding:8px 10px;
+        font-size:13px;
+        text-align:center;
+        white-space:nowrap; /* ключ — запрет переноса */
+        border-radius:12px;
+      }
+      .page::before{display:none} /* десктопный автоград сверху убираем */
 
+      /* Ручной fade под шапкой, чтобы текст уезжал «в звёзды» плавно */
       .page{
         -webkit-mask-image:linear-gradient(to bottom,
           rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.95) 60px,
-          rgba(0,0,0,1) 140px);
+          rgba(0,0,0,0.96) 70px,
+          rgba(0,0,0,1) 160px);
         -webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat;
         mask-image:linear-gradient(to bottom,
           rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.95) 60px,
-          rgba(0,0,0,1) 140px);
+          rgba(0,0,0,0.96) 70px,
+          rgba(0,0,0,1) 160px);
         mask-size:100% 100%;mask-repeat:no-repeat;
       }
 
@@ -150,13 +179,14 @@
       body{font-size:15px}
     }
 
+    /* Доп. верхний fade для мобильной версии, лежит над контентом, но под шапкой */
     .top-fade{
-      position:fixed;top:0;left:0;right:0;height:220px;pointer-events:none;z-index:9;display:none;
+      position:fixed;top:0;left:0;right:0;height:240px;pointer-events:none;z-index:9;display:none;
       background:linear-gradient(to bottom,
         rgba(11,13,27,1) 0%,
         rgba(11,13,27,.96) 30%,
         rgba(11,13,27,.90) 55%,
-        rgba(11,13,27,.65) 72%,
+        rgba(11,13,27,.62) 78%,
         rgba(11,13,27,0) 100%);
     }
     @media (max-width:768px){ .top-fade{display:block} }
