@@ -20,33 +20,33 @@
       --border:rgba(255,255,255,.18);
       --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
-      --header-h: 116px; /* высота шапки для отступа контента */
+      --header-h: 110px; /* отступ под фикс-хедер */
+      --page-max: 980px; /* ширина контентной области */
+      --text-max: 720px; /* комфортная ширина текста */
+      --gutter: clamp(16px, 4vw, 40px); /* боковые поля */
     }
     body{
       color:var(--fg);
       font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;
       overflow-x:hidden;
-      position:relative;
-      z-index:0;
-      background:#0b0d1b; /* бэк, если канва не загрузится */
+      background:#0b0d1b;
     }
-    a{color:var(--accent2);text-decoration:none}
+    a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* ===== Stars are behind EVERYTHING ===== */
+    /* ===== Stars behind everything ===== */
     #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
 
-    /* ===== Header (fixed) ===== */
+    /* ===== Header (transparent, fixed) ===== */
     header{
       position:fixed;top:0;left:0;right:0;z-index:10;
       display:flex;align-items:center;justify-content:space-between;
-      padding:14px 28px;
-      /* полностью прозрачный — как просила */
+      padding:14px var(--gutter);
       background:transparent;border:none;box-shadow:none;
     }
-    /* Round “planet” logo, чуть крупнее */
+    /* Round “planet” logo */
     .logo{
-      width:100px;height:100px;border-radius:50%;
+      width:96px;height:96px;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
       overflow:hidden;position:relative;
       background: radial-gradient(circle at 50% 55%, rgba(165,134,255,.28), rgba(99,199,255,.12) 55%, transparent 65%);
@@ -54,42 +54,77 @@
     }
     .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 
+    /* ===== Glass buttons (no rainbow, subtle underglow) ===== */
     nav{display:flex;gap:12px}
     .btn{
-      padding:10px 18px;border-radius:14px;border:1px solid var(--border);
-      background:rgba(20,20,30,.55);backdrop-filter:blur(6px);
-      font-weight:600;color:var(--fg);
-      transition:all .25s ease;
+      position:relative; isolation:isolate;
+      padding:10px 18px; border-radius:14px;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      color:var(--fg); font-weight:600;
+      backdrop-filter:blur(6px);
+      box-shadow: var(--shadow);
+      transition: transform .22s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease, opacity .25s ease;
+    }
+    /* тонкая «подсветка снизу под стеклом» */
+    .btn::before{
+      content:""; position:absolute; left:10%; right:10%; bottom:-8px; height:28px;
+      background: radial-gradient(60% 100% at 50% 0%, rgba(165,134,255,.22), rgba(99,199,255,.18) 55%, transparent 70%);
+      filter: blur(14px);
+      opacity: .0; transition: opacity .25s ease, transform .25s ease;
+      z-index:-1;
     }
     .btn:hover{
-      transform:translateY(-2px);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      color:#fff; box-shadow:0 0 18px rgba(120,170,255,.45)
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.28);
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.07));
+      box-shadow: 0 16px 50px rgba(165,134,255,.20), var(--shadow);
+      text-decoration:none;
     }
+    .btn:hover::before{ opacity:.9; transform: translateY(-2px); }
+    .btn:active{ transform: translateY(0) scale(.98); }
+    .btn:focus-visible{ outline:2px solid rgba(138,180,255,.85); outline-offset:2px; }
 
-    /* ===== Page wrapper: отступ ВМЕСТО скролла вверх ===== */
-    .page{
-      padding-top: var(--header-h);
-      position:relative; z-index:1; /* выше звёзд */
-    }
+    /* ===== Page wrapper: контент сразу под хедером ===== */
+    .page{ padding-top: var(--header-h); }
 
-    /* ===== Hero (compact banner) ===== */
+    /* ===== HERO: баннер (как есть, не меняем) ===== */
     .hero{
-      /* убрали margin-top: всё решает .page padding-top */
+      position:relative; overflow:hidden; border-radius:20px;
+      min-height:44vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
-      border-radius:20px;min-height:38vh;
-      position:relative;overflow:hidden;
+      margin: 0 var(--gutter); /* поля по краям у баннера */
     }
-    .hero::before{content:"";position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(11,13,27,.35),rgba(11,13,27,.65));
+    .hero::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:
+        radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.68) 70%),
+        linear-gradient(180deg, rgba(11,13,27,.12), rgba(11,13,27,.50));
+    }
+    .hero .cta{
+      position:absolute; left:0; right:0; bottom:8%;
+      display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;
+      padding:0 24px; z-index:1;
     }
 
-    /* ===== Sections (glass) ===== */
-    section{margin:64px 0;position:relative;z-index:1}
-    h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px)}
+    /* ===== Content containers ===== */
+    .wrap{
+      max-width: var(--page-max);
+      margin: 0 auto;
+      padding: 24px var(--gutter);
+    }
+    .text-narrow{ max-width: var(--text-max); margin: 0 auto; }
+
+    /* ===== Sections & cards (glass) ===== */
+    section{margin:64px 0}
+    h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px); text-align:center}
+
     .cards{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      display:grid;
+      grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
       gap:18px;
+      max-width: var(--page-max);
+      margin: 0 auto;
     }
     .card{
       background:rgba(255,255,255,.06);
@@ -97,32 +132,37 @@
       border-radius:var(--card-radius);
       padding:20px;box-shadow:var(--shadow);
       backdrop-filter:blur(8px);
-      transition:transform .25s ease, box-shadow .25s ease;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
-    .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22),var(--shadow)}
-    .muted{color:var(--muted)}
-    .price{font-weight:800;margin-top:10px}
+    .card:hover{
+      transform:translateY(-4px);
+      border-color: rgba(165,134,255,.28);
+      box-shadow:0 18px 60px rgba(120,170,255,.20), var(--shadow);
+    }
+    .muted{color:var(--muted)} .price{font-weight:800;margin-top:10px}
 
-    /* ===== Footer ===== */
     footer{
       margin:72px 0 26px;color:var(--muted);font-size:14px;
       display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      position:relative;z-index:1
+      max-width: var(--page-max);
+      padding: 0 var(--gutter);
+      margin-left:auto; margin-right:auto;
     }
 
-    /* ===== Responsive tweak: поменьше шапка на узких экранах ===== */
+    /* Mobile tune */
     @media (max-width:560px){
-      :root{ --header-h: 100px; }
+      :root{ --header-h: 96px; }
       .logo{ width:84px; height:84px; }
-      header{ padding:12px 16px; }
+      header{ padding:12px var(--gutter); }
+      .hero{ min-height:48vh; }
     }
   </style>
 </head>
 <body>
-  <!-- Stars behind all content -->
+  <!-- Stars background -->
   <canvas id="stars" aria-hidden="true"></canvas>
 
-  <!-- Transparent fixed header -->
+  <!-- Header -->
   <header>
     <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
     <nav>
@@ -132,12 +172,20 @@
     </nav>
   </header>
 
-  <!-- Page content starts RIGHT under the header via padding-top -->
+  <!-- Page -->
   <main class="page">
-    <section class="hero" aria-label="Баннер"></section>
+    <!-- Hero with CTA inside (как было) -->
+    <section class="hero" aria-label="Баннер">
+      <div class="cta">
+        <a class="btn" href="#about">Обо мне</a>
+        <a class="btn" href="#services">Услуги</a>
+        <a class="btn" href="#contact">Контакты</a>
+      </div>
+    </section>
 
+    <!-- Content: всегда в узкой центральной колонке -->
     <div class="wrap">
-      <section id="about">
+      <section id="about" class="text-narrow">
         <h2>Обо мне</h2>
         <p>Создаю авторскую музыку, песни и кинематографичные видео. Работаю бережно к идее, с фокусом на атмосферу и стиль.</p>
       </section>
@@ -151,9 +199,9 @@
         </div>
       </section>
 
-      <section id="contact">
+      <section id="contact" class="text-narrow">
         <h2>Контакты</h2>
-        <div class="cards">
+        <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:var(--text-max);">
           <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
           <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></article>
         </div>
@@ -170,7 +218,7 @@
     // Год
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Звёзды (fixed behind)
+    // Звёзды
     const c = document.getElementById('stars'), ctx = c.getContext('2d');
     let w,h,stars=[]; const R=()=>Math.random();
     function resize(){
