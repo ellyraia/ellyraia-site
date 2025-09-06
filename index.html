@@ -76,5 +76,119 @@
     /* ===== Hero (compact banner) ===== */
     .hero{
       /* убрали margin-top: всё решает .page padding-top */
-      background:url("
+      background:url("assets/hero.jpg") center/cover no-repeat;
+      border-radius:20px;min-height:38vh;
+      position:relative;overflow:hidden;
+    }
+    .hero::before{content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(11,13,27,.35),rgba(11,13,27,.65));
+    }
 
+    /* ===== Sections (glass) ===== */
+    section{margin:64px 0;position:relative;z-index:1}
+    h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px)}
+    .cards{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      gap:18px;
+    }
+    .card{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      border-radius:var(--card-radius);
+      padding:20px;box-shadow:var(--shadow);
+      backdrop-filter:blur(8px);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22),var(--shadow)}
+    .muted{color:var(--muted)}
+    .price{font-weight:800;margin-top:10px}
+
+    /* ===== Footer ===== */
+    footer{
+      margin:72px 0 26px;color:var(--muted);font-size:14px;
+      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      position:relative;z-index:1
+    }
+
+    /* ===== Responsive tweak: поменьше шапка на узких экранах ===== */
+    @media (max-width:560px){
+      :root{ --header-h: 100px; }
+      .logo{ width:84px; height:84px; }
+      header{ padding:12px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Stars behind all content -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <!-- Transparent fixed header -->
+  <header>
+    <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
+    <nav>
+      <a class="btn" href="#about">Обо мне</a>
+      <a class="btn" href="#services">Услуги</a>
+      <a class="btn" href="#contact">Контакты</a>
+    </nav>
+  </header>
+
+  <!-- Page content starts RIGHT under the header via padding-top -->
+  <main class="page">
+    <section class="hero" aria-label="Баннер"></section>
+
+    <div class="wrap">
+      <section id="about">
+        <h2>Обо мне</h2>
+        <p>Создаю авторскую музыку, песни и кинематографичные видео. Работаю бережно к идее, с фокусом на атмосферу и стиль.</p>
+      </section>
+
+      <section id="services">
+        <h2>Услуги</h2>
+        <div class="cards">
+          <article class="card"><h3>Mini</h3><p class="muted">Баннер-видео + музыка (15–30 сек).</p><div class="price">от 70 €</div></article>
+          <article class="card"><h3>Standard</h3><p class="muted">Песня + короткое видео.</p><div class="price">от 150 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: музыка, клип, оформление.</p><div class="price">от 300 €</div></article>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Контакты</h2>
+        <div class="cards">
+          <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
+          <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></article>
+        </div>
+      </section>
+
+      <footer>
+        <div>© <span id="y"></span> Ellyraia</div>
+        <div>Сайт на GitHub Pages</div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Год
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Звёзды (fixed behind)
+    const c = document.getElementById('stars'), ctx = c.getContext('2d');
+    let w,h,stars=[]; const R=()=>Math.random();
+    function resize(){
+      w=c.width=innerWidth; h=c.height=innerHeight;
+      stars = Array.from({length:180},()=>({x:R()*w,y:R()*h,z:0.2+R()*0.8,s:0.6+R()*1.6}));
+    }
+    resize(); addEventListener('resize',resize,{passive:true});
+    function tick(){
+      ctx.clearRect(0,0,w,h);
+      for(const s of stars){
+        s.x += s.z*0.15; if(s.x>w+5) s.x=-5;
+        ctx.globalAlpha = 0.4 + s.z*0.6;
+        ctx.fillStyle = `rgb(${200+s.z*40},${200+s.z*40},255)`;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  </script>
+</body>
+</html>
