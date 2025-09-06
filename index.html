@@ -20,12 +20,12 @@
       --border:rgba(255,255,255,.16);
       --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
-      --header-h: 110px; /* отступ под фикс-хедер */
+      --header-h: 110px; /* высота «воздуха» под фикс-хедер */
       --page-max: 980px; /* ширина контентной области */
       --text-max: 720px; /* комфортная ширина текста */
       --gutter: clamp(16px, 4vw, 40px); /* боковые поля */
       --logo-w: 96px; /* ширина логотипа */
-      --logo-gap: 16px; /* небольшой зазор от логотипа */
+      --logo-gap: 16px; /* зазор от логотипа */
     }
     body{
       color:var(--fg);
@@ -36,7 +36,7 @@
     a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* ===== Cosmic backdrop (subtle gradient) + stars ===== */
+    /* ===== Subtle cosmic gradient under stars ===== */
     .space-grad{
       position:fixed; inset:0; z-index:-2; pointer-events:none;
       background:
@@ -48,14 +48,13 @@
     }
     #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
 
-    /* ===== Header (transparent, fixed) ===== */
+    /* ===== Header ===== */
     header{
       position:fixed;top:0;left:0;right:0;z-index:10;
       display:flex;align-items:center;justify-content:space-between;
       padding:14px var(--gutter);
       background:transparent;border:none;box-shadow:none;
     }
-    /* Круглый «планетный» логотип */
     .logo{
       width:var(--logo-w);height:var(--logo-w);border-radius:50%;
       display:flex;align-items:center;justify-content:center;
@@ -65,7 +64,7 @@
     }
     .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 
-    /* ===== Glass buttons (ярче, чем карточки; без «радуги») ===== */
+    /* ===== Glass buttons (чуть ярче, чем карточки; без «радуги») ===== */
     nav{display:flex;gap:12px}
     .btn{
       position:relative; isolation:isolate;
@@ -95,16 +94,14 @@
     .btn:active{ transform: translateY(0) scale(.97); }
     .btn:focus-visible{ outline:2px solid rgba(138,180,255,.85); outline-offset:2px; }
 
-    /* ===== Page wrapper: контент сразу под хедером ===== */
+    /* ===== Page wrapper ===== */
     .page{ padding-top: var(--header-h); }
 
-    /* ===== HERO: без кнопок; СИММЕТРИЧНЫЕ поля слева/справа ===== */
+    /* ===== HERO (симметричные поля) ===== */
     .hero{
       position:relative; overflow:hidden; border-radius:20px;
       min-height:40vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
-
-      /* Симметрия: воздух слева = (gutter + logo + gap), справа — тот же самый */
       margin-left: calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
       margin-right: calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
     }
@@ -123,7 +120,7 @@
     }
     .text-narrow{ max-width: var(--text-max); margin: 0 auto; }
 
-    /* ===== Sections & cards (glass) ===== */
+    /* ===== Sections & cards ===== */
     section{margin:64px 0}
     h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px); text-align:center}
 
@@ -135,7 +132,7 @@
       margin: 0 auto;
     }
     .card{
-      background:rgba(255,255,255,.045); /* прозрачнее */
+      background:rgba(255,255,255,.045);
       border:1px solid rgba(255,255,255,.14);
       border-radius:var(--card-radius);
       padding:20px;box-shadow:var(--shadow);
@@ -158,26 +155,50 @@
       margin-left:auto; margin-right:auto;
     }
 
-    /* Mobile tune */
-    @media (max-width:560px){
-      :root{ --header-h: 96px; --logo-w: 84px; }
+    /* ===== Mobile tune (≤768px) ===== */
+    @media (max-width:768px){
+      :root{
+        --header-h: 96px;
+        --logo-w: 78px; /* логотип компактнее */
+        --logo-gap: 12px;
+      }
       header{ padding:12px var(--gutter); }
-      /* на мобиле баннер на ширину полей */
+      nav{ gap:10px; }
+      .btn{
+        padding:8px 14px;
+        border-radius:12px;
+        font-size:14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.25);
+      }
+      .btn:hover{
+        /* на тач-экране ховер почти не виден, но оставим чуть заметнее */
+        background: linear-gradient(180deg, rgba(165,134,255,.28), rgba(99,199,255,.18));
+        box-shadow: 0 6px 22px rgba(165,134,255,.44), 0 0 22px rgba(99,199,255,.32);
+      }
+
+      /* Баннер — безопасные поля, меньше высота */
       .hero{
-        min-height:44vh;
+        min-height: 36vh;
         margin-left: var(--gutter);
         margin-right: var(--gutter);
+        background-position: center 40%;
+        background-size: cover;
       }
+
+      /* Карточки уже и по центру */
+      .cards{ grid-template-columns: 1fr; max-width: 92%; }
+      .card{ max-width: 100%; margin: 0 auto; }
+      .text-narrow{ max-width: 92%; }
+
+      h2{ font-size: 22px; }
+      body{ font-size: 15px; }
     }
   </style>
 </head>
 <body>
-  <!-- Subtle color gradient under the stars -->
   <div class="space-grad" aria-hidden="true"></div>
-  <!-- Stars on top of gradient -->
   <canvas id="stars" aria-hidden="true"></canvas>
 
-  <!-- Header -->
   <header>
     <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
     <nav>
@@ -187,14 +208,10 @@
     </nav>
   </header>
 
-  <!-- Page -->
   <main class="page">
-    <!-- Hero WITHOUT buttons -->
     <section class="hero" aria-label="Баннер"></section>
 
-    <!-- Content: узкая центральная колонка -->
     <div class="wrap">
-      <!-- ОБО МНЕ — 2 карточки -->
       <section id="about">
         <h2>Обо мне</h2>
         <div class="cards" style="max-width:var(--page-max);">
@@ -209,7 +226,6 @@
         </div>
       </section>
 
-      <!-- Услуги -->
       <section id="services">
         <h2>Услуги</h2>
         <div class="cards">
@@ -219,7 +235,6 @@
         </div>
       </section>
 
-      <!-- Контакты -->
       <section id="contact" class="text-narrow">
         <h2>Контакты</h2>
         <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:var(--text-max);">
@@ -236,7 +251,7 @@
   </main>
 
   <script>
-    // Год
+    // Текущий год
     document.getElementById('y').textContent = new Date().getFullYear();
 
     // Звёзды — мягкий glow
@@ -244,7 +259,8 @@
     let w,h,stars=[]; const R=()=>Math.random();
     function resize(){
       w=c.width=innerWidth; h=c.height=innerHeight;
-      stars = Array.from({length:190},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
+      const count = (innerWidth<=768) ? 150 : 190; // на мобиле чуть меньше
+      stars = Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
     }
     resize(); addEventListener('resize',resize,{passive:true});
     function tick(){
@@ -264,3 +280,4 @@
   </script>
 </body>
 </html>
+
