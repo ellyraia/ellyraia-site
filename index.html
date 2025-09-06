@@ -9,9 +9,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/hero.jpg" />
   <link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
-
   <style>
-    /* ===== Base ===== */
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%;margin:0}
     html{scroll-behavior:smooth}
@@ -29,16 +27,10 @@
       --logo-w:132px;
       --logo-gap:16px;
     }
-    body{
-      color:var(--fg);
-      font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;
-      overflow-x:hidden;
-      background:#0b0d1b;
-    }
+    body{color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden;background:#0b0d1b}
     a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* ===== Space background ===== */
     .space-grad{
       position:fixed;inset:0;z-index:-2;pointer-events:none;
       background:
@@ -50,12 +42,10 @@
     }
     #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
 
-    /* ===== Header ===== */
     header{
       position:fixed;top:0;left:0;right:0;z-index:10;
       display:flex;align-items:center;justify-content:space-between;
-      padding:22px var(--gutter);
-      background:transparent;
+      padding:22px var(--gutter);background:transparent;
     }
     .logo{
       width:var(--logo-w);height:var(--logo-w);border-radius:50%;
@@ -73,30 +63,21 @@
       color:var(--fg);font-weight:600;font-size:15px;
       backdrop-filter:blur(6px);
       box-shadow:0 2px 8px rgba(0,0,0,.25);
-      transition:transform .22s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease,opacity .25s ease;
-    }
-    .btn::before{
-      content:"";position:absolute;left:8%;right:8%;bottom:-8px;height:26px;
-      background:radial-gradient(60% 100% at 50% 0%, rgba(165,134,255,.28), rgba(99,199,255,.22) 55%, transparent 70%);
-      filter:blur(16px);opacity:0;transition:opacity .25s ease,transform .25s ease;z-index:-1;
+      transition:transform .22s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
     }
     .btn:hover{
       transform:translateY(-2px);
       border-color:rgba(255,255,255,.32);
       background:linear-gradient(180deg,rgba(165,134,255,.25),rgba(99,199,255,.15));
-      box-shadow:0 4px 20px rgba(165,134,255,.40), 0 0 24px rgba(99,199,255,.30);
-      text-decoration:none;
+      box-shadow:0 4px 20px rgba(165,134,255,.35);
     }
-    .btn:hover::before{opacity:1;transform:translateY(-2px)}
 
-    /* Десктопная мягкая вуаль (над контентом, под шапкой) */
     .page{padding-top:var(--header-h);position:relative}
     .page::before{
       content:"";position:fixed;top:0;left:0;right:0;height:110px;pointer-events:none;z-index:6;
       background:linear-gradient(to bottom, rgba(11,13,27,.95) 0%, rgba(11,13,27,.70) 35%, rgba(11,13,27,0) 100%);
     }
 
-    /* ===== Hero ===== */
     .hero{
       position:relative;overflow:hidden;border-radius:20px;min-height:38vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
@@ -110,7 +91,6 @@
         linear-gradient(180deg, rgba(11,13,27,.12), rgba(11,13,27,.50));
     }
 
-    /* ===== Sections / Cards ===== */
     .wrap{max-width:var(--page-max);margin:0 auto;padding:24px var(--gutter)}
     .text-narrow{max-width:var(--text-max);margin:0 auto}
     section{margin:64px 0;scroll-margin-top:calc(var(--header-h) + 16px)}
@@ -125,7 +105,7 @@
     .card:hover{
       transform:translateY(-4px);
       background:rgba(255,255,255,.06);
-      border-color:rgba(165,134,255,.24);
+      border-color:rgba(165,134,255,.22);
       box-shadow:0 18px 60px rgba(120,170,255,.18), var(--shadow);
     }
     .muted{color:var(--muted)} .price{font-weight:800;margin-top:10px}
@@ -136,31 +116,28 @@
       max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto;
     }
 
-    /* ===== Mobile (≤768px) ===== */
     @media (max-width:768px){
-      :root{ --header-h:112px; --logo-w:90px; --logo-gap:12px; }
+      :root{
+        --header-h:136px;
+        --logo-w:96px;
+        --logo-gap:12px;
+      }
       header{padding:12px var(--gutter)}
-      nav{gap:10px;margin-left:12px;transform:translateY(8px)} /* кнопки чуть ниже от лого */
-      .btn{padding:7px 12px;border-radius:12px;font-size:13.5px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
-      .btn::before{height:22px}
-
-      /* Убираем десктопную вуаль — будем использовать фикс-оверлей .top-fade */
+      nav{gap:10px;margin-left:12px;transform:translateY(10px)}
+      .btn{padding:6px 12px;border-radius:12px;font-size:13px}
       .page::before{display:none}
 
-      /* Лёгкий mask как дополнительный fallback */
       .page{
         -webkit-mask-image:linear-gradient(to bottom,
           rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.85) 60px,
-          rgba(0,0,0,1) 128px);
-        -webkit-mask-size:100% 100%;
-        -webkit-mask-repeat:no-repeat;
-                mask-image:linear-gradient(to bottom,
+          rgba(0,0,0,0.95) 60px,
+          rgba(0,0,0,1) 140px);
+        -webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat;
+        mask-image:linear-gradient(to bottom,
           rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.85) 60px,
-          rgba(0,0,0,1) 128px);
-        mask-size:100% 100%;
-        mask-repeat:no-repeat;
+          rgba(0,0,0,0.95) 60px,
+          rgba(0,0,0,1) 140px);
+        mask-size:100% 100%;mask-repeat:no-repeat;
       }
 
       .hero{
@@ -168,21 +145,18 @@
         background-position:center 40%;background-size:cover;
       }
       .cards{grid-template-columns:1fr;max-width:92%}
-      .card{max-width:100%;margin:0 auto}
       .text-narrow{max-width:92%}
       h2{font-size:22px}
       body{font-size:15px}
     }
 
-    /* ===== Фиксированный верхний fade-оверлей (ТОЛЬКО мобайл) ===== */
     .top-fade{
-      position:fixed;top:0;left:0;right:0;height:180px;pointer-events:none;z-index:9;display:none;
-      /* Плотный цветовой градиент (без backdrop-filter), чтобы эффект был виден везде */
+      position:fixed;top:0;left:0;right:0;height:220px;pointer-events:none;z-index:9;display:none;
       background:linear-gradient(to bottom,
         rgba(11,13,27,1) 0%,
-        rgba(11,13,27,.95) 24%,
-        rgba(11,13,27,.80) 48%,
-        rgba(11,13,27,.55) 70%,
+        rgba(11,13,27,.96) 30%,
+        rgba(11,13,27,.90) 55%,
+        rgba(11,13,27,.65) 72%,
         rgba(11,13,27,0) 100%);
     }
     @media (max-width:768px){ .top-fade{display:block} }
@@ -201,7 +175,6 @@
     </nav>
   </header>
 
-  <!-- Мобильный градиент-оверлей, чтобы контент «растворялся» под шапкой -->
   <div class="top-fade" aria-hidden="true"></div>
 
   <main class="page">
@@ -247,27 +220,21 @@
   </main>
 
   <script>
-    // Год в футере
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Звёзды
-    const c = document.getElementById('stars'), ctx = c.getContext('2d');
+    const c=document.getElementById('stars'),ctx=c.getContext('2d');
     let w,h,stars=[]; const R=()=>Math.random();
     function resize(){
       w=c.width=innerWidth; h=c.height=innerHeight;
-      const count = (innerWidth<=768) ? 150 : 190;
-      stars = Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
+      const count=(innerWidth<=768)?150:190;
+      stars=Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
     }
     resize(); addEventListener('resize',resize,{passive:true});
     function tick(){
-      ctx.clearRect(0,0,w,h);
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(180,190,255,0.75)';
+      ctx.clearRect(0,0,w,h); ctx.shadowBlur=8; ctx.shadowColor='rgba(180,190,255,0.75)';
       for(const s of stars){
-        s.x += s.z*0.16; if(s.x>w+6) s.x=-6;
-        const a = 0.46 + s.z*0.6;
-        ctx.globalAlpha = a > 1 ? 1 : a;
-        ctx.fillStyle = `rgb(${205+s.z*38},${205+s.z*38},255)`;
+        s.x+=s.z*0.16; if(s.x>w+6) s.x=-6;
+        const a=0.46+s.z*0.6; ctx.globalAlpha=a>1?1:a;
+        ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
         ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
       }
       requestAnimationFrame(tick);
@@ -276,5 +243,4 @@
   </script>
 </body>
 </html>
-
 
