@@ -3,34 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Официальный сайт</title>
-  <meta name="description" content="Краткое представление, услуги, контакты и реквизиты." />
+  <title>Ellyraia — Music • Video</title>
+  <meta name="description" content="Ellyraia — авторские песни, музыка и кинематографичные видео. Контакты, услуги и реквизиты на одной странице." />
   <meta name="theme-color" content="#0b0d1b" />
-  <meta property="og:title" content="Официальный сайт" />
-  <meta property="og:description" content="Краткое представление, услуги, контакты и реквизиты." />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ellyraia — Music • Video" />
+  <meta property="og:description" content="Музыка, песни, видео и визуалы в атмосфере будущего. Связаться и заказать — на этой странице." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/hero.jpg" />
-  <link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
-
+  <link rel="icon" type="image/png" href="assets/Logo.jpg" />
   <style>
     /* ===== Base ===== */
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%}
     :root{
-      --bg:#0b0d1b; --fg:#eaf0ff; --muted:#9fb0d8;
-      --glass-h:rgba(255,255,255,.10); --glass-l:rgba(255,255,255,.05);
+      --bg:#0b0d1b;
+      --fg:#eaf0ff;
+      --muted:#9fb0d8;
+      --accent:#a586ff;
+      --accent2:#63c7ff;
+      --accent3:#ffd36e;
       --border:rgba(255,255,255,.18);
-      --rad:22px; --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
-      --accent:#a586ff; --accent2:#63c7ff; --accent3:#ffd36e;
+      --shadow:0 12px 40px rgba(0,0,0,.45);
+      --card-radius:22px;
     }
-    body{margin:0;background:var(--bg);color:var(--fg);
-         font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
-    a{color:#63c7ff;text-decoration:none}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial;overflow-x:hidden}
+    a{color:var(--accent2);text-decoration:none}
     a:hover{text-decoration:underline}
-    html{scroll-behavior:smooth}
     .wrap{max-width:1180px;margin:0 auto;padding:24px}
 
-    /* ===== Фоновые слои ===== */
+    /* ===== Cosmic background ===== */
     .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
       background-size:160% 160%;
       background-image:
@@ -39,227 +41,103 @@
         radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.32), transparent 62%),
         radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.20), transparent 62%),
         linear-gradient(180deg,#070914, #0b0d1b 55%, #0a0d18);
-      animation:drift 25s ease-in-out infinite alternate;
-      filter:saturate(1.05) contrast(1.02);
+      animation: drift 25s ease-in-out infinite alternate;
     }
     @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,88% 88%,0 0}}
-    #stars{position:fixed;inset:0;z-index:-2;pointer-events:none;display:block}
-    .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;
-      background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
-                       repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
-      mix-blend-mode:overlay;
-    }
 
-    /* ===== Header (липкий, стеклянный) ===== */
-    .site-header-wrap{position:sticky;top:0;z-index:10}
-    header{
-      display:flex;align-items:center;justify-content:flex-start;gap:16px;
-      transition:box-shadow .25s ease, background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
-      border-radius:18px; padding:10px 14px; margin-top:10px;
-      background:transparent; border:1px solid transparent;
-    }
-    .header-glass{
-      background:linear-gradient(180deg,var(--glass-h),var(--glass-l));
-      backdrop-filter:blur(8px);
-      border-color:var(--border);
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-    }
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:98px;height:98px;border-radius:16px;overflow:hidden;display:grid;place-items:center}
+    .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
+      background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
+                       repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
+      mix-blend-mode:overlay;}
+
+    /* ===== Header ===== */
+    header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;transition:all .3s ease}
+    .logo{width:90px;height:90px;display:grid;place-items:center}
     .logo img{width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 0 10px rgba(165,134,255,.65))}
-    @media (max-width:520px){ .logo{width:82px;height:82px} }
+    nav{display:flex;gap:14px}
+    .btn{padding:10px 16px;border-radius:16px;border:1px solid var(--border);background:rgba(20,20,30,.45);box-shadow:var(--shadow);backdrop-filter:blur(4px);
+      font-weight:600;color:var(--fg);transition:all .25s ease}
+    .btn:hover{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 0 18px rgba(120,170,255,.45)}
 
-    /* ===== Кнопки: современное свечение ===== */
-    .btn{
-      position:relative; isolation:isolate;
-      padding:12px 18px;border-radius:16px;border:1px solid var(--border);
-      background:linear-gradient(180deg,var(--glass-h),var(--glass-l));
-      box-shadow:var(--shadow); backdrop-filter:blur(6px);
-      font-weight:600;letter-spacing:.2px;display:inline-flex;align-items:center;gap:10px;
-      transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
-      will-change:transform, box-shadow;
-    }
-    .btn::after{
-      content:""; position:absolute; inset:-12px; z-index:-1; border-radius:22px;
-      background:radial-gradient(60% 60% at 50% 50%, rgba(165,134,255,.45), rgba(99,199,255,.35) 40%, rgba(255,211,110,.20) 70%, transparent 72%);
-      opacity:0; filter:blur(16px); transform:scale(.9); transition:opacity .25s ease, transform .25s ease;
-    }
-    .btn:hover{ transform:translateY(-2px); box-shadow:0 16px 50px rgba(165,134,255,.28), var(--shadow); text-decoration:none }
-    .btn:hover::after{ opacity:1; transform:scale(1) }
-    .btn:active{ transform:translateY(0) scale(.98) }
-    .btn:focus-visible{ outline:2px solid #63c7ff; outline-offset:2px; }
+    /* ===== Hero ===== */
+    .hero{margin-top:120px;display:grid;gap:20px;background:url("assets/hero.jpg") center/cover no-repeat;border-radius:24px;padding:60px;position:relative;overflow:hidden;min-height:50vh}
+    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,27,.45),rgba(11,13,27,.7));pointer-events:none}
+    .hero>*{position:relative}
+    .hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
 
-    /* ===== Hero (баннер на весь экран + кнопки) ===== */
-    .hero{
-      margin-top:18px;border-radius:24px;padding:0;overflow:hidden;position:relative;
-      min-height:60vh;background:url("assets/hero.jpg") center/cover no-repeat;
-    }
-    @media (min-width:900px){ .hero{ min-height:88vh; } }
-    .hero::before{content:"";position:absolute;inset:0;
-      background:
-        radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
-        linear-gradient(180deg, rgba(11,13,27,.15), rgba(11,13,27,.50));
-      pointer-events:none;
-    }
-    /* тёплый ореол поверх баннера */
-    .hero::after{
-      content:"";position:absolute;inset:-6%;pointer-events:none;z-index:1;
-      background:radial-gradient(50% 35% at 50% 40%, rgba(255,200,120,.30), rgba(165,134,255,.20) 35%, rgba(99,199,255,.12) 58%, transparent 70%);
-      filter:blur(24px) saturate(1.05);opacity:.65;
-      animation:heroGlow 6s ease-in-out infinite alternate;
-    }
-    @keyframes heroGlow{
-      0%{transform:scale(1);opacity:.55;filter:blur(22px) saturate(1.02);}
-      100%{transform:scale(1.05);opacity:.75;filter:blur(28px) saturate(1.08);}
-    }
-    .hero .cta{
-      position:relative; z-index:2; display:flex; gap:12px; flex-wrap:wrap;
-      justify-content:center; align-items:center; padding:24px;
-      top: calc(50vh - 80px);
-    }
-    @media (min-width:900px){ .hero .cta{ top: calc(44vh - 40px); } }
-
-    /* ===== Sections ===== */
+    /* ===== Sections & cards ===== */
     section{margin:64px 0}
-    section[id]{ scroll-margin-top: 110px; }
-    .line{position:relative}
-    .line::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:1px;
-      background:linear-gradient(90deg,transparent,rgba(165,134,255,.6),transparent);
-      filter:drop-shadow(0 0 6px rgba(165,134,255,.7))}
     h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px)}
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
-    .card{
-      position:relative;overflow:hidden;
-      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.18);border-radius:var(--rad);padding:20px;
-      box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease
-    }
-    /* светящийся ореол */
-    .card::after{
-      content:"";position:absolute;inset:-20%;pointer-events:none;z-index:0;
-      background:radial-gradient(60% 60% at 50% 0%, rgba(165,134,255,0), rgba(165,134,255,.12) 55%, rgba(99,199,255,.10) 70%, transparent 75%);
-      opacity:0;transform:scale(.96);
-      transition:opacity .25s ease, transform .25s ease, filter .25s ease;
-      filter:blur(18px);
-    }
-    .card:hover::after{opacity:1;transform:scale(1);filter:blur(16px);}
-    .card:hover{transform:translateY(-4px);border-color:rgba(165,134,255,.35);
-      box-shadow:0 18px 60px rgba(120,170,255,.22),0 0 0 1px rgba(165,134,255,.25) inset,var(--shadow);}
-    .card h3{margin:0 0 8px;font-size:20px}
+    .card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease}
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22),var(--shadow)}
     .muted{color:var(--muted)}
     .price{font-weight:800;margin-top:10px}
 
     /* ===== Footer ===== */
     footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .grad{animation:none}
-      .btn, .card{transition:none}
-      .hero::after{animation:none}
-    }
   </style>
 </head>
 <body>
   <div class="grad" aria-hidden="true"></div>
-  <canvas id="stars" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
 
-  <div class="wrap">
-    <div class="site-header-wrap">
-      <header id="siteHeader">
-        <div class="brand">
-          <div class="logo" aria-hidden="true">
-            <img src="assets/Logo.jpg" alt="Логотип">
-          </div>
-        </div>
-      </header>
+  <header>
+    <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
+    <nav>
+      <a class="btn" href="#about">Обо мне</a>
+      <a class="btn" href="#services">Услуги</a>
+      <a class="btn" href="#contact">Контакты</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="cta">
+      <a class="btn" href="#about">Обо мне</a>
+      <a class="btn" href="#services">Услуги</a>
+      <a class="btn" href="#contact">Контакты</a>
     </div>
+  </section>
 
-    <section class="hero" aria-label="Баннер">
-      <div class="cta">
-        <a class="btn" href="#about">Обо мне</a>
-        <a class="btn" href="#services">Услуги</a>
-        <a class="btn" href="#contact">Контакты</a>
-      </div>
-    </section>
+  <section id="about">
+    <h2>Обо мне</h2>
+    <p>Ellyraia — создаю авторскую музыку, песни и видео. Работаю с AI-инструментами и делаю проекты в атмосфере будущего.</p>
+  </section>
 
-    <section id="about">
-      <h2 class="line">Обо мне</h2>
-      <div class="cards">
-        <article class="card"><h3>Кто я</h3><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Работаю бережно к идее, предпочитаю спокойную коммуникацию по e-mail.</p></article>
-        <article class="card"><h3>Что делаю</h3><p class="muted">Короткие баннер-видео, песни/саундтреки под задачу, лирик-видео и обложки. RU/EN вокальные партии по брифу.</p></article>
-      </div>
-    </section>
+  <section id="services">
+    <h2>Услуги</h2>
+    <div class="cards">
+      <article class="card"><h3>Mini</h3><p class="muted">Баннер-видео + музыка (15–30 сек).</p><div class="price">от 70 €</div></article>
+      <article class="card"><h3>Standard</h3><p class="muted">Песня + короткое видео.</p><div class="price">от 150 €</div></article>
+      <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: музыка, клип, оформление.</p><div class="price">от 300 €</div></article>
+    </div>
+  </section>
 
-    <section id="services">
-      <h2 class="line">Услуги</h2>
-      <div class="cards">
-        <article class="card"><h3>Mini • Баннер-видео + музыка</h3><p class="muted">15–30 сек. Анимированный баннер/интро под фирменный звук.</p><div class="price">от 70 €</div></article>
-        <article class="card"><h3>Standard • Песня + короткое видео</h3><p class="muted">Оригинальная музыка с вокальной озвучкой (RU/EN) и короткий визуал.</p><div class="price">от 150 €</div></article>
-        <article class="card"><h3>Premium • Продакшн под ключ</h3><p class="muted">Полный цикл: музыка/саундтрек, визуалы, монтаж, оформление.</p><div class="price">от 300 €</div></article>
-      </div>
-    </section>
+  <section id="contact">
+    <h2>Контакты</h2>
+    <div class="cards">
+      <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
+      <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></article>
+    </div>
+  </section>
 
-    <section id="contact">
-      <h2 class="line">Контакты</h2>
-      <div class="cards">
-        <article class="card"><h3>Email</h3><p class="kbd">hello@ellyraia.com</p></article>
-        <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">YouTube-канал</a></article>
-      </div>
-    </section>
-
-    <section id="details">
-      <h2 class="line">Реквизиты</h2>
-      <div class="cards">
-        <article class="card"><h3>Платёжные данные</h3><pre class="kbd">IBAN: LV00BANK0000000000000
-Получатель: Self-employed
-Банк: BANK NAME, Latvia
-Назначение: За авторскую работу (музыка/видео)</pre></article>
-        <article class="card"><h3>Юридическая информация</h3><pre class="kbd">Статус: Самозанятое лицо (LV)
-Рег. номер: 00000000000
-НДС: —
-Адрес: Riga, Latvia
-Email: legal@ellyraia.com</pre></article>
-      </div>
-    </section>
-
-    <footer>
-      <div>© <span id="y"></span>. Все права защищены.</div>
-      <div>Домен: ellyraia.com · Сайт на GitHub Pages</div>
-    </footer>
-  </div>
+  <footer>
+    <div>© <span id="y"></span> Ellyraia</div>
+    <div>Сайт на GitHub Pages</div>
+  </footer>
 
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    // Год
+    document.getElementById('y').textContent=new Date().getFullYear();
 
-    // Анимированные звёзды
-    const c = document.getElementById('stars'); const ctx = c.getContext('2d');
-    let w,h,stars=[]; const R=()=>Math.random();
-    function resize(){ w=c.width=innerWidth; h=c.height=innerHeight;
-      stars = Array.from({length:180},()=>({x:R()*w,y:R()*h,z:0.2+R()*0.8,s:0.6+R()*1.6}));
-    }
-    resize(); addEventListener('resize',resize,{passive:true});
-    function tick(){
-      ctx.clearRect(0,0,w,h);
-      for(const s of stars){
-        s.x+=s.z*0.15; if(s.x>w+5) s.x=-5;
-        ctx.globalAlpha=0.4+s.z*0.6;
-        ctx.fillStyle=`rgb(${200+s.z*40},${200+s.z*40},255)`;
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
-      }
-      requestAnimationFrame(tick);
-    }
+    // Звёзды
+    const c=document.getElementById('stars'),ctx=c.getContext('2d');
+    let w,h,stars=[];const R=()=>Math.random();
+    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;stars=Array.from({length:180},()=>({x:R()*w,y:R()*h,z:.2+R()*.8,s:.6+R()*1.6}))}
+    resize();addEventListener('resize',resize);
+    function tick(){ctx.clearRect(0,0,w,h);for(const st of stars){st.x+=(st.z*.15);if(st.x>w+5)st.x=-5;ctx.globalAlpha=.4+st.z*.6;ctx.fillStyle=`rgb(${200+st.z*40},${200+st.z*40},255)`;ctx.beginPath();ctx.arc(st.x,st.y,st.s,0,Math.PI*2);ctx.fill()}requestAnimationFrame(tick)}
     tick();
-
-    // Липкий стеклянный хедер после скролла
-    const sh = document.getElementById('siteHeader');
-    const onScroll = () => {
-      if (window.scrollY > 8) sh.classList.add('header-glass');
-      else sh.classList.remove('header-glass');
-    };
-    onScroll();
-    addEventListener('scroll', onScroll, {passive:true});
   </script>
 </body>
 </html>
