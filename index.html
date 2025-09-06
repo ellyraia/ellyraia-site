@@ -25,6 +25,7 @@
       --text-max: 720px; /* комфортная ширина текста */
       --gutter: clamp(16px, 4vw, 40px); /* боковые поля */
       --logo-w: 96px; /* ширина логотипа */
+      --logo-gap: 16px; /* небольшой зазор от логотипа */
     }
     body{
       color:var(--fg);
@@ -35,7 +36,16 @@
     a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* ===== Stars behind everything ===== */
+    /* ===== Cosmic backdrop (subtle gradient) + stars ===== */
+    .space-grad{
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(1000px 600px at 10% 8%, rgba(102,52,200,.16), transparent 60%),
+        radial-gradient(900px 520px at 85% 88%, rgba(255,170,210,.10), transparent 62%),
+        radial-gradient(1200px 700px at 80% 15%, rgba(20,140,220,.12), transparent 60%),
+        linear-gradient(180deg,#080a15 0%, #0b0d1b 55%, #0a0d18 100%);
+      filter: saturate(1.02) contrast(1.02);
+    }
     #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
 
     /* ===== Header (transparent, fixed) ===== */
@@ -55,7 +65,7 @@
     }
     .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 
-    /* ===== Glass buttons (чуть ярче, чем карточки; без «радуги») ===== */
+    /* ===== Glass buttons (ярче, чем карточки; без «радуги») ===== */
     nav{display:flex;gap:12px}
     .btn{
       position:relative; isolation:isolate;
@@ -67,7 +77,6 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.25);
       transition: transform .22s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease, opacity .25s ease;
     }
-    /* мягкий «подстекольный» подсвет снизу, ярче чем у карточек */
     .btn::before{
       content:""; position:absolute; left:8%; right:8%; bottom:-8px; height:28px;
       background: radial-gradient(60% 100% at 50% 0%, rgba(165,134,255,.28), rgba(99,199,255,.22) 55%, transparent 70%);
@@ -89,13 +98,15 @@
     /* ===== Page wrapper: контент сразу под хедером ===== */
     .page{ padding-top: var(--header-h); }
 
-    /* ===== HERO: баннер (кнопок внутри НЕТ, сдвиг правее логотипа) ===== */
+    /* ===== HERO: без кнопок; СИММЕТРИЧНЫЕ поля слева/справа ===== */
     .hero{
       position:relative; overflow:hidden; border-radius:20px;
       min-height:40vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
-      margin: 0 var(--gutter); /* поля справа/слева */
-      margin-left: calc(var(--gutter) + var(--logo-w) + 16px);/* старт правее лого */
+
+      /* Симметрия: воздух слева = (gutter + logo + gap), справа — тот же самый */
+      margin-left: calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
+      margin-right: calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
     }
     .hero::before{
       content:""; position:absolute; inset:0; pointer-events:none;
@@ -151,12 +162,19 @@
     @media (max-width:560px){
       :root{ --header-h: 96px; --logo-w: 84px; }
       header{ padding:12px var(--gutter); }
-      .hero{ min-height:44vh; margin-left: var(--gutter); } /* на мобиле баннер на всю ширину поля */
+      /* на мобиле баннер на ширину полей */
+      .hero{
+        min-height:44vh;
+        margin-left: var(--gutter);
+        margin-right: var(--gutter);
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Stars background -->
+  <!-- Subtle color gradient under the stars -->
+  <div class="space-grad" aria-hidden="true"></div>
+  <!-- Stars on top of gradient -->
   <canvas id="stars" aria-hidden="true"></canvas>
 
   <!-- Header -->
@@ -246,4 +264,3 @@
   </script>
 </body>
 </html>
-
