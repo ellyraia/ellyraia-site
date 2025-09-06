@@ -4,113 +4,77 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ellyraia — Music • Video</title>
-  <meta name="description" content="Ellyraia — авторские песни, музыка и кинематографичные видео. Контакты, услуги и реквизиты на одной странице." />
+  <meta name="description" content="Авторские песни, музыка и кинематографичные видео. Контакты, услуги и реквизиты на одной странице." />
   <meta name="theme-color" content="#0b0d1b" />
+  <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/hero.jpg" />
-  <link rel="icon" type="image/png" href="assets/Logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
+
   <style>
+    /* ===== Base / Vars ===== */
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%;margin:0}
     :root{
-      --bg:#0b0d1b;--fg:#eaf0ff;--muted:#9fb0d8;
-      --accent:#a586ff;--accent2:#63c7ff;--accent3:#ffd36e;
-      --border:rgba(255,255,255,.18);--shadow:0 12px 40px rgba(0,0,0,.45);
+      --fg:#eaf0ff; --muted:#9fb0d8;
+      --accent:#a586ff; --accent2:#63c7ff;
+      --border:rgba(255,255,255,.18);
+      --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
+      --header-h: 116px; /* высота шапки для отступа контента */
     }
-    body{background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
+    body{
+      color:var(--fg);
+      font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;
+      overflow-x:hidden;
+      position:relative;
+      z-index:0;
+      background:#0b0d1b; /* бэк, если канва не загрузится */
+    }
     a{color:var(--accent2);text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:1180px;margin:0 auto;padding:24px}
 
-    /* Фон */
-    .grad{position:fixed;inset:0;z-index:-3;pointer-events:none;
-      background:radial-gradient(ellipse at top left,rgba(102,52,200,.35),transparent 60%),
-                 radial-gradient(ellipse at bottom right,rgba(20,140,220,.3),transparent 60%),
-                 linear-gradient(180deg,#070914,#0b0d1b);
+    /* ===== Stars are behind EVERYTHING ===== */
+    #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
+
+    /* ===== Header (fixed) ===== */
+    header{
+      position:fixed;top:0;left:0;right:0;z-index:10;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;
+      /* полностью прозрачный — как просила */
+      background:transparent;border:none;box-shadow:none;
     }
-    .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
-      background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.7) 0,rgba(255,255,255,.7) 1px,transparent 1px,transparent 2px),
-                       repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0,rgba(255,255,255,.7) 1px,transparent 1px,transparent 2px);
-      mix-blend-mode:overlay;}
+    /* Round “planet” logo, чуть крупнее */
+    .logo{
+      width:100px;height:100px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;position:relative;
+      background: radial-gradient(circle at 50% 55%, rgba(165,134,255,.28), rgba(99,199,255,.12) 55%, transparent 65%);
+      box-shadow:0 0 22px rgba(165,134,255,.55),0 0 44px rgba(99,199,255,.28);
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 
-    /* Хедер */
-    header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 28px}
-    .logo{width:72px;height:72px}
-    .logo img{width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 0 8px rgba(165,134,255,.65))}
     nav{display:flex;gap:12px}
-    .btn{padding:10px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(20,20,30,.45);backdrop-filter:blur(4px);
-      font-weight:600;color:var(--fg);transition:all .25s ease}
-    .btn:hover{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 0 18px rgba(120,170,255,.45)}
+    .btn{
+      padding:10px 18px;border-radius:14px;border:1px solid var(--border);
+      background:rgba(20,20,30,.55);backdrop-filter:blur(6px);
+      font-weight:600;color:var(--fg);
+      transition:all .25s ease;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#fff; box-shadow:0 0 18px rgba(120,170,255,.45)
+    }
 
-    /* Баннер */
-    .hero{margin-top:100px;background:url("assets/hero.jpg") center/cover no-repeat;
-      border-radius:20px;min-height:45vh;position:relative;overflow:hidden}
+    /* ===== Page wrapper: отступ ВМЕСТО скролла вверх ===== */
+    .page{
+      padding-top: var(--header-h);
+      position:relative; z-index:1; /* выше звёзд */
+    }
 
-    /* Секции */
-    section{margin:64px 0}
-    h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px)}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
-    .card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px;box-shadow:var(--shadow);transition:.25s}
-    .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22),var(--shadow)}
-    .muted{color:var(--muted)}.price{font-weight:800;margin-top:10px}
-
-    footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  </style>
-</head>
-<body>
-  <div class="grad"></div>
-  <div class="grain"></div>
-  <canvas id="stars"></canvas>
-
-  <header>
-    <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
-    <nav>
-      <a class="btn" href="#about">Обо мне</a>
-      <a class="btn" href="#services">Услуги</a>
-      <a class="btn" href="#contact">Контакты</a>
-    </nav>
-  </header>
-
-  <section class="hero"></section>
-
-  <div class="wrap">
-    <section id="about">
-      <h2>Обо мне</h2>
-      <p>Ellyraia — создаю авторскую музыку, песни и видео. Работаю с AI-инструментами и делаю проекты в атмосфере будущего.</p>
-    </section>
-
-    <section id="services">
-      <h2>Услуги</h2>
-      <div class="cards">
-        <article class="card"><h3>Mini</h3><p class="muted">Баннер-видео + музыка (15–30 сек).</p><div class="price">от 70 €</div></article>
-        <article class="card"><h3>Standard</h3><p class="muted">Песня + короткое видео.</p><div class="price">от 150 €</div></article>
-        <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: музыка, клип, оформление.</p><div class="price">от 300 €</div></article>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Контакты</h2>
-      <div class="cards">
-        <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
-        <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></article>
-      </div>
-    </section>
-
-    <footer>
-      <div>© <span id="y"></span> Ellyraia</div>
-      <div>Сайт на GitHub Pages</div>
-    </footer>
-  </div>
-
-  <script>
-    document.getElementById('y').textContent=new Date().getFullYear();
-    const c=document.getElementById('stars'),ctx=c.getContext('2d');
-    let w,h,stars=[];const R=()=>Math.random();
-    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;stars=Array.from({length:150},()=>({x:R()*w,y:R()*h,z:.2+R()*.8,s:.6+R()*1.6}))}
-    resize();addEventListener('resize',resize);
-    function tick(){ctx.clearRect(0,0,w,h);for(const st of stars){st.x+=(st.z*.15);if(st.x>w+5)st.x=-5;ctx.globalAlpha=.4+st.z*.6;ctx.fillStyle=`rgb(${200+st.z*40},${200+st.z*40},255)`;ctx.beginPath();ctx.arc(st.x,st.y,st.s,0,Math.PI*2);ctx.fill()}requestAnimationFrame(tick)}
-    tick();
-  </script>
-</body>
-</html>
+    /* ===== Hero (compact banner) ===== */
+    .hero{
+      /* убрали margin-top: всё решает .page padding-top */
+      background:url("
 
