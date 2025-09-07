@@ -1,190 +1,182 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ellyraia — Music & Video</title>
-  <meta name="description" content="Авторские песни, музыка и клипы. Пакеты услуг, процесс работы и контакты." />
-  <meta name="theme-color" content="#0b0d1b" />
-  <link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
-  <style>
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    html{scroll-behavior:smooth}
-    :root{
-      --fg:#eaf0ff; --muted:#9fb0d8;
-      --border:rgba(255,255,255,.16);
-      --shadow:0 12px 40px rgba(0,0,0,.45);
-      --card-radius:22px;
-      --header-h:122px; --page-max:980px; --gutter:clamp(16px,4vw,40px);
-      --logo-w:132px; --logo-gap:16px;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ellyraia — Music & Video</title>
+<meta name="description" content="Авторская музыка, озвучка и визуалы. Быстрый контакт, услуги и реквизиты." />
+<meta name="theme-color" content="#0b0d1b" />
+<link rel="icon" href="assets/Logo.jpg" type="image/jpeg" />
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  :root{
+    --bg:#0b0d1b; --fg:#eaf0ff; --muted:#a9b6d6;
+    --glassH:rgba(255,255,255,.10); --glassL:rgba(255,255,255,.05);
+    --border:rgba(255,255,255,.18);
+    --accent:#a586ff; --accent2:#63c7ff; --accent3:#ffd36e;
+    --radius:22px; --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
+    --wrap:1180px;
+  }
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;overflow-x:hidden}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:24px}
+
+  /* фон */
+  .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
+    background-size:160% 160%;
+    background-image:
+      radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
+      radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.40), transparent 60%),
+      radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.32), transparent 62%),
+      radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.20), transparent 62%),
+      linear-gradient(180deg,#070914, #0b0d1b 55%, #0a0d18);
+    animation:drift 25s ease-in-out infinite alternate; filter:saturate(1.05) contrast(1.02);
+  }
+  @keyframes drift{to{background-position:10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
+  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+
+  /* шапка */
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo{width:86px;height:86px;border-radius:50%;overflow:hidden;box-shadow:0 0 28px rgba(165,134,255,.35)}
+  .logo img{width:100%;height:100%;object-fit:cover}
+  .nav{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{padding:12px 18px;border-radius:16px;border:1px solid var(--border);
+       background:linear-gradient(180deg,var(--glassH),var(--glassL));backdrop-filter:blur(6px);
+       box-shadow:var(--shadow);font-weight:600;letter-spacing:.2px;transition:transform .2s, box-shadow .2s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(165,134,255,.28), var(--shadow);text-decoration:none}
+  .btn.active{outline:2px solid rgba(165,134,255,.45)}
+
+  /* hero (только десктоп) */
+  .hero{margin-top:36px;display:grid;gap:18px;background:url("assets/hero.jpg") center/cover no-repeat;
+        border-radius:24px;padding:44px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
+      linear-gradient(180deg, rgba(11,13,27,.20), rgba(11,13,27,.55));pointer-events:none}
+  .hero > *{position:relative}
+  .accent{background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+          -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 22px rgba(120,170,255,.25)}
+
+  /* секции */
+  section{margin:64px 0}
+  h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+  .card{background:linear-gradient(180deg,var(--glassH),var(--glassL));border:1px solid var(--border);
+        border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:transform .25s, box-shadow .25s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22), var(--shadow)}
+  .muted{color:var(--muted)} .price{font-weight:800;margin-top:10px}
+
+  footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  /* мобайл */
+  @media (max-width:760px){
+    .wrap{padding:18px}
+    .logo{width:104px;height:104px}
+    .nav .btn{padding:10px 14px;border-radius:14px}
+    .hero{display:none}
+    section{margin:28px 0}
+    .cards{gap:14px}
+    .card{padding:16px;border-radius:18px}
+    .mobile-top{margin-top:12px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+    .mobile-fade{position:relative}
+    .mobile-fade::after{
+      content:""; position:absolute; left:0; right:0; top:-20px; height:80px;
+      background:linear-gradient(180deg, rgba(11,13,27,1), rgba(11,13,27,0));
+      pointer-events:none; z-index:1;
     }
-    body{color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden;background:#0b0d1b}
-    a{color:#b8d9ff;text-decoration:none}
-    a.btn,a.btn:hover{text-decoration:none}
-
-    .space-grad{position:fixed;inset:0;z-index:-2;pointer-events:none;
-      background:radial-gradient(1000px 600px at 10% 8%, rgba(102,52,200,.16), transparent 60%),
-                 radial-gradient(900px 520px at 85% 88%, rgba(255,170,210,.10), transparent 62%),
-                 radial-gradient(1200px 700px at 80% 15%, rgba(20,140,220,.12), transparent 60%),
-                 linear-gradient(180deg,#080a15 0%, #0b0d1b 55%, #0a0d18 100%);
-      filter:saturate(1.02) contrast(1.02);}
-    #stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
-
-    header{position:fixed;top:0;left:0;right:0;z-index:10;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:22px var(--gutter);}
-    .logo{width:var(--logo-w);height:var(--logo-w);border-radius:50%;overflow:hidden;
-      background:radial-gradient(circle at 50% 55%, rgba(165,134,255,.28), rgba(99,199,255,.12) 55%, transparent 65%);
-      box-shadow:0 0 22px rgba(165,134,255,.55);}
-    .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-    nav{display:flex;gap:14px;align-items:center;margin-left:28px}
-    .btn{padding:8px 14px;border-radius:13px;border:1px solid var(--border);
-      background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));
-      color:var(--fg);font-weight:600;font-size:15px;white-space:nowrap;
-      backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.25);
-      transition:all .25s ease}
-    .btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.32);
-      background:linear-gradient(180deg,rgba(165,134,255,.25),rgba(99,199,255,.15));
-      box-shadow:0 4px 20px rgba(165,134,255,.35)}
-    .btn.is-active{border-color:rgba(255,255,255,.42);box-shadow:0 6px 22px rgba(165,134,255,.42)}
-
-    .lang-switch{margin-left:20px;font-size:14px;color:var(--muted)}
-    .lang-switch a{color:var(--muted);margin:0 4px;transition:color .25s}
-    .lang-switch a:hover{color:#fff}
-
-    .page{padding-top:var(--header-h)}
-
-    .wrap{max-width:var(--page-max);margin:0 auto;padding:28px var(--gutter)}
-    section{margin:96px 0;scroll-margin-top:calc(var(--header-h) + 18px)}
-    h2{text-align:center;margin-bottom:26px;font-size:clamp(22px,3vw,28px)}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
-    .card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);
-      border-radius:var(--card-radius);padding:24px;box-shadow:var(--shadow);backdrop-filter:blur(8px);
-      transition:all .25s ease}
-    .card:hover{transform:translateY(-4px);background:rgba(255,255,255,.06);
-      border-color:rgba(165,134,255,.22);box-shadow:0 18px 60px rgba(120,170,255,.18), var(--shadow)}
-    .muted{color:var(--muted)} .price{font-weight:800;margin-top:12px}
-    footer{margin:96px 0 28px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto}
-
-    /* Mobile */
-    @media (max-width:768px){
-      :root{--header-h:210px;--logo-w:140px}
-      header{flex-direction:column;align-items:center;gap:12px;padding:16px var(--gutter)}
-      nav{margin-left:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;width:100%}
-      .btn{padding:10px 12px;font-size:13.5px;text-align:center}
-      .wrap{padding:18px var(--gutter)}
-      section{margin:28px 0}
-      .cards{grid-template-columns:1fr;gap:14px}
-      .card{padding:18px;border-radius:18px}
-      h2{font-size:21px;margin-bottom:16px}
-      body{font-size:15px}
-      /* Tabs */
-      .m-tabs section[data-tab]{display:none}
-      .m-tabs section[data-tab].active{display:block}
-    }
-  </style>
+    .section{display:none}
+    .section.is-visible{display:block}
+  }
+</style>
 </head>
 <body>
-  <div class="space-grad"></div>
+  <div class="grad"></div>
   <canvas id="stars"></canvas>
 
-  <header>
-    <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
-    <nav>
-      <a class="btn" href="#about" data-target="about">Обо мне</a>
-      <a class="btn" href="#services" data-target="services">Услуги</a>
-      <a class="btn" href="#workflow" data-target="workflow">Процесс</a>
-      <a class="btn" href="#contact" data-target="contact">Контакты</a>
-    </nav>
-    <div class="lang-switch">
-      <a href="index.html">RU</a> | <a href="index-en.html">EN</a>
-    </div>
-  </header>
+  <div class="wrap">
+    <header class="mobile-top">
+      <a class="logo" href="#"><img src="assets/Logo.jpg" alt="Ellyraia logo"></a>
+      <nav class="nav" id="nav">
+        <a class="btn" data-target="#about">Обо мне</a>
+        <a class="btn" data-target="#services">Услуги</a>
+        <a class="btn" data-target="#contact">Контакты</a>
+      </nav>
+    </header>
 
-  <main class="page m-tabs">
-    <div class="wrap">
-      <section id="about" data-tab="about">
-        <h2>Обо мне</h2>
-        <div class="cards">
-          <article class="card"><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Работаю онлайн, вся коммуникация проходит по e-mail.</p></article>
-          <article class="card"><p class="muted">В проектах использую живые записи и AI-технологии. Каждый заказ — это уникальная история с акцентом на эмоции и атмосферу.</p></article>
-        </div>
+    <section class="hero" id="hero">
+      <h1>Музыка, песни и видео <span class="accent">из будущего</span></h1>
+      <p class="muted">Авторские треки, озвучка, визуалы и клипы. Минимальная бюрократия и спокойная коммуникация по e-mail.</p>
+    </section>
+
+    <div class="mobile-fade">
+      <section class="section" id="about">
+        <h2>Кто я</h2>
+        <div class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p></div>
+        <h2>О работах</h2>
+        <div class="card"><p>Короткие баннер-видео, песни/саундтреки, лирик-видео, обложки, фирменные шоты для каналов. RU/EN вокал по брифу.</p></div>
       </section>
 
-      <section id="services" data-tab="services">
+      <section class="section" id="services">
         <h2>Услуги</h2>
         <div class="cards">
-          <article class="card">
-            <h3>Mini</h3>
-            <p class="muted">Авторская песня + простая видео-заставка.</p>
-            <div class="price">от 70 €</div>
-          </article>
-          <article class="card">
-            <h3>Standard</h3>
-            <p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p>
-            <div class="price">от 150 €</div>
-          </article>
-          <article class="card">
-            <h3>Premium</h3>
-            <p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейссвапами. Возможны проекты в формате трейлера или мини-блокбастера.</p>
-            <div class="price">от 300 €</div>
-          </article>
+          <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + простая видео-заставка.</p><div class="price">от 70 €</div></article>
+          <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p><div class="price">от 150 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией/клипами/фейссвапами. Возможны мини-трейлеры.</p><div class="price">от 300 €</div></article>
         </div>
       </section>
 
-      <section id="workflow" data-tab="workflow">
-        <h2>Как проходит работа</h2>
-        <div class="cards">
-          <article class="card"><h3>1. Предоплата</h3><p class="muted">После обсуждения идеи вносится 50% предоплата через <b>Wise</b>.</p></article>
-          <article class="card"><h3>2. Создание</h3><p class="muted">Я создаю проект по согласованному пакету. Включено до <b>трёх правок</b>.</p></article>
-          <article class="card"><h3>3. Финал</h3><p class="muted">Готовый файл загружается на <b>Vimeo</b> в закрытый доступ. После финальной оплаты вы получаете ссылку для скачивания.</p></article>
-        </div>
-      </section>
-
-      <section id="contact" data-tab="contact">
+      <section class="section" id="contact">
         <h2>Контакты</h2>
         <div class="cards">
           <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
-          <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></article>
+          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></p></article>
         </div>
       </section>
-
-      <footer>
-        <div>© <span id="y"></span> Ellyraia</div>
-        <div>Сайт на GitHub Pages</div>
-      </footer>
     </div>
-  </main>
 
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    <footer>
+      <div>© <span id="y"></span> Ellyraia</div>
+      <div>RU | EN</div>
+      <div>Сайт на GitHub Pages</div>
+    </footer>
+  </div>
 
-    // Stars
-    const c=document.getElementById('stars'),ctx=c.getContext('2d');
-    let w,h,stars=[];const R=()=>Math.random();
-    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;
-      stars=Array.from({length:(innerWidth<=768)?150:190},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));}
-    resize();addEventListener('resize',resize);
-    function tick(){ctx.clearRect(0,0,w,h);
-      for(const s of stars){s.x+=s.z*0.16;if(s.x>w+6)s.x=-6;
-        ctx.globalAlpha=0.4+s.z*0.6;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-        ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}
-      requestAnimationFrame(tick);}tick();
+<script>
+  document.getElementById('y').textContent=new Date().getFullYear();
 
-    // Mobile tabs
-    const mqMobile=window.matchMedia('(max-width:768px)');
-    const secs=[...document.querySelectorAll('section[data-tab]')];
-    const links=[...document.querySelectorAll('nav a[data-target]')];
-    function setTab(t){secs.forEach(s=>s.classList.toggle('active',s.dataset.tab===t));
-      links.forEach(a=>a.classList.toggle('is-active',a.dataset.target===t));
-      if(location.hash.replace('#','')!==t)history.replaceState(null,'','#'+t);}
-    function initTabs(){if(mqMobile.matches){const init=(location.hash||'').replace('#','')||'about';setTab(init);
-      links.forEach(a=>a.onclick=e=>{e.preventDefault();setTab(a.dataset.target)});}
-    else{secs.forEach(s=>s.classList.add('active'));}}
-    mqMobile.addEventListener('change',()=>location.reload());initTabs();
-  </script>
+  // звёзды
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  let w,h,stars=[];
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;
+    stars=Array.from({length:180},()=>({x:Math.random()*w,y:Math.random()*h,z:0.2+Math.random()*0.8,s:0.6+Math.random()*1.6}));
+  }
+  function tick(){ctx.clearRect(0,0,w,h);
+    for(const st of stars){st.x+=st.z*0.15;if(st.x>w+5)st.x=-5;
+      ctx.globalAlpha=0.4+st.z*0.6;ctx.fillStyle=`rgb(${200+st.z*40},${200+st.z*40},255)`;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.s,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(tick);}
+  resize();addEventListener('resize',resize);tick();
+
+  // мобайл: по одному разделу
+  const mq=matchMedia('(max-width:760px)');
+  const secs=['#about','#services','#contact'].map(s=>document.querySelector(s));
+  const nav=document.getElementById('nav');
+  function setVisible(id){
+    secs.forEach(s=>s.classList.toggle('is-visible','#'+s.id===id));
+    [...nav.querySelectorAll('.btn')].forEach(b=>b.classList.toggle('active',b.dataset.target===id));
+    const t=document.querySelector(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function init(){
+    if(mq.matches){secs.forEach(s=>s.classList.remove('is-visible'));}
+    else{secs.forEach(s=>s.classList.add('is-visible'));}
+    document.getElementById('hero').style.display=mq.matches?'none':'grid';
+  }
+  init();mq.addEventListener('change',init);
+  nav.addEventListener('click',e=>{
+    const a=e.target.closest('[data-target]');if(!a)return;e.preventDefault();setVisible(a.dataset.target);
+  });
+</script>
 </body>
 </html>
 
