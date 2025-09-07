@@ -9,6 +9,7 @@
 <style>
   /* ===== Base / Tokens ===== */
   *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
   html,body{height:100%}
   :root{
     --bg:#0b0d1b; --fg:#eaf0ff; --muted:#a9b7dd;
@@ -17,8 +18,7 @@
     --radius:22px;
     --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
     --hover:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18);
-    --headerH:86px;
-    --footerH:56px;
+    --headerH:86px; --footerH:56px;
   }
   body{
     margin:0;background:var(--bg);color:var(--fg);
@@ -30,11 +30,10 @@
   .wrap{max-width:1180px;margin:0 auto;padding:24px}
   .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
-  /* ===== Background: звёзды + нежные цветовые подсветки (без шаров) ===== */
+  /* ===== Background: звёзды + подсветки ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
-    /* мягкие подсветки: сине-фиолетовая и розово-фиолетовая */
     background-image:
       radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
       radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.35), transparent 60%),
@@ -45,7 +44,6 @@
     filter:saturate(1.05) contrast(1.02);
   }
   @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,88% 88%,0 0}}
-
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
   /* ===== Buttons & Cards ===== */
@@ -70,24 +68,26 @@
   .card:hover{transform:translateY(-4px);box-shadow:var(--hover)}
   .muted{color:var(--muted)} .price{font-weight:800;margin-top:8px}
 
-  /* ===== Desktop header & hero ===== */
+  /* ===== Desktop header & clean hero ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;z-index:10;height:var(--headerH);
     display:flex;align-items:center;justify-content:center;background:transparent}
-  .head-inner{width:100%;max-width:1180px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .head-inner{
+    width:100%;max-width:1180px;padding:0 32px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px
+  }
   .brand{display:flex;align-items:center;gap:14px}
   .logo{width:72px;height:72px;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
   .logo img{width:100%;height:100%;object-fit:cover}
   nav.top{display:flex;gap:12px}
 
   .hero{
-    margin-top:18px;display:grid;gap:18px;border-radius:24px;padding:44px;position:relative;overflow:hidden;
-    background:url("assets/hero.jpg") center/cover no-repeat}
+    margin-top:18px;display:block;border-radius:24px;position:relative;overflow:hidden;
+    background:url("assets/hero.jpg") center/cover no-repeat; min-height:300px;
+  }
   .hero::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
-    linear-gradient(180deg, rgba(11,13,27,.18), rgba(11,13,27,.55))}
-  .hero>*{position:relative}
-  .hero h1{margin:0;font-size:clamp(32px,5.4vw,56px);line-height:1.06}
+    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.50) 70%),
+    linear-gradient(180deg, rgba(11,13,27,.10), rgba(11,13,27,.45))}
 
   section{margin:88px 0}
   h2{margin:0 0 22px;font-size:28px}
@@ -97,8 +97,8 @@
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;z-index:8;color:var(--fg);
-    background:linear-gradient(180deg, rgba(8,10,20,0) 0%, rgba(8,10,20,.45) 55%, rgba(8,10,20,.7) 100%);
-    backdrop-filter:blur(8px)
+    background:rgba(8,10,20,0.12);
+    backdrop-filter:blur(3px);
   }
   footer a{color:#dfe8ff}
 
@@ -109,9 +109,8 @@
     :root{--headerH:64px}
     .wrap{padding:18px}
     .page-offset{padding-top:0}
-    header.site{display:none} /* скрываем шапку на заставке */
+    header.site{display:none}
 
-    /* Центровая заставка */
     #mobile-home{
       position:fixed;inset:0;z-index:6;display:flex;flex-direction:column;
       align-items:center;justify-content:center;gap:18px;padding:24px}
@@ -120,12 +119,14 @@
       overflow:hidden;box-shadow:0 0 34px rgba(155,120,255,.55);cursor:pointer}
     #mobile-home .m-logo img{width:100%;height:100%;object-fit:cover}
     #mobile-home .m-nav{
-      display:flex;gap:10px;width:100%;max-width:520px;justify-content:center;align-items:center}
+      display:flex;gap:8px;width:100%;max-width:520px;
+      justify-content:center;align-items:center;padding:0 8px;
+    }
     #mobile-home .m-btn{
-      flex:1 1 0;min-width:0;padding:10px 12px;border-radius:16px;
-      font-size:clamp(13px,3.6vw,15px);line-height:1}
+      flex:1 1 0;min-width:0;padding:8px 9px;
+      font-size:clamp(12px,3.4vw,14px);line-height:1;color:#f0f0f0;
+    }
 
-    /* Режим просмотра секций */
     body.compact header.site{display:flex}
     body.compact .page-offset{padding-top:calc(var(--headerH) + 12px)}
     body.compact #mobile-home{display:none}
@@ -137,13 +138,14 @@
     .card{padding:18px;border-radius:18px}
 
     .hero{display:none}
+
     .top-fade{position:fixed;top:0;left:0;right:0;height:120px;z-index:5;pointer-events:none;
       background:linear-gradient(180deg, rgba(11,13,27,1), rgba(11,13,27,0))}
   }
 
   @media (max-width:360px){
-    #mobile-home .m-btn{padding:9px 10px;font-size:13px}
-    #mobile-home .m-nav{gap:8px}
+    #mobile-home .m-btn{padding:7px 8px;font-size:13px}
+    #mobile-home .m-nav{gap:6px}
     #mobile-home .m-logo{width:150px;height:150px}
   }
 
@@ -154,18 +156,16 @@
 </style>
 </head>
 <body>
-  <!-- Background -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
   <div class="top-fade" aria-hidden="true"></div>
 
-  <!-- DESKTOP header (и MOBILE в режиме compact) -->
   <header class="site">
     <div class="head-inner">
       <div class="brand">
-        <a class="logo" href="#" id="logoTop" aria-label="Главная"><img src="assets/Logo.jpg" alt="Логотип" /></a>
+        <a class="logo" href="#" id="logoTop"><img src="assets/Logo.jpg" alt="Логотип" /></a>
       </div>
-      <nav class="top" aria-label="Навигация">
+      <nav class="top">
         <a class="btn" href="#about" data-tab="about">Обо мне</a>
         <a class="btn" href="#services" data-tab="services">Услуги</a>
         <a class="btn" href="#contact" data-tab="contact">Контакты</a>
@@ -173,11 +173,8 @@
     </div>
   </header>
 
-  <!-- MOBILE landing -->
-  <div id="mobile-home" aria-hidden="true">
-    <a class="m-logo" href="#" id="centerLogo" aria-label="Ellyraia">
-      <img src="assets/Logo.jpg" alt="Логотип" />
-    </a>
+  <div id="mobile-home">
+    <a class="m-logo" href="#" id="centerLogo"><img src="assets/Logo.jpg" alt="Логотип" /></a>
     <div class="m-nav">
       <button class="btn m-btn" data-open="about">Обо мне</button>
       <button class="btn m-btn" data-open="services">Услуги</button>
@@ -186,113 +183,67 @@
   </div>
 
   <div class="wrap page-offset" id="top">
-    <!-- Hero — только десктоп -->
-    <section class="hero" aria-label="Hero (desktop only)">
-      <h1>Музыка и видео с характером</h1>
-      <p class="muted" style="max-width:760px">Авторские треки, озвучка и визуальные клипы. Связь — по e-mail, спокойно и понятно.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a class="btn" href="#services">Услуги и цены</a>
-        <a class="btn" href="#contact">Связаться</a>
-      </div>
-    </section>
+    <section class="hero"></section>
 
     <main id="content">
-      <section id="about" data-mobile aria-label="Обо мне">
+      <section id="about" data-mobile>
         <h2>Кто я</h2>
         <div class="cards">
-          <article class="card">
-            <p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p>
-          </article>
-          <article class="card">
-            <p>Сочетаю живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоциональный акцент.</p>
-          </article>
+          <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
+          <article class="card"><p>Сочетаю живые записи и AI-инструменты. Упор на атмосферу и динамику.</p></article>
         </div>
       </section>
 
-      <section id="services" data-mobile aria-label="Услуги">
+      <section id="services" data-mobile>
         <h2>Услуги</h2>
         <div class="cards">
-          <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + простая видео-заставка.</p><div class="price">от 70 €</div></article>
-          <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейc-свапами.</p><div class="price">от 300 €</div></article>
+          <article class="card"><h3>Mini</h3><p class="muted">Песня + простая видео-заставка.</p><div class="price">от 70 €</div></article>
+          <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео.</p><div class="price">от 150 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или клип с AI-анимацией.</p><div class="price">от 300 €</div></article>
         </div>
       </section>
 
-      <section id="contact" data-mobile aria-label="Контакты">
+      <section id="contact" data-mobile>
         <h2>Контакты</h2>
-        <div class="cards" style="max-width:860px">
+        <div class="cards">
           <article class="card"><h3>Email</h3><p class="muted">hello@ellyraia.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a class="muted" href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
+          <article class="card"><h3>YouTube</h3><p><a class="muted" href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></p></article>
         </div>
       </section>
     </main>
   </div>
 
   <footer>
-    © <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a> · Сайт на GitHub Pages
+    © <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a>
   </footer>
 
 <script>
-  // Текущий год
   document.getElementById('y').textContent = new Date().getFullYear();
-
-  // Звёзды
   const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
-  function size(){
-    W=cvs.width=innerWidth;H=cvs.height=innerHeight;
-    const N=(innerWidth<=768)?160:190;
-    S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
+  function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
+    S=Array.from({length:(innerWidth<=768)?160:190},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
   }
-  function tick(){
-    ctx.clearRect(0,0,W,H);
-    for(const s of S){
-      s.x+=s.z*0.16; if(s.x>W+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5; ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
-    }
-    requestAnimationFrame(tick);
-  }
-  size(); addEventListener('resize',size,{passive:true}); tick();
+  function tick(){ctx.clearRect(0,0,W,H);for(const s of S){s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
+    ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(tick);}
+  size();addEventListener('resize',size,{passive:true});tick();
 
-  // ===== Мобильная логика (landing -> compact) =====
   const mq = matchMedia('(max-width: 768px)');
   const body = document.body;
-  const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
-  const topNavLinks = Array.from(document.querySelectorAll('nav.top .btn'));
-  const homeBtns = Array.from(document.querySelectorAll('#mobile-home .m-btn'));
+  const sections = [...document.querySelectorAll('main section[data-mobile]')];
+  const topNavLinks = [...document.querySelectorAll('nav.top .btn')];
+  const homeBtns = [...document.querySelectorAll('#mobile-home .m-btn')];
   const headerLogo = document.getElementById('logoTop');
   const centerLogo = document.getElementById('centerLogo');
 
-  function enterLanding(){
-    if(mq.matches){
-      body.classList.remove('compact');
-      sections.forEach(s=>s.classList.remove('active'));
-      window.scrollTo({top:0});
-    }else{
-      body.classList.add('compact');
-      sections.forEach(s=>s.classList.add('active'));
-    }
-  }
-  enterLanding();
-  mq.addEventListener('change', enterLanding);
+  function enterLanding(){if(mq.matches){body.classList.remove('compact');sections.forEach(s=>s.classList.remove('active'));scrollTo({top:0});}else{body.classList.add('compact');sections.forEach(s=>s.classList.add('active'));}}
+  enterLanding();mq.addEventListener('change',enterLanding);
 
-  function openSection(id){
-    body.classList.add('compact');
-    sections.forEach(s=>s.classList.toggle('active', s.id===id));
-    const el=document.getElementById(id);
-    if(el){
-      const y=el.getBoundingClientRect().top + scrollY - 8;
-      scrollTo({top:y, behavior:'smooth'});
-    }
-  }
-
+  function openSection(id){body.classList.add('compact');sections.forEach(s=>s.classList.toggle('active',s.id===id));const el=document.getElementById(id);if(el){const y=el.getBoundingClientRect().top+scrollY-8;scrollTo({top:y,behavior:'smooth'});}}
   homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
-  topNavLinks.forEach(a=>a.addEventListener('click',e=>{
-    if(mq.matches){ e.preventDefault(); openSection(a.dataset.tab); }
-  }));
-  function goHome(e){ if(mq.matches){ e.preventDefault(); enterLanding(); } }
-  headerLogo.addEventListener('click', goHome);
-  centerLogo.addEventListener('click', goHome);
+  topNavLinks.forEach(a=>a.addEventListener('click',e=>{if(mq.matches){e.preventDefault();openSection(a.dataset.tab);}}));
+  function goHome(e){if(mq.matches){e.preventDefault();enterLanding();}}
+  headerLogo.addEventListener('click',goHome);centerLogo.addEventListener('click',goHome);
 </script>
 </body>
 </html>
