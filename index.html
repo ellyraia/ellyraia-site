@@ -17,49 +17,36 @@
     --radius:22px;
     --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
     --hover:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18);
-    --headerH:86px; /* desktop header height */
-    --footerH:56px; /* fixed footer height */
+    --headerH:86px;
+    --footerH:56px;
   }
   body{
     margin:0;background:var(--bg);color:var(--fg);
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;
     overflow-x:hidden;
-    padding-bottom:var(--footerH); /* чтобы контент не заезжал под футер */
+    padding-bottom:var(--footerH);
   }
   a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px}
+  .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
-  /* ===== Cosmic background (stars + soft gradients) ===== */
-  .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
+  /* ===== Background: звёзды + нежные цветовые подсветки (без шаров) ===== */
+  .grad{
+    position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
+    /* мягкие подсветки: сине-фиолетовая и розово-фиолетовая */
     background-image:
       radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
-      radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.40), transparent 60%),
-      radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.30), transparent 62%),
-      radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.16), transparent 62%),
+      radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.35), transparent 60%),
+      radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.28), transparent 62%),
+      radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.12), transparent 62%),
       linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
     animation: drift 25s ease-in-out infinite alternate;
     filter:saturate(1.05) contrast(1.02);
   }
-  @keyframes drift{to{background-position: 10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
-  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+  @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,88% 88%,0 0}}
 
-  /* ===== Decorative planets (CSS) ===== */
-  .planet{position:fixed;z-index:-1;border-radius:50%;opacity:.42;pointer-events:none;filter:blur(.2px)}
-  .p1{width:280px;height:280px;left:-110px;top:16%;
-    background:radial-gradient(120% 120% at 35% 35%, rgba(255,255,255,.28), rgba(255,255,255,.06) 32%, transparent 60%),
-               radial-gradient(80% 80% at 50% 50%, rgba(155,120,255,.18), transparent 70%),
-               radial-gradient(70% 70% at 70% 30%, rgba(10,12,26,0) 55%, rgba(10,12,26,.65) 72%);
-    box-shadow:0 0 60px 10px rgba(155,120,255,.12), inset -30px -30px 80px rgba(0,0,0,.25)}
-  .p2{width:200px;height:200px;right:4%;top:22%;
-    background:radial-gradient(110% 110% at 40% 40%, rgba(255,255,255,.25), rgba(255,255,255,.06) 30%, transparent 58%),
-               radial-gradient(70% 70% at 55% 55%, rgba(80,180,255,.18), transparent 70%),
-               radial-gradient(70% 70% at 72% 28%, rgba(10,12,26,0) 52%, rgba(10,12,26,.65) 72%);
-    box-shadow:0 0 40px 8px rgba(80,180,255,.15), inset -25px -25px 60px rgba(0,0,0,.25)}
-  .p3{width:360px;height:360px;right:-160px;bottom:6%;opacity:.35;
-    background:radial-gradient(120% 120% at 35% 35%, rgba(255,255,255,.28), rgba(255,255,255,.06) 32%, transparent 60%),
-               radial-gradient(80% 80% at 50% 50%, rgba(255,150,100,.18), transparent 70%),
-               radial-gradient(70% 70% at 70% 30%, rgba(10,12,26,0) 55%, rgba(10,12,26,.65) 72%);
-    box-shadow:0 0 80px 12px rgba(255,150,100,.12), inset -30px -30px 80px rgba(0,0,0,.25)}
+  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
   /* ===== Buttons & Cards ===== */
   .btn{
@@ -73,9 +60,6 @@
   }
   .btn:hover{transform:translateY(-2px);box-shadow:var(--hover)}
   .btn:active{transform:translateY(0)}
-
-  .wrap{max-width:1180px;margin:0 auto;padding:24px}
-  .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
   .card{
@@ -116,15 +100,18 @@
     background:linear-gradient(180deg, rgba(8,10,20,0) 0%, rgba(8,10,20,.45) 55%, rgba(8,10,20,.7) 100%);
     backdrop-filter:blur(8px)
   }
+  footer a{color:#dfe8ff}
 
   /* ===== MOBILE ===== */
+  #mobile-home{display:none}
+
   @media (max-width:768px){
     :root{--headerH:64px}
     .wrap{padding:18px}
     .page-offset{padding-top:0}
-    header.site{display:none} /* на заставке скрыта шапка */
+    header.site{display:none} /* скрываем шапку на заставке */
 
-    /* Центровка: лого + 3 кнопки под ним */
+    /* Центровая заставка */
     #mobile-home{
       position:fixed;inset:0;z-index:6;display:flex;flex-direction:column;
       align-items:center;justify-content:center;gap:18px;padding:24px}
@@ -134,36 +121,30 @@
     #mobile-home .m-logo img{width:100%;height:100%;object-fit:cover}
     #mobile-home .m-nav{
       display:flex;gap:10px;width:100%;max-width:520px;justify-content:center;align-items:center}
-    /* Кнопки не уезжают: flex:1 и адаптивная типографика/паддинги */
     #mobile-home .m-btn{
-      flex:1 1 0;min-width:0;
-      padding:10px 12px;border-radius:16px;
+      flex:1 1 0;min-width:0;padding:10px 12px;border-radius:16px;
       font-size:clamp(13px,3.6vw,15px);line-height:1}
-    /* ultra-узкие экраны */
-    @media (max-width:360px){
-      #mobile-home .m-btn{padding:9px 10px;font-size:13px}
-      #mobile-home .m-nav{gap:8px}
-      #mobile-home .m-logo{width:150px;height:150px}
-    }
 
-    /* Режим контента: включаем шапку и показываем одну секцию */
+    /* Режим просмотра секций */
     body.compact header.site{display:flex}
     body.compact .page-offset{padding-top:calc(var(--headerH) + 12px)}
     body.compact #mobile-home{display:none}
 
-    /* Секции по одной, без крупных h2, одна колонка карточек */
     main section[data-mobile]{display:none;margin:28px 0}
     main section[data-mobile].active{display:block}
     main section > h2{display:none}
     .cards{grid-template-columns:1fr;gap:14px}
     .card{padding:18px;border-radius:18px}
 
-    /* Баннер не нужен на мобиле */
     .hero{display:none}
-
-    /* Плавная маска под шапкой */
     .top-fade{position:fixed;top:0;left:0;right:0;height:120px;z-index:5;pointer-events:none;
       background:linear-gradient(180deg, rgba(11,13,27,1), rgba(11,13,27,0))}
+  }
+
+  @media (max-width:360px){
+    #mobile-home .m-btn{padding:9px 10px;font-size:13px}
+    #mobile-home .m-nav{gap:8px}
+    #mobile-home .m-logo{width:150px;height:150px}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -176,9 +157,6 @@
   <!-- Background -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
-  <div class="planet p1" aria-hidden="true"></div>
-  <div class="planet p2" aria-hidden="true"></div>
-  <div class="planet p3" aria-hidden="true"></div>
   <div class="top-fade" aria-hidden="true"></div>
 
   <!-- DESKTOP header (и MOBILE в режиме compact) -->
@@ -195,7 +173,7 @@
     </div>
   </header>
 
-  <!-- MOBILE landing: центр-лого + три кнопки -->
+  <!-- MOBILE landing -->
   <div id="mobile-home" aria-hidden="true">
     <a class="m-logo" href="#" id="centerLogo" aria-label="Ellyraia">
       <img src="assets/Logo.jpg" alt="Логотип" />
@@ -219,7 +197,6 @@
     </section>
 
     <main id="content">
-      <!-- ОБО МНЕ -->
       <section id="about" data-mobile aria-label="Обо мне">
         <h2>Кто я</h2>
         <div class="cards">
@@ -232,7 +209,6 @@
         </div>
       </section>
 
-      <!-- УСЛУГИ -->
       <section id="services" data-mobile aria-label="Услуги">
         <h2>Услуги</h2>
         <div class="cards">
@@ -242,7 +218,6 @@
         </div>
       </section>
 
-      <!-- КОНТАКТЫ -->
       <section id="contact" data-mobile aria-label="Контакты">
         <h2>Контакты</h2>
         <div class="cards" style="max-width:860px">
@@ -253,13 +228,12 @@
     </main>
   </div>
 
-  <!-- Футер всегда снизу -->
   <footer>
     © <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a> · Сайт на GitHub Pages
   </footer>
 
 <script>
-  // Год
+  // Текущий год
   document.getElementById('y').textContent = new Date().getFullYear();
 
   // Звёзды
@@ -291,11 +265,10 @@
 
   function enterLanding(){
     if(mq.matches){
-      body.classList.remove('compact'); // показать заставку
+      body.classList.remove('compact');
       sections.forEach(s=>s.classList.remove('active'));
       window.scrollTo({top:0});
     }else{
-      // десктоп: показываем всё как обычную страницу
       body.classList.add('compact');
       sections.forEach(s=>s.classList.add('active'));
     }
@@ -304,7 +277,7 @@
   mq.addEventListener('change', enterLanding);
 
   function openSection(id){
-    body.classList.add('compact'); // уезжаем с заставки в шапку
+    body.classList.add('compact');
     sections.forEach(s=>s.classList.toggle('active', s.id===id));
     const el=document.getElementById(id);
     if(el){
@@ -313,13 +286,10 @@
     }
   }
 
-  // Кнопки на заставке
   homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
-  // Кнопки в шапке (на мобиле тоже переключают секции)
   topNavLinks.forEach(a=>a.addEventListener('click',e=>{
     if(mq.matches){ e.preventDefault(); openSection(a.dataset.tab); }
   }));
-  // Лого -> домой (на мобиле)
   function goHome(e){ if(mq.matches){ e.preventDefault(); enterLanding(); } }
   headerLogo.addEventListener('click', goHome);
   centerLogo.addEventListener('click', goHome);
