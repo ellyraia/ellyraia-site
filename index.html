@@ -32,7 +32,7 @@
   .wrap{max-width:1180px;margin:0 auto;padding:24px}
   .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
-  /* ===== Background: звёзды + мягкие подсветки (без «шаров») ===== */
+  /* ===== Background ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
@@ -70,7 +70,7 @@
   .card:hover{transform:translateY(-4px);box-shadow:var(--hover)}
   .muted{color:var(--muted)} .price{font-weight:800;margin-top:8px}
 
-  /* ===== Desktop header & clean hero ===== */
+  /* ===== Desktop header ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;z-index:10;height:var(--headerH);
     display:flex;align-items:center;justify-content:center;background:transparent}
@@ -79,8 +79,11 @@
     display:flex;align-items:center;justify-content:space-between;gap:16px
   }
   .brand{display:flex;align-items:center;gap:14px}
-  .logo{width:72px;height:72px;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
-  .logo img{width:100%;height:100%;object-fit:cover}
+  .logo{
+    width:72px;aspect-ratio:1/1;border-radius:50%;overflow:hidden;
+    box-shadow:0 0 26px rgba(155,120,255,.45)
+  }
+  .logo img{width:100%;height:100%;object-fit:cover;display:block}
   nav.top{display:flex;gap:12px}
 
   .hero{
@@ -94,7 +97,7 @@
   section{margin:88px 0}
   h2{margin:0 0 22px;font-size:28px}
 
-  /* ===== Fixed footer (прозрачный) ===== */
+  /* ===== Footer ===== */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);
     display:flex;align-items:center;justify-content:center;gap:12px;
@@ -106,87 +109,64 @@
 
   /* ===== MOBILE ===== */
   #mobile-home{display:none}
-  #mobile-bar{display:none} /* фиксированная шапка в режиме разделов */
+  #mobile-bar{display:none}
 
   @media (max-width:768px){
     :root{--headerH:64px}
     .wrap{padding:18px}
     .page-offset{padding-top:0}
-    header.site{display:none} /* на мобиле десктоп-шапка не нужна */
+    header.site{display:none}
 
-    /* Главная (landing): лого по центру + три кнопки ПОД ним */
     #mobile-home{
       position:fixed;inset:0;z-index:6;display:flex;flex-direction:column;
       align-items:center;justify-content:center;gap:20px;padding:24px}
     #mobile-home .m-logo{
-      width:min(46vw,180px);height:min(46vw,180px);border-radius:50%;
-      overflow:hidden;box-shadow:0 0 34px rgba(155,120,255,.55);cursor:pointer}
-    #mobile-home .m-logo img{width:100%;height:100%;object-fit:cover}
+      width:min(46vw,180px);aspect-ratio:1/1;border-radius:50%;overflow:hidden;
+      box-shadow:0 0 34px rgba(155,120,255,.55);cursor:pointer}
+    #mobile-home .m-logo img{width:100%;height:100%;object-fit:cover;display:block}
     #mobile-home .m-nav{
-      display:flex;gap:10px;width:100%;max-width:560px;justify-content:center;align-items:center;padding:0 10px}
+      display:flex;gap:10px;width:100%;max-width:560px;justify-content:center;align-items:center;padding:0 10px;flex-wrap:wrap}
     #mobile-home .m-btn{
-      flex:1 1 0;min-width:0;padding:10px 12px;font-size:clamp(12px,3.4vw,15px);
-      line-height:1;border-radius:16px;color:#f0f0f0}
+      flex:1 1 30%;min-width:0;white-space:normal;padding:9px 10px;font-size:clamp(12px,3.3vw,14px);color:#f0f0f0}
 
-    /* Режим разделов: фиксированная мобильная шапка (лого меньше + кнопки горизонтально) */
     body.compact #mobile-home{display:none}
     body.compact #mobile-bar{
       position:fixed;top:0;left:0;right:0;height:var(--mbarH);z-index:7;
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
       padding:10px 12px;
-      background:linear-gradient(180deg, rgba(11,13,27,.95), rgba(11,13,27,.60) 75%, rgba(11,13,27,0) 100%);
-      backdrop-filter:blur(6px)
+      background:linear-gradient(180deg, rgba(11,13,27,0.35), rgba(11,13,27,0.12) 70%, rgba(11,13,27,0) 100%);
+      backdrop-filter:blur(3px);
     }
     #mobile-bar .m-logo-small{
-      width:84px;height:84px;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
-    #mobile-bar .m-logo-small img{width:100%;height:100%;object-fit:cover}
+      width:84px;aspect-ratio:1/1;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
+    #mobile-bar .m-logo-small img{width:100%;height:100%;object-fit:cover;display:block}
     #mobile-bar .m-nav{
-      display:flex;gap:10px;width:100%;max-width:560px;justify-content:center;align-items:center;padding:0 8px}
+      display:flex;gap:10px;width:100%;max-width:560px;justify-content:center;align-items:center;padding:0 8px;flex-wrap:wrap}
     #mobile-bar .m-btn{
-      flex:1 1 0;min-width:0;padding:8px 10px;font-size:14px;line-height:1;border-radius:16px;color:#f0f0f0}
+      flex:1 1 30%;min-width:0;white-space:normal;padding:8px 10px;font-size:14px;color:#f0f0f0}
 
-    /* Отступ, чтобы контент не уезжал под фиксированную мобильную шапку */
     body.compact .page-offset{padding-top:calc(var(--mbarH) + 12px)}
 
-    /* На мобиле показываем по одной секции */
     main section[data-mobile]{display:none;margin:28px 0}
     main section[data-mobile].active{display:block}
     main section > h2{display:none}
     .cards{grid-template-columns:1fr;gap:14px}
     .card{padding:18px;border-radius:18px}
 
-    /* Баннер скрыт на мобиле */
     .hero{display:none}
-  }
-
-  /* Очень узкие экраны — подстраховка */
-  @media (max-width:360px){
-    #mobile-home .m-btn{padding:8px 9px;font-size:13px}
-    #mobile-home .m-nav{gap:8px}
-    #mobile-home .m-logo{width:160px;height:160px}
-    #mobile-bar .m-btn{padding:7px 9px;font-size:13px}
-    #mobile-bar .m-nav{gap:8px}
-    #mobile-bar .m-logo-small{width:76px;height:76px}
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    .btn,.card{transition:none}
-    .grad{animation:none}
   }
 </style>
 </head>
 <body>
-  <!-- Background -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
-  <!-- DESKTOP header -->
   <header class="site">
     <div class="head-inner">
       <div class="brand">
-        <a class="logo" href="#" id="logoTop" aria-label="Главная"><img src="assets/Logo.jpg" alt="Логотип" /></a>
+        <a class="logo" href="#" id="logoTop"><img src="assets/Logo.jpg" alt="Логотип" /></a>
       </div>
-      <nav class="top" aria-label="Навигация">
+      <nav class="top">
         <a class="btn" href="#about" data-tab="about">Обо мне</a>
         <a class="btn" href="#services" data-tab="services">Услуги</a>
         <a class="btn" href="#contact" data-tab="contact">Контакты</a>
@@ -194,11 +174,8 @@
     </div>
   </header>
 
-  <!-- MOBILE: Главная (лого + три кнопки под ним) -->
-  <div id="mobile-home" aria-hidden="true">
-    <a class="m-logo" href="#" id="centerLogo" aria-label="Ellyraia">
-      <img src="assets/Logo.jpg" alt="Логотип" />
-    </a>
+  <div id="mobile-home">
+    <a class="m-logo" href="#" id="centerLogo"><img src="assets/Logo.jpg" alt="Логотип" /></a>
     <div class="m-nav">
       <button class="btn m-btn" data-open="about">Обо мне</button>
       <button class="btn m-btn" data-open="services">Услуги</button>
@@ -206,11 +183,8 @@
     </div>
   </div>
 
-  <!-- MOBILE: фиксированная шапка в режиме разделов -->
-  <div id="mobile-bar" aria-hidden="true">
-    <a class="m-logo-small" href="#" id="barLogo" aria-label="Главная">
-      <img src="assets/Logo.jpg" alt="Логотип" />
-    </a>
+  <div id="mobile-bar">
+    <a class="m-logo-small" href="#" id="barLogo"><img src="assets/Logo.jpg" alt="Логотип" /></a>
     <div class="m-nav">
       <button class="btn m-btn" data-open="about">Обо мне</button>
       <button class="btn m-btn" data-open="services">Услуги</button>
@@ -219,54 +193,43 @@
   </div>
 
   <div class="wrap page-offset" id="top">
-    <!-- Hero — ЧИСТЫЙ баннер (десктоп) -->
-    <section class="hero" aria-label="Hero (desktop only)"></section>
+    <section class="hero"></section>
 
     <main id="content">
-      <!-- ОБО МНЕ -->
-      <section id="about" data-mobile aria-label="Обо мне">
+      <section id="about" data-mobile>
         <h2>Кто я</h2>
         <div class="cards">
-          <article class="card">
-            <p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимум бюрократии и спокойную коммуникацию по e-mail.</p>
-          </article>
-          <article class="card">
-            <p>Сочетаю живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоциональный акцент.</p>
-          </article>
+          <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
+          <article class="card"><p>Сочетаю живые записи и AI-инструменты.</p></article>
         </div>
       </section>
 
-      <!-- УСЛУГИ -->
-      <section id="services" data-mobile aria-label="Услуги">
+      <section id="services" data-mobile>
         <h2>Услуги</h2>
         <div class="cards">
           <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
-          <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейс-свапами.</p><div class="price">от 300 €</div></article>
+          <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из фото/видео.</p><div class="price">от 150 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или трейлер.</p><div class="price">от 300 €</div></article>
         </div>
       </section>
 
-      <!-- КОНТАКТЫ -->
-      <section id="contact" data-mobile aria-label="Контакты">
+      <section id="contact" data-mobile>
         <h2>Контакты</h2>
-        <div class="cards" style="max-width:860px">
+        <div class="cards">
           <article class="card"><h3>Email</h3><p class="muted">hello@ellyraia.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a class="muted" href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
+          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Футер всегда снизу -->
   <footer>
     © <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a>
   </footer>
 
 <script>
-  // Текущий год
   document.getElementById('y').textContent = new Date().getFullYear();
 
-  // Звёзды
   const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
   function size(){
     W=cvs.width=innerWidth;H=cvs.height=innerHeight;
@@ -276,15 +239,14 @@
   function tick(){
     ctx.clearRect(0,0,W,H);
     for(const s of S){
-      s.x+=s.z*0.16; if(s.x>W+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5; ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
+      s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
+      ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
     }
     requestAnimationFrame(tick);
   }
   size(); addEventListener('resize',size,{passive:true}); tick();
 
-  // ===== Логика мобайл: landing -> compact (фиксированная шапка с лого+кнопками) =====
   const mq = matchMedia('(max-width: 768px)');
   const body = document.body;
   const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
@@ -296,12 +258,11 @@
 
   function enterLanding(){
     if(mq.matches){
-      body.classList.remove('compact'); // показать landing (центр-лого + кнопки)
+      body.classList.remove('compact');
       window.scrollTo({top:0});
       sections.forEach(s=>s.classList.remove('active'));
     }else{
-      // десктоп: показываем обычную страницу
-      body.classList.add('compact'); // чтобы моб.бар не светился
+      body.classList.add('compact');
       sections.forEach(s=>s.classList.add('active'));
     }
   }
@@ -309,26 +270,23 @@
   mq.addEventListener('change', enterLanding);
 
   function openSection(id){
-    body.classList.add('compact'); // включаем мобильную шапку
+    body.classList.add('compact');
     sections.forEach(s=>s.classList.toggle('active', s.id===id));
     const el=document.getElementById(id);
     if(el){
-      const y = el.getBoundingClientRect().top + scrollY - 8;
-      scrollTo({top:y, behavior:'smooth'});
+      const y=el.getBoundingClientRect().top+scrollY-8;
+      scrollTo({top:y,behavior:'smooth'});
     }
   }
 
-  // Кнопки (landing и фикс-бар)
   homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
-  // Кнопки десктоп-шапки
   topNavLinks.forEach(a=>a.addEventListener('click',e=>{
-    if(mq.matches){ e.preventDefault(); openSection(a.dataset.tab); }
+    if(mq.matches){e.preventDefault();openSection(a.dataset.tab);}
   }));
-  // Логотипы -> домой на мобиле
-  function goHome(e){ if(mq.matches){ e.preventDefault(); enterLanding(); } }
-  centerLogo.addEventListener('click', goHome);
-  barLogo.addEventListener('click', goHome);
-  logoTop.addEventListener('click', goHome);
+  function goHome(e){if(mq.matches){e.preventDefault();enterLanding();}}
+  centerLogo.addEventListener('click',goHome);
+  barLogo.addEventListener('click',goHome);
+  logoTop.addEventListener('click',goHome);
 </script>
 </body>
 </html>
