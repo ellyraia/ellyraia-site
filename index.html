@@ -1,279 +1,227 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ellyraia — Music & Video</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: white;
-      background: black;
-      overflow-x: hidden;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ellyraia — Music • Video</title>
+<meta name="description" content="Авторская музыка, озвучка и визуалы. Услуги, процесс и контакты." />
+<meta name="theme-color" content="#0b0d1b" />
+<link rel="icon" href="assets/Logo.jpg" type="image/jpeg" />
+<style>
+  /* ===== Tokens ===== */
+  :root{
+    --bg:#0b0d1b; --fg:#eaf0ff; --muted:#9fb0d8;
+    --glassH:rgba(255,255,255,.12); --glassL:rgba(255,255,255,.06);
+    --border:rgba(255,255,255,.18);
+    --accent:#a586ff; --accent2:#63c7ff;
+    --radius:22px;
+    --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
+    --wrap:1180px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;overflow-x:hidden}
+  a{color:#b8d9ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:24px}
 
-    /* Звёздный фон */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at bottom, #0d1d31 0%, #000 100%);
-      z-index: -2;
-    }
+  /* ===== Cosmic background (везде) ===== */
+  .grad{position:fixed;inset:-20vh -20vw;z-index:-4;pointer-events:none;
+    background-size:160% 160%;
+    background-image:
+      radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
+      radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.40), transparent 60%),
+      radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.32), transparent 62%),
+      radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.20), transparent 62%),
+      linear-gradient(180deg,#070914, #0b0d1b 55%, #0a0d18);
+    animation:drift 25s ease-in-out infinite alternate; filter:saturate(1.05) contrast(1.02);
+  }
+  @keyframes drift{to{background-position:10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
+  #stars{position:fixed;inset:0;z-index:-3;display:block}
+  .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
+                     repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
+    mix-blend-mode:overlay;
+  }
 
-    /* Анимация звёзд */
-    .stars::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: transparent url('https://www.script-tutorials.com/demos/360/images/stars.png') repeat top center;
-      animation: moveStars 200s linear infinite;
-      opacity: 0.6;
-    }
+  /* ===== Header ===== */
+  header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;background:transparent}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:86px;height:86px;border-radius:50%;overflow:hidden;box-shadow:0 0 28px rgba(165,134,255,.35)}
+  .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+  nav.main{display:flex;gap:12px;align-items:center}
+  .btn{padding:10px 16px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg,var(--glassH),var(--glassL));backdrop-filter:blur(8px);font-weight:700;letter-spacing:.2px;color:var(--fg);box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .25s ease, background .25s ease}
+  .btn:hover,.btn.is-active{transform:translateY(-1px);box-shadow:0 16px 50px rgba(165,134,255,.28), var(--shadow);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08))}
 
-    @keyframes moveStars {
-      from { background-position: 0 0; }
-      to { background-position: -10000px 5000px; }
-    }
+  /* ===== Banner (desktop) ===== */
+  .hero{margin-top:120px;display:grid;gap:18px;background:url("assets/hero.jpg") center/cover no-repeat;border-radius:24px;padding:44px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
+    linear-gradient(180deg, rgba(11,13,27,.20), rgba(11,13,27,.55));pointer-events:none}
+  .hero>*{position:relative}
+  .hero h1{margin:0;font-size:clamp(32px,5.4vw,60px);line-height:1.05}
+  .accent{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 22px rgba(120,170,255,.25)}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
 
-    /* Навбар */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      box-sizing: border-box;
-      z-index: 10;
-    }
+  /* ===== Sections ===== */
+  main{padding-top:26px}
+  section{margin:64px 0}
+  .line{position:relative}
+  .line::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:1px;background:linear-gradient(90deg,transparent,rgba(165,134,255,.6),transparent);filter:drop-shadow(0 0 6px rgba(165,134,255,.7))}
+  h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .card{background:linear-gradient(180deg,var(--glassH),var(--glassL));border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22), var(--shadow)}
+  .muted{color:var(--muted)}
+  .price{font-weight:800;margin-top:10px}
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    }
+  footer{margin:72px 0 26px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
-    nav {
-      display: flex;
-      gap: 15px;
-    }
+  /* ===== Mobile only ===== */
+  @media (max-width:760px){
+    .logo{width:104px;height:104px}
+    .hero{display:none} /* баннер скрыт на мобилке */
+    .wrap{padding:18px}
+    nav.main{gap:10px}
+    .btn{padding:9px 12px;font-size:14px}
+    section{margin:28px 0}
+    .cards{grid-template-columns:1fr;gap:14px}
+    .card{padding:16px;border-radius:18px}
+    h2{font-size:21px;margin-bottom:16px}
 
-    nav button {
-      background: rgba(255, 255, 255, 0.15);
-      border: none;
-      border-radius: 12px;
-      padding: 10px 18px;
-      color: white;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 0.3s ease;
-    }
-
-    nav button:hover,
-    nav button.active {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Секции */
-    main {
-      padding: 120px 20px 60px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    section {
-      display: none;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s ease;
-      margin-bottom: 60px;
-    }
-
-    section.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 15px rgba(255,255,255,0.05);
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    /* Баннер (только на десктопе) */
-    .banner {
-      width: 100%;
-      margin-top: 100px;
-      margin-bottom: 60px;
-    }
-
-    /* Футер */
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: rgba(255,255,255,0.7);
-      font-size: 14px;
-    }
-
-    .lang-switch {
-      margin-top: 10px;
-    }
-
-    .lang-switch button {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.7);
-      font-size: 14px;
-      margin: 0 5px;
-      cursor: pointer;
-    }
-
-    .lang-switch button.active {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: underline;
-    }
-
-    /*  Мобильная версия */
-    @media (max-width: 768px) {
-      .banner { display: none; }
-
-      main {
-        padding-top: 160px;
-      }
-
-      .logo {
-        width: 90px;
-        height: 90px;
-      }
-
-      nav {
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
-      nav button {
-        padding: 8px 14px;
-        font-size: 14px;
-      }
-
-      .card {
-        padding: 15px;
-      }
-    }
-  </style>
+    /* только лого + кнопки на первом экране */
+    .veil{position:fixed;left:0;right:0;top:0;height:120px;z-index:6;pointer-events:none;
+      background:linear-gradient(180deg, rgba(11,13,27,1) 0%, rgba(11,13,27,.75) 45%, rgba(11,13,27,0) 100%);}
+    /* показываем по одной секции */
+    .tabbed section[data-tab]{display:none;opacity:0;transform:translateY(8px);transition:opacity .22s ease, transform .22s ease}
+    .tabbed section[data-tab].active{display:block;opacity:1;transform:none}
+  }
+</style>
 </head>
 <body>
-  <div class="stars"></div>
+  <!-- Background layers -->
+  <div class="grad" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
 
+  <!-- Header -->
   <header>
-    <img src="assets/Logo.jpg" alt="Ellyraia Logo" class="logo" />
-    <nav>
-      <button class="tab-btn active" data-target="about">Обо мне</button>
-      <button class="tab-btn" data-target="services">Услуги</button>
-      <button class="tab-btn" data-target="contacts">Контакты</button>
+    <div class="brand">
+      <a class="logo" href="#" aria-label="Ellyraia"><img src="assets/Logo.jpg" alt="logo"></a>
+    </div>
+    <nav class="main" id="topnav">
+      <a class="btn" href="#about" data-target="about">Обо мне</a>
+      <a class="btn" href="#services" data-target="services">Услуги</a>
+      <a class="btn" href="#contact" data-target="contact">Контакты</a>
     </nav>
   </header>
 
-  <main>
-    <!-- Баннер (только десктоп) -->
-    <img src="assets/hero.jpg" alt="Hero Banner" class="banner" />
-
-    <section id="about" class="active">
-      <div class="card">
-        <h2>Кто я</h2>
-        <p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p>
-      </div>
-      <div class="card">
-        <h2>О работах</h2>
-        <p>Короткие баннер-видео, авторские песни/саундтреки, лирик-видео, обложки, фирменные шоты для каналов. RU/EN вокал по брифу.</p>
+  <main class="wrap tabbed">
+    <!-- Desktop hero -->
+    <section class="hero" aria-label="Баннер">
+      <h1 class="line">Музыка, песни и видео <span class="accent">из будущего</span></h1>
+      <p class="muted" style="max-width:760px">Авторские треки, озвучка, визуалы и клипы. Минимальная бюрократия и спокойная коммуникация по e-mail.</p>
+      <div class="cta">
+        <a class="btn" href="#services">Услуги и цены</a>
+        <a class="btn" href="#contact">Связаться</a>
       </div>
     </section>
 
-    <section id="services">
-      <div class="card">
-        <h2>Mini</h2>
-        <p>Авторская песня + простая видео-заставка.</p>
-        <p><b>от 70 €</b></p>
-      </div>
-      <div class="card">
-        <h2>Standard</h2>
-        <p>Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p>
-        <p><b>от 150 €</b></p>
-      </div>
-      <div class="card">
-        <h2>Premium</h2>
-        <p>Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейссвапами. Возможны проекты в формате трейлера или мини-блокбастера.</p>
-        <p><b>от 300 €</b></p>
+    <!-- ABOUT -->
+    <section id="about" data-tab="about">
+      <h2 class="line">Обо мне</h2>
+      <div class="cards">
+        <article class="card"><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Работаю онлайн — вся коммуникация по e-mail.</p></article>
+        <article class="card"><p class="muted">В проектах сочетаю живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоциональный акцент.</p></article>
       </div>
     </section>
 
-    <section id="contacts">
-      <div class="card">
-        <h2>Email</h2>
-        <p>hello@ellyraia.com</p>
-      </div>
-      <div class="card">
-        <h2>YouTube</h2>
-        <p><a href="https://youtube.com/@Ellyraia.official" target="_blank" style="color:#a9d0ff;">Ellyraia.official</a></p>
+    <!-- SERVICES -->
+    <section id="services" data-tab="services">
+      <h2 class="line">Услуги</h2>
+      <div class="cards">
+        <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + простая видео-заставка.</p><div class="price">от 70 €</div></article>
+        <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p><div class="price">от 150 €</div></article>
+        <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейссвапами.</p><div class="price">от 300 €</div></article>
       </div>
     </section>
+
+    <!-- CONTACT -->
+    <section id="contact" data-tab="contact">
+      <h2 class="line">Контакты</h2>
+      <div class="cards" style="max-width:860px">
+        <article class="card"><h3>Email</h3><p class="muted">hello@ellyraia.com</p></article>
+        <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="y"></span> Ellyraia</div>
+      <div>RU | EN</div>
+      <div>Сайт на GitHub Pages</div>
+    </footer>
   </main>
 
-  <footer>
-    <p>© 2025 Ellyraia</p>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lang="ru">RU</button> |
-      <button class="lang-btn" data-lang="en">EN</button>
-    </div>
-    <p><a href="https://pages.github.com/" target="_blank" style="color:#a9d0ff;">Сайт на GitHub Pages</a></p>
-  </footer>
+  <!-- Mobile fade under header -->
+  <div class="veil" aria-hidden="true"></div>
 
-  <script>
-    // Переключение секций
-    const tabs = document.querySelectorAll(".tab-btn");
-    const sections = document.querySelectorAll("main section");
+<script>
+  // Год
+  document.getElementById('y').textContent = new Date().getFullYear();
 
-    tabs.forEach(btn => {
-      btn.addEventListener("click", () => {
-        tabs.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
+  // Звёзды
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  let w,h,stars=[]; const R=()=>Math.random();
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;
+    const count=(innerWidth<=760)?150:190;
+    stars=Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
+  }
+  function tick(){ctx.clearRect(0,0,w,h);
+    for(const s of stars){s.x+=s.z*0.16;if(s.x>w+6)s.x=-6;
+      ctx.globalAlpha=0.4+s.z*0.6;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(tick);
+  }
+  resize(); addEventListener('resize',resize,{passive:true}); tick();
 
-        const target = btn.getAttribute("data-target");
-        sections.forEach(sec => {
-          if (sec.id === target) {
-            sec.classList.add("active");
-          } else {
-            sec.classList.remove("active");
-          }
-        });
-      });
+  // Навигация: десктоп = якоря; мобайл = вкладки (по одному разделу)
+  const mqMobile = window.matchMedia('(max-width:760px)');
+  const links=[...document.querySelectorAll('nav.main a[data-target]')];
+  const sections=[...document.querySelectorAll('section[data-tab]')];
+
+  function setTab(id){
+    sections.forEach(s=>s.classList.toggle('active',s.id===id));
+    links.forEach(a=>a.classList.toggle('is-active',a.dataset.target===id));
+    if(mqMobile.matches){
+      // на мобильном — не скроллим далеко, просто показываем
+      const wrapTop=document.querySelector('.wrap').offsetTop;
+      window.scrollTo({top:wrapTop+8,behavior:'smooth'});
+    }else{
+      // на десктопе — обычный скролл к секции
+      const el=document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }
+
+  function init(){
+    if(mqMobile.matches){
+      // мобайл: скрыть все секции до выбора
+      sections.forEach(s=>s.classList.remove('active'));
+    }else{
+      // десктоп: показать все секции
+      sections.forEach(s=>s.classList.add('active'));
+    }
+  }
+  init();
+  mqMobile.addEventListener('change', init);
+
+  links.forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      setTab(a.dataset.target);
     });
-
-    // Переключение языка
-    const langBtns = document.querySelectorAll(".lang-btn");
-    langBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        langBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        alert("Переключение языка пока демо: " + btn.dataset.lang);
-      });
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
 
