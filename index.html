@@ -4,34 +4,29 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ellyraia — Music & Video</title>
-<meta name="description" content="Авторская музыка, озвучка и визуальные клипы. Минимум бюрократии и спокойная коммуникация по e-mail." />
 <meta name="theme-color" content="#0b0d1b" />
-<meta property="og:title" content="Ellyraia — Music & Video" />
-<meta property="og:description" content="Музыка, визуалы и клипы в атмосфере будущего. Связаться и заказать — на этой странице." />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="assets/hero.jpg" />
 <link rel="icon" href="assets/Logo.jpg" />
 
 <style>
-  /* ===== Base / Tokens ===== */
+  /* ===== Tokens ===== */
   *,*::before,*::after{box-sizing:border-box}
   html,body{height:100%}
   :root{
     --bg:#0b0d1b; --fg:#eaf0ff; --muted:#a9b7dd;
     --glassH:rgba(255,255,255,.10); --glassL:rgba(255,255,255,.05);
     --border:rgba(255,255,255,.18);
-    --accent:#9a88ff; --accent2:#62c7ff;
     --radius:22px;
     --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
     --hover:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18);
-    --headerH:86px; /* высота шапки на десктопе */
+    --headerH:86px;
   }
   body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;overflow-x:hidden}
+
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1180px;margin:0 auto;padding:24px}
-  .page-offset{padding-top:calc(var(--headerH) + 24px)} /* чтобы не заезжало под фикс.шапку */
+  .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
-  /* ===== Cosmic background (везде) ===== */
+  /* ===== Background (всегда) ===== */
   .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
     background-image:
@@ -41,52 +36,23 @@
       radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.16), transparent 62%),
       linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
     animation: drift 25s ease-in-out infinite alternate;
-    filter:saturate(1.05) contrast(1.02);
   }
   @keyframes drift{to{background-position: 10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
-  .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
-    background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.7) 0,rgba(255,255,255,.7) 1px,transparent 1px,transparent 2px),
-                     repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0,rgba(255,255,255,.7) 1px,transparent 1px,transparent 2px);
-    mix-blend-mode:overlay}
-  #stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header (fixed on desktop) ===== */
-  header.site{
-    position:fixed; top:0; left:0; right:0; z-index:10;
-    display:flex; align-items:center; justify-content:center;
-    background:transparent;
-    height:var(--headerH);
-  }
-  .head-inner{width:100%; max-width:1180px; padding:0 24px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-  }
-  .brand{display:flex;align-items:center;gap:14px}
-  .logo{width:72px;height:72px;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
-  .logo img{width:100%;height:100%;object-fit:cover}
-  nav.top{display:flex;gap:12px}
+  /* ===== Buttons / Cards ===== */
   .btn{
     padding:12px 18px;border-radius:16px;border:1px solid var(--border);
-    background:linear-gradient(180deg,var(--glassH),var(--glassL));backdrop-filter:blur(6px);
-    box-shadow:var(--shadow);font-weight:600;letter-spacing:.2px;display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(180deg,var(--glassH),var(--glassL));
+    backdrop-filter:blur(6px);
+    box-shadow:var(--shadow);font-weight:600;letter-spacing:.2px;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    white-space:nowrap;
   }
   .btn:hover{transform:translateY(-2px);box-shadow:var(--hover)}
-  .btn:active{transform:translateY(0);box-shadow:0 10px 30px rgba(165,134,255,.3)}
+  .btn:active{transform:translateY(0)}
 
-  /* ===== Hero (desktop) ===== */
-  .hero{
-    margin-top:18px; display:grid; gap:18px; border-radius:24px; padding:44px;
-    position:relative; overflow:hidden; background:url("assets/hero.jpg") center/cover no-repeat;
-  }
-  .hero::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
-    linear-gradient(180deg, rgba(11,13,27,.18), rgba(11,13,27,.55))}
-  .hero>*{position:relative}
-  .hero h1{margin:0;font-size:clamp(32px,5.4vw,56px);line-height:1.06}
-
-  /* ===== Sections & cards ===== */
-  section{margin:88px 0} /* больше воздуха */
-  h2{margin:0 0 22px;font-size:28px}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
   .card{
     background:linear-gradient(180deg,var(--glassH),var(--glassL));border:1px solid var(--border);
@@ -94,52 +60,72 @@
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .card:hover{transform:translateY(-4px);box-shadow:var(--hover)}
-  .muted{color:var(--muted)}
-  .price{font-weight:800;margin-top:8px}
+  .muted{color:var(--muted)} .price{font-weight:800;margin-top:8px}
+
+  /* ===== Desktop header & hero ===== */
+  header.site{
+    position:fixed; top:0; left:0; right:0; z-index:10; height:var(--headerH);
+    display:flex; align-items:center; justify-content:center; background:transparent;
+  }
+  .head-inner{width:100%; max-width:1180px; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:72px;height:72px;border-radius:50%;overflow:hidden;box-shadow:0 0 26px rgba(155,120,255,.45)}
+  .logo img{width:100%;height:100%;object-fit:cover}
+  nav.top{display:flex;gap:12px}
+
+  .hero{margin-top:18px; display:grid; gap:18px; border-radius:24px; padding:44px; position:relative; overflow:hidden;
+    background:url("assets/hero.jpg") center/cover no-repeat;}
+  .hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.72) 70%),
+    linear-gradient(180deg, rgba(11,13,27,.18), rgba(11,13,27,.55))}
+  .hero>*{position:relative}
+  .hero h1{margin:0;font-size:clamp(32px,5.4vw,56px);line-height:1.06}
+
+  section{margin:88px 0}
+  h2{margin:0 0 22px;font-size:28px}
 
   footer{margin:80px 0 28px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   /* ===== MOBILE ===== */
-  @media (max-width: 768px){
-    :root{ --headerH: 110px; } /* шапка выше под крупное лого */
-    .page-offset{padding-top:calc(var(--headerH) + 10px)}
-    /* Мобильная шапка = только лого + кнопки под ним, по центру */
-    header.site{height:auto;background:transparent}
-    .head-inner{flex-direction:column;gap:12px;padding:10px 16px}
-    .logo{width:96px;height:96px}
-    nav.top{
-      width:100%;
-      justify-content:center;
-      gap:10px;
+  @media (max-width:768px){
+    :root{--headerH:64px}
+    .wrap{padding:18px}
+    .page-offset{padding-top:0} /* на мобиле шапка не мешает, пока мы в landing */
+    /* Скрываем десктопную шапку до «компактного» режима */
+    header.site{display:none}
+    /* Центр-лендинг: только лого + кнопки */
+    #mobile-home{
+      position:fixed; inset:0; z-index:6; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:18px; padding:24px;
+      background:transparent;
     }
-    .btn{
-      padding:10px 12px;border-radius:14px;
-      font-size:clamp(13px,3.7vw,15px); line-height:1;
-      flex:1; min-width:0; /* три кнопки адаптивно в одну линию */
-      text-align:center; white-space:nowrap;
-    }
+    #mobile-home .m-logo{width:min(48vw,180px);height:min(48vw,180px);border-radius:50%;
+      overflow:hidden; box-shadow:0 0 34px rgba(155,120,255,.55)}
+    #mobile-home .m-logo img{width:100%;height:100%;object-fit:cover}
+    #mobile-home .m-nav{display:flex;gap:12px;width:100%}
+    #mobile-home .m-btn{flex:1; min-width:0; padding:12px 14px; border-radius:16px; font-size:clamp(14px,3.8vw,16px)}
 
-    /* На первом экране контент-секции скрыты */
+    /* Когда переходим в режим контента (compact) — показываем шапку и контент */
+    body.compact header.site{display:flex}
+    body.compact .page-offset{padding-top:calc(var(--headerH) + 12px)}
+    body.compact #mobile-home{display:none}
+
+    /* Контент: одна колонка, компактные карточки, без h2-заголовков */
     main section[data-mobile]{display:none;margin:28px 0}
     main section[data-mobile].active{display:block}
-
-    /* Скрываем крупные h2 на мобиле для чистоты первого экрана */
     main section > h2{display:none}
-
-    /* Карточки строго по одной колонке и компактнее */
     .cards{grid-template-columns:1fr;gap:14px}
     .card{padding:18px;border-radius:18px}
 
-    /* Баннер скрыт на мобиле */
+    /* Баннер не нужен на мобиле */
     .hero{display:none}
 
-    /* Лёгкое «растворение» сверху под шапкой */
+    /* Размытая маска под шапкой */
     .top-fade{position:fixed;top:0;left:0;right:0;height:120px;z-index:5;pointer-events:none;
       background:linear-gradient(180deg, rgba(11,13,27,1), rgba(11,13,27,0))}
   }
 
-  /* prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion:reduce){
     .btn,.card{transition:none}
     .grad{animation:none}
   }
@@ -148,11 +134,10 @@
 <body>
   <!-- Фон -->
   <div class="grad" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
   <div class="top-fade" aria-hidden="true"></div>
 
-  <!-- Fixed Header (desktop), центр на мобиле -->
+  <!-- Десктопная шапка (и мобильная в compact) -->
   <header class="site">
     <div class="head-inner">
       <div class="brand">
@@ -165,6 +150,16 @@
       </nav>
     </div>
   </header>
+
+  <!-- Мобильный центр-лендинг (только лого + 3 кнопки) -->
+  <div id="mobile-home" aria-hidden="true">
+    <a class="m-logo" href="#top" aria-label="Ellyraia"><img src="assets/Logo.jpg" alt="Логотип" /></a>
+    <div class="m-nav">
+      <button class="btn m-btn" data-open="about">Обо мне</button>
+      <button class="btn m-btn" data-open="services">Услуги</button>
+      <button class="btn m-btn" data-open="contact">Контакты</button>
+    </div>
+  </div>
 
   <div class="wrap page-offset" id="top">
     <!-- Hero — только десктоп -->
@@ -197,7 +192,7 @@
         <div class="cards">
           <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + простая видео-заставка.</p><div class="price">от 70 €</div></article>
           <article class="card"><h3>Standard</h3><p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фэйссвапами.</p><div class="price">от 300 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейcсвапами.</p><div class="price">от 300 €</div></article>
         </div>
       </section>
 
@@ -206,69 +201,72 @@
         <h2>Контакты</h2>
         <div class="cards" style="max-width:860px">
           <article class="card"><h3>Email</h3><p class="muted">hello@ellyraia.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener" class="muted">Ellyraia.official</a></p></article>
+          <article class="card"><h3>YouTube</h3><p><a class="muted" href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
         </div>
       </section>
     </main>
 
     <footer>
       <div>© <span id="y"></span> Ellyraia</div>
-      <div><a href="#" aria-label="Русский">RU</a> | <a href="#" aria-label="English">EN</a> · Сайт на GitHub Pages</div>
+      <div><a href="#">RU</a> | <a href="#">EN</a> · Сайт на GitHub Pages</div>
     </footer>
   </div>
 
 <script>
-  // Год
+  // Текущий год
   document.getElementById('y').textContent = new Date().getFullYear();
 
   // Звёзды
-  const c = document.getElementById('stars'), ctx = c.getContext('2d');
-  let w,h,stars=[]; const R=()=>Math.random();
-  function size(){ w=c.width=innerWidth; h=c.height=innerHeight;
-    const n = (innerWidth<=768)?160:190;
-    stars=Array.from({length:n},()=>({x:R()*w,y:R()*h,z:0.22+R()*0.85,s:0.7+R()*1.6}));
+  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
+  const R=()=>Math.random();
+  function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
+    const n=(innerWidth<=768)?160:190;
+    S=Array.from({length:n},()=>({x:R()*W,y:R()*H,z:0.22+R()*0.85,s:0.7+R()*1.6}));
   }
-  function tick(){ ctx.clearRect(0,0,w,h);
-    for(const s of stars){ s.x+=s.z*0.16; if(s.x>w+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5; ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill(); }
-    requestAnimationFrame(tick);
+  function tick(){ctx.clearRect(0,0,W,H);
+    for(const s of S){s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
+      ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
+    } requestAnimationFrame(tick);
   }
-  size(); addEventListener('resize',size,{passive:true}); tick();
+  size();addEventListener('resize',size,{passive:true});tick();
 
-  // ===== Мобильная логика: на старте показывать только лого+кнопки =====
-  const mqMobile = matchMedia('(max-width: 768px)');
+  // ===== Мобильный сценарий =====
+  const mq = matchMedia('(max-width: 768px)');
+  const body = document.body;
+  const mobileHome = document.getElementById('mobile-home');
   const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
-  const navLinks = Array.from(document.querySelectorAll('nav.top .btn'));
+  const topNavLinks = Array.from(document.querySelectorAll('nav.top .btn'));
+  const homeBtns = Array.from(document.querySelectorAll('#mobile-home .m-btn'));
 
-  function setMobileHome(){
-    if(mqMobile.matches){
-      sections.forEach(s=>s.classList.remove('active')); // скрыть все разделы
+  function enterLanding(){
+    if(mq.matches){
+      body.classList.remove('compact'); // показать центр-лендинг
+      sections.forEach(s=>s.classList.remove('active'));
       window.scrollTo({top:0});
     }else{
-      // на десктопе все разделы видны
+      // десктоп: всё видно
+      body.classList.add('compact');
       sections.forEach(s=>s.classList.add('active'));
     }
   }
-  setMobileHome();
-  mqMobile.addEventListener('change', setMobileHome);
+  enterLanding();
+  mq.addEventListener('change', enterLanding);
 
-  // Клик по кнопкам: на мобиле — показываем один раздел, на десктопе — обычный якорь
-  navLinks.forEach(a=>{
-    a.addEventListener('click', (e)=>{
-      const id = a.getAttribute('data-tab');
-      if(mqMobile.matches){
-        e.preventDefault();
-        sections.forEach(s=>s.classList.toggle('active', s.id===id));
-        // прокрутим чуть ниже шапки
-        const anchor = document.getElementById(id);
-        if(anchor){
-          const y = anchor.getBoundingClientRect().top + scrollY - 8;
-          scrollTo({top:y, behavior:'smooth'});
-        }
-      }
-    });
-  });
+  function openSection(id){
+    body.classList.add('compact'); // прячем лендинг, включаем шапку
+    sections.forEach(s=>s.classList.toggle('active', s.id===id));
+    const el=document.getElementById(id);
+    if(el){const y=el.getBoundingClientRect().top+scrollY-8; scrollTo({top:y,behavior:'smooth'});}
+  }
+
+  // Нажатия на центральные (лендинг) кнопки
+  homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
+
+  // Нажатия на кнопки в шапке (на мобиле — тоже переключают секции)
+  topNavLinks.forEach(a=>a.addEventListener('click',e=>{
+    if(mq.matches){ e.preventDefault(); openSection(a.dataset.tab); }
+  }));
 </script>
 </body>
 </html>
