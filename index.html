@@ -19,7 +19,7 @@
       --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
 
-      --header-h:122px; /* десктопное «место» под фикс. хедер */
+      --header-h:122px; /* десктопное «место» под фикс-хедер */
       --page-max:980px;
       --text-max:720px;
       --gutter:clamp(16px,4vw,40px);
@@ -30,7 +30,7 @@
     body{color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden;background:#0b0d1b}
     a{color:#b8d9ff;text-decoration:none}
     a:hover{text-decoration:underline}
-    a.btn:hover{text-decoration:none}
+    a.btn, a.btn:hover{ text-decoration:none }
 
     /* Космический фон */
     .space-grad{
@@ -75,14 +75,17 @@
       box-shadow:0 4px 20px rgba(165,134,255,.35);
     }
 
-    /* Основной контейнер и плавный фейд на десктопе */
-    .page{padding-top:var(--header-h);position:relative}
+    /* Контент + мягкая вуаль (десктоп) */
+    .page{
+      padding-top:var(--header-h);
+      position:relative;
+    }
     .page::before{
       content:"";position:fixed;top:0;left:0;right:0;height:110px;pointer-events:none;z-index:6;
       background:linear-gradient(to bottom, rgba(11,13,27,.95) 0%, rgba(11,13,27,.70) 35%, rgba(11,13,27,0) 100%);
     }
 
-    /* Баннер */
+    /* Баннер (виден только на десктопе) */
     .hero{
       position:relative;overflow:hidden;border-radius:20px;min-height:38vh;
       background:url("assets/hero.jpg") center/cover no-repeat;
@@ -96,16 +99,32 @@
         linear-gradient(180deg, rgba(11,13,27,.12), rgba(11,13,27,.50));
     }
 
-    /* Секции */
-    .wrap{max-width:var(--page-max);margin:0 auto;padding:24px var(--gutter)}
-    .text-narrow{max-width:var(--text-max);margin:0 auto}
-    section{margin:64px 0;scroll-margin-top:calc(var(--header-h) + 16px)}
-    h2{margin:0 0 24px;font-size:clamp(22px,3vw,28px);text-align:center}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:var(--page-max);margin:0 auto}
+    /* Секции/карточки (десктоп — больше воздуха и крупнее карты) */
+    .wrap{max-width:var(--page-max);margin:0 auto;padding:28px var(--gutter)}
+    section{
+      margin:96px 0; /* было 64px → 96px */
+      scroll-margin-top:calc(var(--header-h) + 18px);
+      position:relative;
+    }
+    /* тонкая декоративная линия между секциями */
+    section::after{
+      content:""; position:absolute; left:10%; right:10%; bottom:-48px; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(165,134,255,.55),transparent);
+      filter:drop-shadow(0 0 6px rgba(165,134,255,.6));
+    }
+    section:last-of-type::after{ display:none }
+
+    h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px);text-align:center}
+    .cards{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); /* карты чуть шире */
+      gap:22px;max-width:var(--page-max);margin:0 auto
+    }
     .card{
       background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);
-      border-radius:var(--card-radius);padding:20px;box-shadow:var(--shadow);
-      backdrop-filter:blur(8px);
+      border-radius:var(--card-radius);
+      padding:24px; /* было 20px → 24px */
+      box-shadow:var(--shadow);backdrop-filter:blur(8px);
+      min-height:168px; /* новая минимальная высота карты */
       transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
     }
     .card:hover{
@@ -114,82 +133,55 @@
       border-color:rgba(165,134,255,.22);
       box-shadow:0 18px 60px rgba(120,170,255,.18), var(--shadow);
     }
-    .muted{color:var(--muted)} .price{font-weight:800;margin-top:10px}
+    .muted{color:var(--muted)}
+    .price{font-weight:800;margin-top:12px}
 
     footer{
-      margin:72px 0 26px;color:var(--muted);font-size:14px;
+      margin:96px 0 28px; /* синхронизировано с секциями */
+      color:var(--muted);font-size:14px;
       display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto;
     }
 
-    /* --- МОБИЛЬНАЯ ВЕРСИЯ: логотип сверху по центру, ниже симметричные кнопки 3×1, без переноса --- */
+    /* ===== Мобильная версия: баннер убираем, шапка колонкой, табы ===== */
     @media (max-width:768px){
       :root{
-        --header-h:176px; /* больше места под колонку (логотип + ряд кнопок) */
-        --logo-w:106px;
+        --header-h:188px;
+        --logo-w:132px;
         --logo-gap:12px;
       }
       header{
-        padding:12px var(--gutter);
+        padding:16px var(--gutter);
         flex-direction:column;
         align-items:center;
         justify-content:flex-start;
-        gap:10px;
+        gap:12px;
       }
       .logo{width:var(--logo-w);height:var(--logo-w)}
       nav{
-        width:100%;
-        margin-left:0;
-        transform:none;
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:10px;
-        max-width:520px; /* чтобы ряд не растягивался слишком широко */
+        width:100%; margin-left:0; transform:none;
+        display:grid; grid-template-columns:repeat(3,1fr);
+        gap:10px; max-width:520px;
       }
-      .btn{
-        padding:8px 10px;
-        font-size:13px;
-        text-align:center;
-        white-space:nowrap; /* ключ — запрет переноса */
-        border-radius:12px;
-      }
-      .page::before{display:none} /* десктопный автоград сверху убираем */
+      .btn{ padding:10px 12px; font-size:13.5px; text-align:center; white-space:nowrap; border-radius:12px; }
 
-      /* Ручной fade под шапкой, чтобы текст уезжал «в звёзды» плавно */
-      .page{
-        -webkit-mask-image:linear-gradient(to bottom,
-          rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.96) 70px,
-          rgba(0,0,0,1) 160px);
-        -webkit-mask-size:100% 100%;-webkit-mask-repeat:no-repeat;
-        mask-image:linear-gradient(to bottom,
-          rgba(0,0,0,0) 0px,
-          rgba(0,0,0,0.96) 70px,
-          rgba(0,0,0,1) 160px);
-        mask-size:100% 100%;mask-repeat:no-repeat;
-      }
+      .hero{ display:none } /* баннер скрыт на мобайле */
+      .page::before{ display:none }
 
-      .hero{
-        min-height:30vh;margin-left:var(--gutter);margin-right:var(--gutter);
-        background-position:center 40%;background-size:cover;
-      }
-      .cards{grid-template-columns:1fr;max-width:92%}
-      .text-narrow{max-width:92%}
-      h2{font-size:22px}
-      body{font-size:15px}
+      .wrap{ padding:22px var(--gutter) }
+      section{ margin:44px 0 } /* на мобиле короче скролл */
+      section::after{ bottom:-28px }
+
+      /* табы — показываем один раздел */
+      .m-tabs section[data-tab]{ display:none; }
+      .m-tabs section[data-tab].active{ display:block; animation: fadeIn .28s ease }
+      @keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+
+      .cards{ grid-template-columns:1fr; max-width:92% }
+      .text-narrow{ max-width:92% }
+      h2{ font-size:22px }
+      body{ font-size:15px }
     }
-
-    /* Доп. верхний fade для мобильной версии, лежит над контентом, но под шапкой */
-    .top-fade{
-      position:fixed;top:0;left:0;right:0;height:240px;pointer-events:none;z-index:9;display:none;
-      background:linear-gradient(to bottom,
-        rgba(11,13,27,1) 0%,
-        rgba(11,13,27,.96) 30%,
-        rgba(11,13,27,.90) 55%,
-        rgba(11,13,27,.62) 78%,
-        rgba(11,13,27,0) 100%);
-    }
-    @media (max-width:768px){ .top-fade{display:block} }
   </style>
 </head>
 <body>
@@ -199,19 +191,18 @@
   <header>
     <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
     <nav>
-      <a class="btn" href="#about">Обо мне</a>
-      <a class="btn" href="#services">Услуги</a>
-      <a class="btn" href="#contact">Контакты</a>
+      <a class="btn" href="#about" data-target="about">Обо мне</a>
+      <a class="btn" href="#services" data-target="services">Услуги</a>
+      <a class="btn" href="#contact" data-target="contact">Контакты</a>
     </nav>
   </header>
 
-  <div class="top-fade" aria-hidden="true"></div>
-
-  <main class="page">
+  <main class="page m-tabs">
+    <!-- Десктоп-баннер (на мобиле скрывается) -->
     <section class="hero" aria-label="Баннер"></section>
 
     <div class="wrap">
-      <section id="about">
+      <section id="about" data-tab="about">
         <h2>Обо мне</h2>
         <div class="cards">
           <article class="card">
@@ -225,7 +216,7 @@
         </div>
       </section>
 
-      <section id="services">
+      <section id="services" data-tab="services">
         <h2>Услуги</h2>
         <div class="cards">
           <article class="card"><h3>Mini</h3><p class="muted">Баннер-видео + музыка (15–30 сек).</p><div class="price">от 70 €</div></article>
@@ -234,7 +225,7 @@
         </div>
       </section>
 
-      <section id="contact" class="text-narrow">
+      <section id="contact" class="text-narrow" data-tab="contact">
         <h2>Контакты</h2>
         <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:var(--text-max);">
           <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
@@ -250,11 +241,13 @@
   </main>
 
   <script>
+    // Год
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Звёзды
     const c=document.getElementById('stars'),ctx=c.getContext('2d');
     let w,h,stars=[]; const R=()=>Math.random();
-    function resize(){
-      w=c.width=innerWidth; h=c.height=innerHeight;
+    function resize(){ w=c.width=innerWidth; h=c.height=innerHeight;
       const count=(innerWidth<=768)?150:190;
       stars=Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
     }
@@ -270,6 +263,39 @@
       requestAnimationFrame(tick);
     }
     tick();
+
+    // ===== Мобильные табы (на десктопе показываем всё) =====
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    const sections = Array.from(document.querySelectorAll('section[data-tab]'));
+    const links = Array.from(document.querySelectorAll('nav a[data-target]'));
+
+    function setActiveTab(tab){
+      sections.forEach(s => s.classList.toggle('active', s.dataset.tab===tab));
+      if (location.hash.replace('#','') !== tab) history.replaceState(null, '', '#'+tab);
+      window.scrollTo({top: Math.max(0, parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))), behavior:'smooth'});
+    }
+    function initMobileTabs(){
+      if (mqMobile.matches){
+        const initial = (location.hash||'').replace('#','') || 'about';
+        setActiveTab(initial);
+        links.forEach(a=>{
+          a.addEventListener('click', (e)=>{ e.preventDefault(); setActiveTab(a.dataset.target); });
+        });
+      }else{
+        sections.forEach(s => s.classList.add('active')); // десктоп — все секции видны
+      }
+    }
+    mqMobile.addEventListener('change', ()=>location.reload());
+    initMobileTabs();
+
+    // ===== Десктопный scroll-snap (ломкий на мобиле — включаем только ≥769px) =====
+    if (window.matchMedia('(min-width: 769px)').matches){
+      document.querySelector('.page').style.scrollSnapType = 'y proximity';
+      document.querySelectorAll('section[id]').forEach(sec=>{
+        sec.style.scrollSnapAlign = 'start';
+        sec.style.scrollMarginTop = 'calc(var(--header-h) + 18px)';
+      });
+    }
   </script>
 </body>
 </html>
