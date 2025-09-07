@@ -3,11 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ellyraia — Music • Video</title>
-  <meta name="description" content="Авторские песни, музыка и кинематографичные видео. Контакты, услуги и реквизиты на одной странице." />
+  <title>Ellyraia — Music & Video</title>
+  <meta name="description" content="Авторские песни, музыка и клипы. Пакеты услуг, процесс работы и контакты." />
   <meta name="theme-color" content="#0b0d1b" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/hero.jpg" />
   <link rel="icon" type="image/jpeg" href="assets/Logo.jpg" />
   <style>
     *,*::before,*::after{box-sizing:border-box}
@@ -18,218 +16,138 @@
       --border:rgba(255,255,255,.16);
       --shadow:0 12px 40px rgba(0,0,0,.45);
       --card-radius:22px;
-
-      --header-h:122px; /* десктопное «место» под фикс-хедер */
-      --page-max:980px;
-      --text-max:720px;
-      --gutter:clamp(16px,4vw,40px);
-
-      --logo-w:132px;
-      --logo-gap:16px;
+      --header-h:122px; --page-max:980px; --gutter:clamp(16px,4vw,40px);
+      --logo-w:132px; --logo-gap:16px;
     }
     body{color:var(--fg);font:16px/1.6 system-ui,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden;background:#0b0d1b}
     a{color:#b8d9ff;text-decoration:none}
-    a:hover{text-decoration:underline}
-    a.btn, a.btn:hover{ text-decoration:none }
+    a.btn,a.btn:hover{text-decoration:none}
 
-    /* Космический фон */
-    .space-grad{
-      position:fixed;inset:0;z-index:-2;pointer-events:none;
-      background:
-        radial-gradient(1000px 600px at 10% 8%, rgba(102,52,200,.16), transparent 60%),
-        radial-gradient(900px 520px at 85% 88%, rgba(255,170,210,.10), transparent 62%),
-        radial-gradient(1200px 700px at 80% 15%, rgba(20,140,220,.12), transparent 60%),
-        linear-gradient(180deg,#080a15 0%, #0b0d1b 55%, #0a0d18 100%);
-      filter:saturate(1.02) contrast(1.02);
-    }
-    #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;display:block}
+    .space-grad{position:fixed;inset:0;z-index:-2;pointer-events:none;
+      background:radial-gradient(1000px 600px at 10% 8%, rgba(102,52,200,.16), transparent 60%),
+                 radial-gradient(900px 520px at 85% 88%, rgba(255,170,210,.10), transparent 62%),
+                 radial-gradient(1200px 700px at 80% 15%, rgba(20,140,220,.12), transparent 60%),
+                 linear-gradient(180deg,#080a15 0%, #0b0d1b 55%, #0a0d18 100%);
+      filter:saturate(1.02) contrast(1.02);}
+    #stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
 
-    /* Хедер */
-    header{
-      position:fixed;top:0;left:0;right:0;z-index:10;
+    header{position:fixed;top:0;left:0;right:0;z-index:10;
       display:flex;align-items:center;justify-content:space-between;
-      padding:22px var(--gutter);background:transparent;
-    }
-    .logo{
-      width:var(--logo-w);height:var(--logo-w);border-radius:50%;
-      display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto;
+      padding:22px var(--gutter);}
+    .logo{width:var(--logo-w);height:var(--logo-w);border-radius:50%;overflow:hidden;
       background:radial-gradient(circle at 50% 55%, rgba(165,134,255,.28), rgba(99,199,255,.12) 55%, transparent 65%);
-      box-shadow:0 0 22px rgba(165,134,255,.55),0 0 44px rgba(99,199,255,.28);
-    }
+      box-shadow:0 0 22px rgba(165,134,255,.55);}
     .logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-
-    nav{display:flex;gap:14px;align-items:center;margin-left:28px;transform:translateY(4px)}
-    .btn{
-      position:relative;isolation:isolate;
-      padding:8px 14px;border-radius:13px;border:1px solid var(--border);
+    nav{display:flex;gap:14px;align-items:center;margin-left:28px}
+    .btn{padding:8px 14px;border-radius:13px;border:1px solid var(--border);
       background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.08));
       color:var(--fg);font-weight:600;font-size:15px;white-space:nowrap;
-      backdrop-filter:blur(6px);
-      box-shadow:0 2px 8px rgba(0,0,0,.25);
-      transition:transform .22s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
-    }
-    .btn:hover{
-      transform:translateY(-2px);
-      border-color:rgba(255,255,255,.32);
+      backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.25);
+      transition:all .25s ease}
+    .btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.32);
       background:linear-gradient(180deg,rgba(165,134,255,.25),rgba(99,199,255,.15));
-      box-shadow:0 4px 20px rgba(165,134,255,.35);
-    }
+      box-shadow:0 4px 20px rgba(165,134,255,.35)}
+    .btn.is-active{border-color:rgba(255,255,255,.42);box-shadow:0 6px 22px rgba(165,134,255,.42)}
 
-    /* Контент + мягкая вуаль (десктоп) */
-    .page{
-      padding-top:var(--header-h);
-      position:relative;
-    }
-    .page::before{
-      content:"";position:fixed;top:0;left:0;right:0;height:110px;pointer-events:none;z-index:6;
-      background:linear-gradient(to bottom, rgba(11,13,27,.95) 0%, rgba(11,13,27,.70) 35%, rgba(11,13,27,0) 100%);
-    }
+    .lang-switch{margin-left:20px;font-size:14px;color:var(--muted)}
+    .lang-switch a{color:var(--muted);margin:0 4px;transition:color .25s}
+    .lang-switch a:hover{color:#fff}
 
-    /* Баннер (виден только на десктопе) */
-    .hero{
-      position:relative;overflow:hidden;border-radius:20px;min-height:38vh;
-      background:url("assets/hero.jpg") center/cover no-repeat;
-      margin-left:calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
-      margin-right:calc(var(--gutter) + var(--logo-w) + var(--logo-gap));
-    }
-    .hero::before{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      background:
-        radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.68) 70%),
-        linear-gradient(180deg, rgba(11,13,27,.12), rgba(11,13,27,.50));
-    }
+    .page{padding-top:var(--header-h)}
 
-    /* Секции/карточки (десктоп — больше воздуха и крупнее карты) */
     .wrap{max-width:var(--page-max);margin:0 auto;padding:28px var(--gutter)}
-    section{
-      margin:96px 0; /* было 64px → 96px */
-      scroll-margin-top:calc(var(--header-h) + 18px);
-      position:relative;
-    }
-    /* тонкая декоративная линия между секциями */
-    section::after{
-      content:""; position:absolute; left:10%; right:10%; bottom:-48px; height:1px;
-      background:linear-gradient(90deg,transparent,rgba(165,134,255,.55),transparent);
-      filter:drop-shadow(0 0 6px rgba(165,134,255,.6));
-    }
-    section:last-of-type::after{ display:none }
+    section{margin:96px 0;scroll-margin-top:calc(var(--header-h) + 18px)}
+    h2{text-align:center;margin-bottom:26px;font-size:clamp(22px,3vw,28px)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+    .card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);
+      border-radius:var(--card-radius);padding:24px;box-shadow:var(--shadow);backdrop-filter:blur(8px);
+      transition:all .25s ease}
+    .card:hover{transform:translateY(-4px);background:rgba(255,255,255,.06);
+      border-color:rgba(165,134,255,.22);box-shadow:0 18px 60px rgba(120,170,255,.18), var(--shadow)}
+    .muted{color:var(--muted)} .price{font-weight:800;margin-top:12px}
+    footer{margin:96px 0 28px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto}
 
-    h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px);text-align:center}
-    .cards{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); /* карты чуть шире */
-      gap:22px;max-width:var(--page-max);margin:0 auto
-    }
-    .card{
-      background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);
-      border-radius:var(--card-radius);
-      padding:24px; /* было 20px → 24px */
-      box-shadow:var(--shadow);backdrop-filter:blur(8px);
-      min-height:168px; /* новая минимальная высота карты */
-      transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
-    }
-    .card:hover{
-      transform:translateY(-4px);
-      background:rgba(255,255,255,.06);
-      border-color:rgba(165,134,255,.22);
-      box-shadow:0 18px 60px rgba(120,170,255,.18), var(--shadow);
-    }
-    .muted{color:var(--muted)}
-    .price{font-weight:800;margin-top:12px}
-
-    footer{
-      margin:96px 0 28px; /* синхронизировано с секциями */
-      color:var(--muted);font-size:14px;
-      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      max-width:var(--page-max);padding:0 var(--gutter);margin-left:auto;margin-right:auto;
-    }
-
-    /* ===== Мобильная версия: баннер убираем, шапка колонкой, табы ===== */
+    /* Mobile */
     @media (max-width:768px){
-      :root{
-        --header-h:188px;
-        --logo-w:132px;
-        --logo-gap:12px;
-      }
-      header{
-        padding:16px var(--gutter);
-        flex-direction:column;
-        align-items:center;
-        justify-content:flex-start;
-        gap:12px;
-      }
-      .logo{width:var(--logo-w);height:var(--logo-w)}
-      nav{
-        width:100%; margin-left:0; transform:none;
-        display:grid; grid-template-columns:repeat(3,1fr);
-        gap:10px; max-width:520px;
-      }
-      .btn{ padding:10px 12px; font-size:13.5px; text-align:center; white-space:nowrap; border-radius:12px; }
-
-      .hero{ display:none } /* баннер скрыт на мобайле */
-      .page::before{ display:none }
-
-      .wrap{ padding:22px var(--gutter) }
-      section{ margin:44px 0 } /* на мобиле короче скролл */
-      section::after{ bottom:-28px }
-
-      /* табы — показываем один раздел */
-      .m-tabs section[data-tab]{ display:none; }
-      .m-tabs section[data-tab].active{ display:block; animation: fadeIn .28s ease }
-      @keyframes fadeIn { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
-
-      .cards{ grid-template-columns:1fr; max-width:92% }
-      .text-narrow{ max-width:92% }
-      h2{ font-size:22px }
-      body{ font-size:15px }
+      :root{--header-h:210px;--logo-w:140px}
+      header{flex-direction:column;align-items:center;gap:12px;padding:16px var(--gutter)}
+      nav{margin-left:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;width:100%}
+      .btn{padding:10px 12px;font-size:13.5px;text-align:center}
+      .wrap{padding:18px var(--gutter)}
+      section{margin:28px 0}
+      .cards{grid-template-columns:1fr;gap:14px}
+      .card{padding:18px;border-radius:18px}
+      h2{font-size:21px;margin-bottom:16px}
+      body{font-size:15px}
+      /* Tabs */
+      .m-tabs section[data-tab]{display:none}
+      .m-tabs section[data-tab].active{display:block}
     }
   </style>
 </head>
 <body>
-  <div class="space-grad" aria-hidden="true"></div>
-  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="space-grad"></div>
+  <canvas id="stars"></canvas>
 
   <header>
     <div class="logo"><img src="assets/Logo.jpg" alt="logo"></div>
     <nav>
       <a class="btn" href="#about" data-target="about">Обо мне</a>
       <a class="btn" href="#services" data-target="services">Услуги</a>
+      <a class="btn" href="#workflow" data-target="workflow">Процесс</a>
       <a class="btn" href="#contact" data-target="contact">Контакты</a>
     </nav>
+    <div class="lang-switch">
+      <a href="index.html">RU</a> | <a href="index-en.html">EN</a>
+    </div>
   </header>
 
   <main class="page m-tabs">
-    <!-- Десктоп-баннер (на мобиле скрывается) -->
-    <section class="hero" aria-label="Баннер"></section>
-
     <div class="wrap">
       <section id="about" data-tab="about">
         <h2>Обо мне</h2>
         <div class="cards">
-          <article class="card">
-            <h3>Кто я</h3>
-            <p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p>
-          </article>
-          <article class="card">
-            <h3>О работах</h3>
-            <p class="muted">Короткие баннер-видео, авторские песни/саундтреки, лирик-видео, обложки, фирменные шоты для каналов. RU/EN вокал по брифу.</p>
-          </article>
+          <article class="card"><p class="muted">Создаю авторскую музыку, озвучку и визуальные клипы. Работаю онлайн, вся коммуникация проходит по e-mail.</p></article>
+          <article class="card"><p class="muted">В проектах использую живые записи и AI-технологии. Каждый заказ — это уникальная история с акцентом на эмоции и атмосферу.</p></article>
         </div>
       </section>
 
       <section id="services" data-tab="services">
         <h2>Услуги</h2>
         <div class="cards">
-          <article class="card"><h3>Mini</h3><p class="muted">Баннер-видео + музыка (15–30 сек).</p><div class="price">от 70 €</div></article>
-          <article class="card"><h3>Standard</h3><p class="muted">Песня + короткое видео.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн: музыка, клип, оформление.</p><div class="price">от 300 €</div></article>
+          <article class="card">
+            <h3>Mini</h3>
+            <p class="muted">Авторская песня + простая видео-заставка.</p>
+            <div class="price">от 70 €</div>
+          </article>
+          <article class="card">
+            <h3>Standard</h3>
+            <p class="muted">Песня + оживлённое видео из ваших фото/видео с лёгкими AI-эффектами.</p>
+            <div class="price">от 150 €</div>
+          </article>
+          <article class="card">
+            <h3>Premium</h3>
+            <p class="muted">Полный продакшн: песня или видеотрек с AI-анимацией, клипами, фейссвапами. Возможны проекты в формате трейлера или мини-блокбастера.</p>
+            <div class="price">от 300 €</div>
+          </article>
         </div>
       </section>
 
-      <section id="contact" class="text-narrow" data-tab="contact">
+      <section id="workflow" data-tab="workflow">
+        <h2>Как проходит работа</h2>
+        <div class="cards">
+          <article class="card"><h3>1. Предоплата</h3><p class="muted">После обсуждения идеи вносится 50% предоплата через <b>Wise</b>.</p></article>
+          <article class="card"><h3>2. Создание</h3><p class="muted">Я создаю проект по согласованному пакету. Включено до <b>трёх правок</b>.</p></article>
+          <article class="card"><h3>3. Финал</h3><p class="muted">Готовый файл загружается на <b>Vimeo</b> в закрытый доступ. После финальной оплаты вы получаете ссылку для скачивания.</p></article>
+        </div>
+      </section>
+
+      <section id="contact" data-tab="contact">
         <h2>Контакты</h2>
-        <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:var(--text-max);">
+        <div class="cards">
           <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
-          <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></article>
+          <article class="card"><h3>YouTube</h3><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></article>
         </div>
       </section>
 
@@ -241,61 +159,31 @@
   </main>
 
   <script>
-    // Год
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Звёзды
+    // Stars
     const c=document.getElementById('stars'),ctx=c.getContext('2d');
-    let w,h,stars=[]; const R=()=>Math.random();
-    function resize(){ w=c.width=innerWidth; h=c.height=innerHeight;
-      const count=(innerWidth<=768)?150:190;
-      stars=Array.from({length:count},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));
-    }
-    resize(); addEventListener('resize',resize,{passive:true});
-    function tick(){
-      ctx.clearRect(0,0,w,h); ctx.shadowBlur=8; ctx.shadowColor='rgba(180,190,255,0.75)';
-      for(const s of stars){
-        s.x+=s.z*0.16; if(s.x>w+6) s.x=-6;
-        const a=0.46+s.z*0.6; ctx.globalAlpha=a>1?1:a;
-        ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
-      }
-      requestAnimationFrame(tick);
-    }
-    tick();
+    let w,h,stars=[];const R=()=>Math.random();
+    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;
+      stars=Array.from({length:(innerWidth<=768)?150:190},()=>({x:R()*w,y:R()*h,z:0.25+R()*0.85,s:0.7+R()*1.6}));}
+    resize();addEventListener('resize',resize);
+    function tick(){ctx.clearRect(0,0,w,h);
+      for(const s of stars){s.x+=s.z*0.16;if(s.x>w+6)s.x=-6;
+        ctx.globalAlpha=0.4+s.z*0.6;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
+        ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}
+      requestAnimationFrame(tick);}tick();
 
-    // ===== Мобильные табы (на десктопе показываем всё) =====
-    const mqMobile = window.matchMedia('(max-width: 768px)');
-    const sections = Array.from(document.querySelectorAll('section[data-tab]'));
-    const links = Array.from(document.querySelectorAll('nav a[data-target]'));
-
-    function setActiveTab(tab){
-      sections.forEach(s => s.classList.toggle('active', s.dataset.tab===tab));
-      if (location.hash.replace('#','') !== tab) history.replaceState(null, '', '#'+tab);
-      window.scrollTo({top: Math.max(0, parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))), behavior:'smooth'});
-    }
-    function initMobileTabs(){
-      if (mqMobile.matches){
-        const initial = (location.hash||'').replace('#','') || 'about';
-        setActiveTab(initial);
-        links.forEach(a=>{
-          a.addEventListener('click', (e)=>{ e.preventDefault(); setActiveTab(a.dataset.target); });
-        });
-      }else{
-        sections.forEach(s => s.classList.add('active')); // десктоп — все секции видны
-      }
-    }
-    mqMobile.addEventListener('change', ()=>location.reload());
-    initMobileTabs();
-
-    // ===== Десктопный scroll-snap (ломкий на мобиле — включаем только ≥769px) =====
-    if (window.matchMedia('(min-width: 769px)').matches){
-      document.querySelector('.page').style.scrollSnapType = 'y proximity';
-      document.querySelectorAll('section[id]').forEach(sec=>{
-        sec.style.scrollSnapAlign = 'start';
-        sec.style.scrollMarginTop = 'calc(var(--header-h) + 18px)';
-      });
-    }
+    // Mobile tabs
+    const mqMobile=window.matchMedia('(max-width:768px)');
+    const secs=[...document.querySelectorAll('section[data-tab]')];
+    const links=[...document.querySelectorAll('nav a[data-target]')];
+    function setTab(t){secs.forEach(s=>s.classList.toggle('active',s.dataset.tab===t));
+      links.forEach(a=>a.classList.toggle('is-active',a.dataset.target===t));
+      if(location.hash.replace('#','')!==t)history.replaceState(null,'','#'+t);}
+    function initTabs(){if(mqMobile.matches){const init=(location.hash||'').replace('#','')||'about';setTab(init);
+      links.forEach(a=>a.onclick=e=>{e.preventDefault();setTab(a.dataset.target)});}
+    else{secs.forEach(s=>s.classList.add('active'));}}
+    mqMobile.addEventListener('change',()=>location.reload());initTabs();
   </script>
 </body>
 </html>
