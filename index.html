@@ -1,221 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ellyraia — Music & Video</title>
 
+  <!-- FAVICON (JPEG) -->
+  <link rel="icon" type="image/jpeg" href="assets/icon-e-32.jpg" sizes="32x32">
+  <link rel="icon" type="image/jpeg" href="assets/icon-e-180.jpg" sizes="180x180">
+  <link rel="apple-touch-icon" href="assets/icon-e-180.jpg">
+
   <style>
-    :root { color-scheme: dark; }
-    html,body{margin:0;padding:0}
+    :root{
+      --bg:#0b1020;
+      --card:#1a2136cc;
+      --stroke:#ffffff22;
+      --text:#dbe4ff;
+      --muted:#9fb0d7;
+      --btn:#2b3555dd;
+      --btnText:#f7f9ff;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:22px;
+      --safe:env(safe-area-inset-bottom,10px);
+    }
+    *{box-sizing:border-box}
     body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(120% 120% at 70% 0%, #1b1c3a 0%, #0a0b16 55%, #000 100%);
-      color:#e9ecf6;
+      margin:0; background:var(--bg); color:var(--text);
+      font:400 16px/1.6 system-ui,Segoe UI,Roboto,Arial;
       overflow-x:hidden;
-      min-height:100dvh;
-      position:relative;
     }
 
-    /* звезды */
-    .stars{
-      position:fixed; inset:0;
-      pointer-events:none;
-      background-image:
-        radial-gradient(2px 2px at 20% 30%,#ffffffcc 0 2px,transparent 2px),
-        radial-gradient(2px 2px at 70% 40%,#ffffffaa 0 2px,transparent 2px),
-        radial-gradient(1.5px 1.5px at 40% 80%,#ffffff88 0 1.5px,transparent 1.5px),
-        radial-gradient(1.5px 1.5px at 85% 70%,#ffffff88 0 1.5px,transparent 1.5px),
-        radial-gradient(2px 2px at 10% 85%,#ffffffcc 0 2px,transparent 2px);
-      background-repeat: repeat;
-      animation: starsMove 180s linear infinite;
-      z-index:0;
+    /* фон */
+    .space{position:fixed;inset:0;z-index:-3;
+      background:radial-gradient(1100px 600px at 75% 25%,rgba(130,120,255,.18),transparent 60%),
+                 radial-gradient(900px 500px at 20% 60%,rgba(255,120,200,.12),transparent 60%),
+                 var(--bg);}
+    .stars,.stars:before,.stars:after{
+      position:absolute;inset:-50% -50%;content:"";
+      background-repeat:repeat;animation:drift 120s linear infinite;
+      background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent 60%),
+                       radial-gradient(1.5px 1.5px at 180px 90px,#fff,transparent 60%),
+                       radial-gradient(1.5px 1.5px at 340px 160px,#fff,transparent 60%);
+      opacity:.75;}
+    .stars:before{transform:scale(1.2);opacity:.55;filter:blur(.3px);}
+    .stars:after{transform:scale(1.45);opacity:.35;filter:blur(.6px);}
+    @keyframes drift{to{transform:translateY(25%)}}
+
+    /* header */
+    header{position:sticky;top:0;z-index:10;
+      backdrop-filter:saturate(1.2) blur(10px);
+      -webkit-backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(to bottom,rgba(8,12,28,.75),rgba(8,12,28,0));
+      padding:18px 16px 10px;}
+    .brand-row{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:14px;}
+
+    /* логотип */
+    .planet{width:min(36vw,140px);aspect-ratio:1/1;border-radius:50%;
+      background:url('assets/logo-planet.jpg') center/cover no-repeat;
+      box-shadow:0 0 24px 10px rgba(186,160,255,.25),0 2px 12px rgba(0,0,0,.35);
+      margin:6px auto 10px;transition:width .25s ease;}
+    .mini-logo{display:none;width:40px;height:40px;border-radius:12px;
+      background:#0f1530 url('assets/icon-e-32.jpg') center/cover no-repeat;
+      box-shadow:var(--shadow);}
+    nav.nav{display:flex;gap:10px;justify-content:center;}
+    nav.nav a{padding:10px 18px;border-radius:16px;
+      background:var(--btn);color:var(--btnText);
+      text-decoration:none;white-space:nowrap;
+      border:1px solid var(--stroke);
+      transition:.2s;}
+    nav.nav a:hover{background:#3a4670ee;}
+
+    /* main */
+    main{max-width:980px;margin:14px auto 80px;padding:0 16px;}
+    .section{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:20px 20px 24px;margin:24px 0 36px;}
+    .card{background:rgba(24,30,54,.68);border:1px solid var(--stroke);border-radius:24px;
+      padding:22px;margin:16px 0;}
+
+    /* footer */
+    footer{padding:18px 16px calc(18px + var(--safe));color:var(--muted);background:transparent;}
+    .foot-row{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+    .langs a{color:var(--text);text-decoration:none;opacity:.85}
+    .langs a:hover{opacity:1}
+
+    @media(max-width:900px){
+      .brand-row{flex-direction:column;}
+      nav.nav{justify-content:center;}
+      body.section-open .planet{width:92px;}
     }
-    @keyframes starsMove{
-      from{ background-position: 0 0, 0 0, 0 0, 0 0, 0 0 }
-      to { background-position: -2000px 1000px, -1500px 900px, -1200px 800px, -1800px 700px, -1600px 600px }
-    }
-
-    #m-home, #m-bar, .m-section { display:none; }
-
-    footer{
-      position:relative; z-index:1;
-      text-align:center; padding:16px 12px 28px;
-      color:#aeb6cf; font-size:14px;
-    }
-    footer a{ color:#aeb6cf; text-decoration:none }
-    footer a:hover{ color:#fff }
-
-    /* ===== МОБИЛКА ===== */
-    @media (max-width: 900px){
-      .desktop-only{ display:none !important; }
-      #m-home, #m-bar, .m-section { display:block; }
-
-      #m-home{
-        min-height:100dvh;
-        display:flex; flex-direction:column; align-items:center; justify-content:center;
-        gap:18px; padding:18px 16px 24px;
-        position:relative; z-index:1;
-      }
-
-      .m-logo, .m-logo-sm{
-        width:min(42vw, 180px);
-        aspect-ratio:1/1;
-        border-radius:50%;
-        overflow:hidden;
-        box-shadow:0 0 40px 10px rgba(151, 95, 255, .25);
-      }
-      .m-logo-sm{ width:68px; box-shadow:0 0 20px 6px rgba(151,95,255,.18); }
-      .m-logo img, .m-logo-sm img{
-        width:100%; height:100%; display:block; object-fit:cover; object-position:center;
-      }
-      .m-logo, .m-logo-sm { cursor:pointer; }
-
-      .m-buttons{
-        display:flex; justify-content:center; align-items:center;
-        gap:12px; flex-wrap:nowrap;
-        padding:0 8px; max-width:100%;
-      }
-      .m-btn{
-        white-space:nowrap;
-        background: rgba(255,255,255,.10);
-        color:#f5f7ff;
-        border:none; border-radius:14px;
-        padding:10px 18px;
-        font-size:16px; letter-spacing:.2px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 6px 18px rgba(0,0,0,.35);
-        transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
-      }
-      .m-btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.22); }
-      .m-btn:active{ transform:translateY(0); background:rgba(255,255,255,.28); }
-
-      #m-bar{
-        position:sticky; top:0; z-index:3;
-        display:flex; flex-direction:column; align-items:center; gap:10px;
-        padding:10px 10px 12px;
-        background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 100%);
-        -webkit-backdrop-filter: blur(6px);
-        backdrop-filter: blur(6px);
-        border-bottom:1px solid rgba(255,255,255,.06);
-      }
-
-      .m-section{
-        padding:16px 14px 24px; z-index:1; position:relative;
-      }
-      .m-section[hidden]{ display:none !important; }
-
-      .m-card{
-        max-width:680px; margin:0 auto 18px;
-        background: rgba(17,20,34,.6);
-        border-radius:18px; padding:18px 16px;
-        box-shadow: 0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
-      }
-      .m-card h3{ margin:.2em 0 .4em; font-size:20px }
-      .m-card p{ margin:.4em 0; color:#cfd6ee; line-height:1.45 }
-
-      footer{ background: transparent; }
+    @media(min-width:901px){
+      .brand-row{justify-content:space-between;}
+      .mini-logo{display:block;}
+      .planet{display:none;}
+      .banner{max-width:1100px;margin:10px auto 20px;border-radius:24px;
+        overflow:hidden;box-shadow:var(--shadow);
+        aspect-ratio:21/7;background:url('assets/banner-wordmark.jpg') center/cover no-repeat;}
     }
   </style>
 </head>
 <body>
-  <div class="stars" aria-hidden="true"></div>
+  <div class="space"><div class="stars"></div></div>
 
-  <!-- ===== МОБИЛКА ===== -->
-  <section id="m-home" aria-label="Главная (мобильная)">
-    <div class="m-logo" id="m-logo-home">
-      <img src="logo.png" alt="Ellyraia Music" />
+  <header>
+    <div class="brand-row">
+      <div class="mini-logo"></div>
+      <div class="planet" id="homeLogo"></div>
+      <nav class="nav" id="topNav">
+        <a href="#about">Обо мне</a>
+        <a href="#services">Услуги</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
     </div>
-    <nav class="m-buttons" aria-label="Навигация">
-      <button class="m-btn" data-target="about">Обo мне</button>
-      <button class="m-btn" data-target="services">Услуги</button>
-      <button class="m-btn" data-target="contacts">Контакты</button>
-    </nav>
-  </section>
-
-  <header id="m-bar" hidden>
-    <div class="m-logo-sm" id="m-logo-top">
-      <img src="logo.png" alt="Ellyraia Music — на главную" />
-    </div>
-    <nav class="m-buttons" aria-label="Навигация">
-      <button class="m-btn" data-target="about">Обo мне</button>
-      <button class="m-btn" data-target="services">Услуги</button>
-      <button class="m-btn" data-target="contacts">Контакты</button>
-    </nav>
   </header>
+  <div class="banner" aria-hidden="true"></div>
 
-  <main id="m-content">
-    <section id="about" class="m-section" hidden>
-      <article class="m-card">
-        <p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p>
-        <p>Сочетаю живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоцию.</p>
-      </article>
+  <main>
+    <section id="about" class="section">
+      <h2>Кто я</h2>
+      <p>Привет, я Ellyraia. В реальной жизни работаю в IT сфере, изучение AI стало не только профессиональной необхоимостью, но и любимым хобби.</p>
+      <p>Создаю творческие проекты с помощью AI-инструментов. Каждый проект - это индивидуальный мир, со своей атмосферой, настроением и волшебством. В любом стиле и жанре.</p>
     </section>
 
-    <section id="services" class="m-section" hidden>
-      <article class="m-card">
+    <section id="services" class="section">
+      <h2>Услуги</h2>
+      <div class="card">
         <h3>Mini</h3>
-        <p>Песня + простая видео-заставка.</p>
-        <p><strong>от 70 €</strong></p>
-      </article>
-      <article class="m-card">
+        <p>Авторская песня + красиво оформленная заставка/видео на 5-10 секунд на повторе (AI анимация).</p>
+        <div class="price">50/70 €</div>
+      </div>
+      <div class="card">
         <h3>Standard</h3>
-        <p>Песня + оживлённое видео из ваших фото/видео.</p>
-        <p><strong>от 150 €</strong></p>
-      </article>
-      <article class="m-card">
+        <p>Авторская песня + видео из вашего материала, с оживлёнными кадрами и AI-эффектами, включая фейсвапы. (До 50% AI).</p>
+        <div class="price">от 150 €</div>
+      </div>
+      <div class="card">
         <h3>Premium</h3>
-        <p>Полный продакшн: песня или клип с AI-анимацией.</p>
-        <p><strong>от 300 €</strong></p>
-      </article>
+        <p>Полный продакшн: Авторская песня + клип с AI-анимацией, фейссвапами / трейлер с озвучкой, саундтреком, фейссвапами. (Более 50% AI).</p>
+        <div class="price">от 200 €</div>
+      </div>
     </section>
 
-    <section id="contacts" class="m-section" hidden>
-      <article class="m-card">
+    <section id="contacts" class="section">
+      <h2>Контакты</h2>
+      <div class="card">
         <h3>Email</h3>
-        <p>hello@ellyraia.com</p>
-      </article>
-      <article class="m-card">
+        <p>info@ellyraia.com</p>
+      </div>
+      <div class="card">
         <h3>YouTube</h3>
-        <p>Ellyraia.official</p>
-      </article>
+        <p>EllyraiaMusic</p>
+      </div>
     </section>
   </main>
 
   <footer>
-    © 2025 Ellyraia · <a href="#">RU</a> | <a href="#">EN</a> · <a href="#">Сайт на GitHub Pages</a>
+    <div class="foot-row">
+      <div>© 2025 Ellyraia</div>
+      <div class="langs">RU | EN</div>
+      <div><a href="#" style="color:inherit;text-decoration:none;opacity:.85">Сайт на GitHub Pages</a></div>
+    </div>
   </footer>
 
   <script>
-    const home = document.getElementById('m-home');
-    const bar = document.getElementById('m-bar');
-    const sections = Array.from(document.querySelectorAll('.m-section'));
-    const navButtons = Array.from(document.querySelectorAll('.m-btn'));
-    const logoHome = document.getElementById('m-logo-home');
-    const logoTop = document.getElementById('m-logo-top');
-
-    function openSection(id){
-      home.hidden = true;
-      bar.hidden = false;
-      sections.forEach(s => s.hidden = s.id !== id);
-      requestAnimationFrame(()=>window.scrollTo({ top: bar.offsetHeight, behavior:'smooth'}));
+    const nav=document.querySelectorAll('.nav a');
+    const logo=document.getElementById('homeLogo');
+    function setActive(){
+      const y=window.scrollY+90;let current='';
+      document.querySelectorAll('main section').forEach(sec=>{
+        const top=sec.offsetTop,bottom=top+sec.offsetHeight;
+        if(y>=top && y<bottom) current='#'+sec.id;
+      });
+      nav.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')===current)});
+      document.body.classList.toggle('section-open',current!=='');
     }
-    function backToHome(){
-      sections.forEach(s => s.hidden = true);
-      bar.hidden = true;
-      home.hidden = false;
-      window.scrollTo({ top: 0, behavior:'smooth' });
-    }
-
-    navButtons.forEach(btn=>{
-      btn.addEventListener('click', ()=>openSection(btn.dataset.target));
-    });
-    logoHome.addEventListener('click', backToHome);
-    logoTop .addEventListener('click', backToHome);
-
-    document.addEventListener('DOMContentLoaded', ()=>{
-      document.documentElement.style.overflowX = 'hidden';
-      document.body.style.overflowX = 'hidden';
-    });
+    setActive();window.addEventListener('scroll',setActive);
+    logo.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
   </script>
 </body>
 </html>
