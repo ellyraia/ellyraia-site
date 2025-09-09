@@ -1,138 +1,222 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ellyraia — Music • Video</title>
-  <meta name="description" content="Ellyraia — авторская музыка, песни, видео и визуалы. Контакты, услуги и реквизиты на одной странице." />
-  <meta name="theme-color" content="#0b0d1b" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Ellyraia — Music • Video" />
-  <meta property="og:description" content="Музыка, песни, видео и визуалы в атмосфере будущего." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/banner.jpg" />
-
-  <!--  Favicon -->
-  <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ellyraia — Music & Video</title>
 
   <style>
-    /* ===== Базовые стили ===== */
-    *,*::before,*::after{box-sizing:border-box}
+    :root { color-scheme: dark; }
+    html,body{margin:0;padding:0}
     body{
-      margin:0;
-      background:#0b0d1b;
-      color:#eaf0ff;
-      font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(120% 120% at 70% 0%, #1b1c3a 0%, #0a0b16 55%, #000 100%);
+      color:#e9ecf6;
       overflow-x:hidden;
+      min-height:100dvh;
+      position:relative;
     }
-    a{color:#63c7ff;text-decoration:none}
-    a:hover{text-decoration:none}
 
-    /* ===== Фон (звёзды + градиент) ===== */
-    .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
-      background-size:160% 160%;
+    /* звезды */
+    .stars{
+      position:fixed; inset:0;
+      pointer-events:none;
       background-image:
-        radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
-        radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.40), transparent 60%),
-        radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.32), transparent 62%),
-        radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.20), transparent 62%),
-        linear-gradient(180deg,#070914, #0b0d1b 55%, #0a0d18);
-      animation: drift 25s ease-in-out infinite alternate;
+        radial-gradient(2px 2px at 20% 30%,#ffffffcc 0 2px,transparent 2px),
+        radial-gradient(2px 2px at 70% 40%,#ffffffaa 0 2px,transparent 2px),
+        radial-gradient(1.5px 1.5px at 40% 80%,#ffffff88 0 1.5px,transparent 1.5px),
+        radial-gradient(1.5px 1.5px at 85% 70%,#ffffff88 0 1.5px,transparent 1.5px),
+        radial-gradient(2px 2px at 10% 85%,#ffffffcc 0 2px,transparent 2px);
+      background-repeat: repeat;
+      animation: starsMove 180s linear infinite;
+      z-index:0;
     }
-    @keyframes drift{to{background-position: 10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
+    @keyframes starsMove{
+      from{ background-position: 0 0, 0 0, 0 0, 0 0, 0 0 }
+      to { background-position: -2000px 1000px, -1500px 900px, -1200px 800px, -1800px 700px, -1600px 600px }
+    }
 
-    .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
-      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
-                        repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
-      mix-blend-mode: overlay;}
+    #m-home, #m-bar, .m-section { display:none; }
 
-    /* ===== Header ===== */
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;position:sticky;top:0;z-index:10;background:rgba(11,13,27,.55);backdrop-filter:blur(8px)}
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:84px;height:84px;border-radius:50%;overflow:hidden;box-shadow:0 0 12px rgba(165,134,255,.45)}
-    .logo img{width:100%;height:100%;object-fit:cover}
-    .title{font-weight:700;letter-spacing:.4px}
-    .wordmark{font-weight:800;background:linear-gradient(90deg,#a586ff,#63c7ff,#ffd36e);-webkit-background-clip:text;color:transparent;text-shadow:0 0 18px rgba(120,170,255,.25)}
-    nav a{padding:10px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);box-shadow:0 6px 20px rgba(0,0,0,.35);font-weight:600;transition:.25s}
-    nav a:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(165,134,255,.28)}
+    footer{
+      position:relative; z-index:1;
+      text-align:center; padding:16px 12px 28px;
+      color:#aeb6cf; font-size:14px;
+    }
+    footer a{ color:#aeb6cf; text-decoration:none }
+    footer a:hover{ color:#fff }
 
-    /* ===== Hero ===== */
-    .hero{margin:32px auto;max-width:1180px;background:url("assets/banner.jpg") center/cover no-repeat;border-radius:24px;padding:64px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,13,27,.4), rgba(11,13,27,.75));}
-    .hero h1{margin:0;font-size:clamp(32px,5vw,60px);line-height:1.1;position:relative}
-    .hero p{max-width:700px;margin-top:12px;color:#9fb0d8;position:relative}
-    .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;position:relative}
+    /* ===== МОБИЛКА ===== */
+    @media (max-width: 900px){
+      .desktop-only{ display:none !important; }
+      #m-home, #m-bar, .m-section { display:block; }
 
-    /* ===== Sections ===== */
-    section{margin:72px auto;max-width:1100px;padding:0 24px}
-    h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px)}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-    .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.45);transition:.25s}
-    .card:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(120,170,255,.25)}
-    .card h3{margin:0 0 10px;font-size:20px}
-    .price{font-weight:800;margin-top:10px}
+      #m-home{
+        min-height:100dvh;
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:18px; padding:18px 16px 24px;
+        position:relative; z-index:1;
+      }
 
-    /* ===== Footer ===== */
-    footer{margin:80px auto 30px;max-width:1100px;padding:0 24px;color:#9fb0d8;font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+      .m-logo, .m-logo-sm{
+        width:min(42vw, 180px);
+        aspect-ratio:1/1;
+        border-radius:50%;
+        overflow:hidden;
+        box-shadow:0 0 40px 10px rgba(151, 95, 255, .25);
+      }
+      .m-logo-sm{ width:68px; box-shadow:0 0 20px 6px rgba(151,95,255,.18); }
+      .m-logo img, .m-logo-sm img{
+        width:100%; height:100%; display:block; object-fit:cover; object-position:center;
+      }
+      .m-logo, .m-logo-sm { cursor:pointer; }
+
+      .m-buttons{
+        display:flex; justify-content:center; align-items:center;
+        gap:12px; flex-wrap:nowrap;
+        padding:0 8px; max-width:100%;
+      }
+      .m-btn{
+        white-space:nowrap;
+        background: rgba(255,255,255,.10);
+        color:#f5f7ff;
+        border:none; border-radius:14px;
+        padding:10px 18px;
+        font-size:16px; letter-spacing:.2px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 6px 18px rgba(0,0,0,.35);
+        transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+      }
+      .m-btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.22); }
+      .m-btn:active{ transform:translateY(0); background:rgba(255,255,255,.28); }
+
+      #m-bar{
+        position:sticky; top:0; z-index:3;
+        display:flex; flex-direction:column; align-items:center; gap:10px;
+        padding:10px 10px 12px;
+        background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 100%);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border-bottom:1px solid rgba(255,255,255,.06);
+      }
+
+      .m-section{
+        padding:16px 14px 24px; z-index:1; position:relative;
+      }
+      .m-section[hidden]{ display:none !important; }
+
+      .m-card{
+        max-width:680px; margin:0 auto 18px;
+        background: rgba(17,20,34,.6);
+        border-radius:18px; padding:18px 16px;
+        box-shadow: 0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      }
+      .m-card h3{ margin:.2em 0 .4em; font-size:20px }
+      .m-card p{ margin:.4em 0; color:#cfd6ee; line-height:1.45 }
+
+      footer{ background: transparent; }
+    }
   </style>
 </head>
 <body>
-  <div class="grad"></div>
-  <div class="grain"></div>
+  <div class="stars" aria-hidden="true"></div>
 
-  <header>
-    <div class="brand">
-      <div class="logo"><img src="assets/logo.jpg" alt="Ellyraia"></div>
-      <div class="title"><span class="wordmark">Ellyraia</span></div>
+  <!-- ===== МОБИЛКА ===== -->
+  <section id="m-home" aria-label="Главная (мобильная)">
+    <div class="m-logo" id="m-logo-home">
+      <img src="logo.png" alt="Ellyraia Music" />
     </div>
-    <nav>
-      <a href="#about">Обо мне</a>
-      <a href="#services">Услуги</a>
-      <a href="#contacts">Контакты</a>
+    <nav class="m-buttons" aria-label="Навигация">
+      <button class="m-btn" data-target="about">Обo мне</button>
+      <button class="m-btn" data-target="services">Услуги</button>
+      <button class="m-btn" data-target="contacts">Контакты</button>
+    </nav>
+  </section>
+
+  <header id="m-bar" hidden>
+    <div class="m-logo-sm" id="m-logo-top">
+      <img src="logo.png" alt="Ellyraia Music — на главную" />
+    </div>
+    <nav class="m-buttons" aria-label="Навигация">
+      <button class="m-btn" data-target="about">Обo мне</button>
+      <button class="m-btn" data-target="services">Услуги</button>
+      <button class="m-btn" data-target="contacts">Контакты</button>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>Музыка и видео <span class="wordmark">из будущего</span></h1>
-    <p>Авторская музыка, песни и клипы. Визуалы с элементами AI и кинематографичный стиль.</p>
-    <div class="cta">
-      <a href="#services">Услуги</a>
-      <a href="#contacts">Контакты</a>
-    </div>
-  </section>
+  <main id="m-content">
+    <section id="about" class="m-section" hidden>
+      <article class="m-card">
+        <p>Создаю авторскую музыку, озвучку и визуальные клипы. Люблю минимальную бюрократию и спокойную коммуникацию по e-mail.</p>
+        <p>Сочетаю живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоцию.</p>
+      </article>
+    </section>
 
-  <section id="about">
-    <h2>Обо мне</h2>
-    <div class="cards">
-      <article class="card"><h3>Кто я</h3><p>Создаю авторскую музыку, озвучку и визуальные клипы. Работаю онлайн, общение — только по e-mail.</p></article>
-      <article class="card"><h3>Подход</h3><p>Комбинирую живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоцию.</p></article>
-    </div>
-  </section>
+    <section id="services" class="m-section" hidden>
+      <article class="m-card">
+        <h3>Mini</h3>
+        <p>Песня + простая видео-заставка.</p>
+        <p><strong>от 70 €</strong></p>
+      </article>
+      <article class="m-card">
+        <h3>Standard</h3>
+        <p>Песня + оживлённое видео из ваших фото/видео.</p>
+        <p><strong>от 150 €</strong></p>
+      </article>
+      <article class="m-card">
+        <h3>Premium</h3>
+        <p>Полный продакшн: песня или клип с AI-анимацией.</p>
+        <p><strong>от 300 €</strong></p>
+      </article>
+    </section>
 
-  <section id="services">
-    <h2>Услуги</h2>
-    <div class="cards">
-      <article class="card"><h3>Mini</h3><p>Авторская песня + видео-заставка.</p><div class="price">70 €</div></article>
-      <article class="card"><h3>Standard</h3><p>Песня + видео с оживлёнными фото и AI-эффектами (до 50%).</p><div class="price">150 €</div></article>
-      <article class="card"><h3>Premium</h3><p>Полный продакшн: трек или клип с AI-анимацией, трейлерным подходом, более 50% AI.</p><div class="price">Цена по брифу</div></article>
-    </div>
-  </section>
-
-  <section id="contacts">
-    <h2>Контакты</h2>
-    <div class="cards">
-      <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
-      <article class="card"><h3>YouTube</h3><p>Ellyraia.official</p></article>
-    </div>
-  </section>
+    <section id="contacts" class="m-section" hidden>
+      <article class="m-card">
+        <h3>Email</h3>
+        <p>hello@ellyraia.com</p>
+      </article>
+      <article class="m-card">
+        <h3>YouTube</h3>
+        <p>Ellyraia.official</p>
+      </article>
+    </section>
+  </main>
 
   <footer>
-    <div>© 2025 Ellyraia</div>
-    <div>RU | EN</div>
-    <div>Сайт на GitHub Pages</div>
+    © 2025 Ellyraia · <a href="#">RU</a> | <a href="#">EN</a> · <a href="#">Сайт на GitHub Pages</a>
   </footer>
+
+  <script>
+    const home = document.getElementById('m-home');
+    const bar = document.getElementById('m-bar');
+    const sections = Array.from(document.querySelectorAll('.m-section'));
+    const navButtons = Array.from(document.querySelectorAll('.m-btn'));
+    const logoHome = document.getElementById('m-logo-home');
+    const logoTop = document.getElementById('m-logo-top');
+
+    function openSection(id){
+      home.hidden = true;
+      bar.hidden = false;
+      sections.forEach(s => s.hidden = s.id !== id);
+      requestAnimationFrame(()=>window.scrollTo({ top: bar.offsetHeight, behavior:'smooth'}));
+    }
+    function backToHome(){
+      sections.forEach(s => s.hidden = true);
+      bar.hidden = true;
+      home.hidden = false;
+      window.scrollTo({ top: 0, behavior:'smooth' });
+    }
+
+    navButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>openSection(btn.dataset.target));
+    });
+    logoHome.addEventListener('click', backToHome);
+    logoTop .addEventListener('click', backToHome);
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.documentElement.style.overflowX = 'hidden';
+      document.body.style.overflowX = 'hidden';
+    });
+  </script>
 </body>
 </html>
 
