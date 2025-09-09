@@ -1,181 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ellyraia — Music & Video</title>
+  <title>Ellyraia — Music • Video</title>
+  <meta name="description" content="Ellyraia — авторская музыка, песни, видео и визуалы. Контакты, услуги и реквизиты на одной странице." />
+  <meta name="theme-color" content="#0b0d1b" />
 
-  <!-- FAVICON (JPEG) -->
-  <link rel="icon" type="image/jpeg" href="assets/icon-e-32.jpg" sizes="32x32">
-  <link rel="icon" type="image/jpeg" href="assets/icon-e-180.jpg" sizes="180x180">
-  <link rel="apple-touch-icon" href="assets/icon-e-180.jpg">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ellyraia — Music • Video" />
+  <meta property="og:description" content="Музыка, песни, видео и визуалы в атмосфере будущего." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/banner.jpg" />
+
+  <!--  Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
 
   <style>
-    :root{
-      --bg:#0b1020;
-      --card:#1a2136cc;
-      --stroke:#ffffff22;
-      --text:#dbe4ff;
-      --muted:#9fb0d7;
-      --btn:#2b3555dd;
-      --btnText:#f7f9ff;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:22px;
-      --safe:env(safe-area-inset-bottom,10px);
-    }
-    *{box-sizing:border-box}
+    /* ===== Базовые стили ===== */
+    *,*::before,*::after{box-sizing:border-box}
     body{
-      margin:0; background:var(--bg); color:var(--text);
-      font:400 16px/1.6 system-ui,Segoe UI,Roboto,Arial;
+      margin:0;
+      background:#0b0d1b;
+      color:#eaf0ff;
+      font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial;
       overflow-x:hidden;
     }
+    a{color:#63c7ff;text-decoration:none}
+    a:hover{text-decoration:none}
 
-    /* фон */
-    .space{position:fixed;inset:0;z-index:-3;
-      background:radial-gradient(1100px 600px at 75% 25%,rgba(130,120,255,.18),transparent 60%),
-                 radial-gradient(900px 500px at 20% 60%,rgba(255,120,200,.12),transparent 60%),
-                 var(--bg);}
-    .stars,.stars:before,.stars:after{
-      position:absolute;inset:-50% -50%;content:"";
-      background-repeat:repeat;animation:drift 120s linear infinite;
-      background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent 60%),
-                       radial-gradient(1.5px 1.5px at 180px 90px,#fff,transparent 60%),
-                       radial-gradient(1.5px 1.5px at 340px 160px,#fff,transparent 60%);
-      opacity:.75;}
-    .stars:before{transform:scale(1.2);opacity:.55;filter:blur(.3px);}
-    .stars:after{transform:scale(1.45);opacity:.35;filter:blur(.6px);}
-    @keyframes drift{to{transform:translateY(25%)}}
-
-    /* header */
-    header{position:sticky;top:0;z-index:10;
-      backdrop-filter:saturate(1.2) blur(10px);
-      -webkit-backdrop-filter:saturate(1.2) blur(10px);
-      background:linear-gradient(to bottom,rgba(8,12,28,.75),rgba(8,12,28,0));
-      padding:18px 16px 10px;}
-    .brand-row{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:14px;}
-
-    /* логотип */
-    .planet{width:min(36vw,140px);aspect-ratio:1/1;border-radius:50%;
-      background:url('assets/logo-planet.jpg') center/cover no-repeat;
-      box-shadow:0 0 24px 10px rgba(186,160,255,.25),0 2px 12px rgba(0,0,0,.35);
-      margin:6px auto 10px;transition:width .25s ease;}
-    .mini-logo{display:none;width:40px;height:40px;border-radius:12px;
-      background:#0f1530 url('assets/icon-e-32.jpg') center/cover no-repeat;
-      box-shadow:var(--shadow);}
-    nav.nav{display:flex;gap:10px;justify-content:center;}
-    nav.nav a{padding:10px 18px;border-radius:16px;
-      background:var(--btn);color:var(--btnText);
-      text-decoration:none;white-space:nowrap;
-      border:1px solid var(--stroke);
-      transition:.2s;}
-    nav.nav a:hover{background:#3a4670ee;}
-
-    /* main */
-    main{max-width:980px;margin:14px auto 80px;padding:0 16px;}
-    .section{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);
-      box-shadow:var(--shadow);padding:20px 20px 24px;margin:24px 0 36px;}
-    .card{background:rgba(24,30,54,.68);border:1px solid var(--stroke);border-radius:24px;
-      padding:22px;margin:16px 0;}
-
-    /* footer */
-    footer{padding:18px 16px calc(18px + var(--safe));color:var(--muted);background:transparent;}
-    .foot-row{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-    .langs a{color:var(--text);text-decoration:none;opacity:.85}
-    .langs a:hover{opacity:1}
-
-    @media(max-width:900px){
-      .brand-row{flex-direction:column;}
-      nav.nav{justify-content:center;}
-      body.section-open .planet{width:92px;}
+    /* ===== Фон (звёзды + градиент) ===== */
+    .grad{position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
+      background-size:160% 160%;
+      background-image:
+        radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
+        radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.40), transparent 60%),
+        radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.32), transparent 62%),
+        radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.20), transparent 62%),
+        linear-gradient(180deg,#070914, #0b0d1b 55%, #0a0d18);
+      animation: drift 25s ease-in-out infinite alternate;
     }
-    @media(min-width:901px){
-      .brand-row{justify-content:space-between;}
-      .mini-logo{display:block;}
-      .planet{display:none;}
-      .banner{max-width:1100px;margin:10px auto 20px;border-radius:24px;
-        overflow:hidden;box-shadow:var(--shadow);
-        aspect-ratio:21/7;background:url('assets/banner-wordmark.jpg') center/cover no-repeat;}
-    }
+    @keyframes drift{to{background-position: 10% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
+
+    .grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.06;
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px),
+                        repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 1px, transparent 1px, transparent 2px);
+      mix-blend-mode: overlay;}
+
+    /* ===== Header ===== */
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;position:sticky;top:0;z-index:10;background:rgba(11,13,27,.55);backdrop-filter:blur(8px)}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:84px;height:84px;border-radius:50%;overflow:hidden;box-shadow:0 0 12px rgba(165,134,255,.45)}
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .title{font-weight:700;letter-spacing:.4px}
+    .wordmark{font-weight:800;background:linear-gradient(90deg,#a586ff,#63c7ff,#ffd36e);-webkit-background-clip:text;color:transparent;text-shadow:0 0 18px rgba(120,170,255,.25)}
+    nav a{padding:10px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);box-shadow:0 6px 20px rgba(0,0,0,.35);font-weight:600;transition:.25s}
+    nav a:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(165,134,255,.28)}
+
+    /* ===== Hero ===== */
+    .hero{margin:32px auto;max-width:1180px;background:url("assets/banner.jpg") center/cover no-repeat;border-radius:24px;padding:64px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,13,27,.4), rgba(11,13,27,.75));}
+    .hero h1{margin:0;font-size:clamp(32px,5vw,60px);line-height:1.1;position:relative}
+    .hero p{max-width:700px;margin-top:12px;color:#9fb0d8;position:relative}
+    .cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;position:relative}
+
+    /* ===== Sections ===== */
+    section{margin:72px auto;max-width:1100px;padding:0 24px}
+    h2{margin:0 0 26px;font-size:clamp(22px,3vw,28px)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+    .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.45);transition:.25s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(120,170,255,.25)}
+    .card h3{margin:0 0 10px;font-size:20px}
+    .price{font-weight:800;margin-top:10px}
+
+    /* ===== Footer ===== */
+    footer{margin:80px auto 30px;max-width:1100px;padding:0 24px;color:#9fb0d8;font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   </style>
 </head>
 <body>
-  <div class="space"><div class="stars"></div></div>
+  <div class="grad"></div>
+  <div class="grain"></div>
 
   <header>
-    <div class="brand-row">
-      <div class="mini-logo"></div>
-      <div class="planet" id="homeLogo"></div>
-      <nav class="nav" id="topNav">
-        <a href="#about">Обо мне</a>
-        <a href="#services">Услуги</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
+    <div class="brand">
+      <div class="logo"><img src="assets/logo.jpg" alt="Ellyraia"></div>
+      <div class="title"><span class="wordmark">Ellyraia</span></div>
     </div>
+    <nav>
+      <a href="#about">Обо мне</a>
+      <a href="#services">Услуги</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
   </header>
-  <div class="banner" aria-hidden="true"></div>
 
-  <main>
-    <section id="about" class="section">
-      <h2>Кто я</h2>
-      <p>Привет, я Ellyraia. В реальной жизни работаю в IT сфере, изучение AI стало не только профессиональной необхоимостью, но и любимым хобби.</p>
-      <p>Создаю творческие проекты с помощью AI-инструментов. Каждый проект - это индивидуальный мир, со своей атмосферой, настроением и волшебством. В любом стиле и жанре.</p>
-    </section>
+  <section class="hero">
+    <h1>Музыка и видео <span class="wordmark">из будущего</span></h1>
+    <p>Авторская музыка, песни и клипы. Визуалы с элементами AI и кинематографичный стиль.</p>
+    <div class="cta">
+      <a href="#services">Услуги</a>
+      <a href="#contacts">Контакты</a>
+    </div>
+  </section>
 
-    <section id="services" class="section">
-      <h2>Услуги</h2>
-      <div class="card">
-        <h3>Mini</h3>
-        <p>Авторская песня + красиво оформленная заставка/видео на 5-10 секунд на повторе (AI анимация).</p>
-        <div class="price">50/70 €</div>
-      </div>
-      <div class="card">
-        <h3>Standard</h3>
-        <p>Авторская песня + видео из вашего материала, с оживлёнными кадрами и AI-эффектами, включая фейсвапы. (До 50% AI).</p>
-        <div class="price">от 150 €</div>
-      </div>
-      <div class="card">
-        <h3>Premium</h3>
-        <p>Полный продакшн: Авторская песня + клип с AI-анимацией, фейссвапами / трейлер с озвучкой, саундтреком, фейссвапами. (Более 50% AI).</p>
-        <div class="price">от 200 €</div>
-      </div>
-    </section>
+  <section id="about">
+    <h2>Обо мне</h2>
+    <div class="cards">
+      <article class="card"><h3>Кто я</h3><p>Создаю авторскую музыку, озвучку и визуальные клипы. Работаю онлайн, общение — только по e-mail.</p></article>
+      <article class="card"><h3>Подход</h3><p>Комбинирую живые записи и AI-инструменты. Упор на атмосферу, динамику и эмоцию.</p></article>
+    </div>
+  </section>
 
-    <section id="contacts" class="section">
-      <h2>Контакты</h2>
-      <div class="card">
-        <h3>Email</h3>
-        <p>info@ellyraia.com</p>
-      </div>
-      <div class="card">
-        <h3>YouTube</h3>
-        <p>EllyraiaMusic</p>
-      </div>
-    </section>
-  </main>
+  <section id="services">
+    <h2>Услуги</h2>
+    <div class="cards">
+      <article class="card"><h3>Mini</h3><p>Авторская песня + видео-заставка.</p><div class="price">70 €</div></article>
+      <article class="card"><h3>Standard</h3><p>Песня + видео с оживлёнными фото и AI-эффектами (до 50%).</p><div class="price">150 €</div></article>
+      <article class="card"><h3>Premium</h3><p>Полный продакшн: трек или клип с AI-анимацией, трейлерным подходом, более 50% AI.</p><div class="price">Цена по брифу</div></article>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="cards">
+      <article class="card"><h3>Email</h3><p>hello@ellyraia.com</p></article>
+      <article class="card"><h3>YouTube</h3><p>Ellyraia.official</p></article>
+    </div>
+  </section>
 
   <footer>
-    <div class="foot-row">
-      <div>© 2025 Ellyraia</div>
-      <div class="langs">RU | EN</div>
-      <div><a href="#" style="color:inherit;text-decoration:none;opacity:.85">Сайт на GitHub Pages</a></div>
-    </div>
+    <div>© 2025 Ellyraia</div>
+    <div>RU | EN</div>
+    <div>Сайт на GitHub Pages</div>
   </footer>
-
-  <script>
-    const nav=document.querySelectorAll('.nav a');
-    const logo=document.getElementById('homeLogo');
-    function setActive(){
-      const y=window.scrollY+90;let current='';
-      document.querySelectorAll('main section').forEach(sec=>{
-        const top=sec.offsetTop,bottom=top+sec.offsetHeight;
-        if(y>=top && y<bottom) current='#'+sec.id;
-      });
-      nav.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')===current)});
-      document.body.classList.toggle('section-open',current!=='');
-    }
-    setActive();window.addEventListener('scroll',setActive);
-    logo.addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
-  </script>
 </body>
 </html>
 
