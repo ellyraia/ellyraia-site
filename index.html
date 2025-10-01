@@ -102,17 +102,17 @@
   main section[data-mobile].active{display:block}
 
   /* ===== Desktop fade (мягкое растворение контента под шапкой) ===== */
-  @media (min-width: 200px){
+  @media (min-width: 769px){
     .fade-top{
       -webkit-mask-image: linear-gradient(
         to top,
-        rgba(0,0,0,1) calc(var(--headerH) + 24px),
-        rgba(0,0,0,0) calc(var(--headerH) + 94px)
+        rgba(0,0,0,1) calc(var(--headerH) + 140px),
+        rgba(0,0,0,0) calc(var(--headerH) + 220px)
       );
               mask-image: linear-gradient(
         to top,
-        rgba(0,0,0,1) calc(var(--headerH) + 24px),
-        rgba(0,0,0,0) calc(var(--headerH) + 94px)
+        rgba(0,0,0,1) calc(var(--headerH) + 140px),
+        rgba(0,0,0,0) calc(var(--headerH) + 220px)
       );
       -webkit-mask-repeat: no-repeat;
               mask-repeat: no-repeat;
