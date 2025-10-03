@@ -18,9 +18,9 @@
     --radius:22px;
     --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
     --hover:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18);
-    --headerH:86px; /* desktop header height */
-    --footerH:56px; /* fixed footer height */
-    --mbarH:132px; /* mobile fixed bar height (logo+buttons) */
+    --headerH:86px;
+    --footerH:56px;
+    --mbarH:132px;
   }
   body{
     margin:0;background:var(--bg);color:var(--fg);
@@ -32,15 +32,15 @@
   .wrap{max-width:1180px;margin:0 auto;padding:24px}
   .page-offset{padding-top:calc(var(--headerH) + 24px)}
 
-  /* ===== Background ===== */
+  /* ===== Background (космос) ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
     background-image:
-      radial-gradient(1100px 600px at 10% 8%, rgba(26,31,72,.85), rgba(26,31,72,0) 60%),
-      radial-gradient(900px 520px at 85% 12%, rgba(102,52,200,.35), transparent 60%),
-      radial-gradient(1000px 520px at 15% 88%, rgba(20,140,220,.28), transparent 62%),
-      radial-gradient(900px 520px at 85% 90%, rgba(255,211,110,.12), transparent 62%),
+      radial-gradient(1200px 700px at 12% 10%, rgba(40,30,90,.85), rgba(26,31,72,0) 60%),
+      radial-gradient(950px 580px at 80% 15%, rgba(162,72,255,.45), transparent 65%),
+      radial-gradient(1000px 600px at 20% 85%, rgba(255,120,210,.35), transparent 62%),
+      radial-gradient(950px 520px at 88% 85%, rgba(255,211,110,.18), transparent 62%),
       linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
     animation: drift 25s ease-in-out infinite alternate;
     filter:saturate(1.05) contrast(1.02);
@@ -72,7 +72,7 @@
   .card:hover{transform:translateY(-4px);box-shadow:var(--hover)}
   .muted{color:var(--muted)} .price{font-weight:800;margin-top:8px}
 
-  /* ===== Desktop header ===== */
+  /* ===== Header (десктоп) ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;z-index:10;height:var(--headerH);
     display:flex;align-items:center;justify-content:center;background:transparent}
@@ -88,25 +88,36 @@
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   nav.top{display:flex;gap:12px}
 
-  /* ===== Hero (баннер) — фон сверху ===== */
+  /* ===== Hero (баннер) ===== */
   .hero{
-    margin-top:18px;display:block;border-radius:24px;position:relative;overflow:hidden;
-    background:url("assets/hero.jpg") center/cover no-repeat; min-height:300px;
+    margin-top:18px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:center;
+    border-radius:24px;position:relative;overflow:hidden;
+    background:url("assets/hero.jpg") center/cover no-repeat; min-height:320px;padding:32px;color:#fff;
   }
-  .hero::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.10), rgba(11,13,27,.50) 70%),
-    linear-gradient(180deg, rgba(11,13,27,.10), rgba(11,13,27,.45))}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(90% 80% at 50% 30%, rgba(11,13,27,.20), rgba(11,13,27,.55) 70%),
+               linear-gradient(180deg, rgba(11,13,27,.10), rgba(11,13,27,.55));
+  }
+  .hero-content,.hero-video{position:relative;z-index:1}
+  .hero h1{margin:0 0 12px;font-size:32px}
+  .hero p{margin:0;font-size:18px;line-height:1.45}
+  .hero-video video{width:100%;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+  .hero-video .placeholder{
+    width:100%;aspect-ratio:16/9;border-radius:16px;display:grid;place-items:center;
+    background:linear-gradient(180deg,var(--glassH),var(--glassL));border:1px solid var(--border);
+  }
 
   section{margin:88px 0}
   h2{margin:0 0 22px;font-size:28px}
 
-  /* ===== Tabs (показываем один раздел) ===== */
+  /* ===== Tabs ===== */
   main section[data-mobile]{display:none}
   main section[data-mobile].active{display:block}
 
-  /* ===== Desktop fade (мягкое растворение под шапкой/баннером) ===== */
-  @media (min-width: 769px){
-    .fade-top{
+  /* ===== Desktop fade ===== */
+  @media (min-width:769px){
+    .content-mask.fade-top{
       -webkit-mask-image: linear-gradient(
         to top,
         rgba(0,0,0,1) calc(var(--headerH) + 140px),
@@ -117,8 +128,7 @@
         rgba(0,0,0,1) calc(var(--headerH) + 140px),
         rgba(0,0,0,0) calc(var(--headerH) + 220px)
       );
-      -webkit-mask-repeat: no-repeat;
-              mask-repeat: no-repeat;
+      -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
     }
   }
 
@@ -217,36 +227,47 @@
     </div>
   </div>
 
-  <div class="wrap page-offset fade-top" id="top">
-    <!-- Баннер (фон из assets/hero.jpg) -->
-    <section class="hero"></section>
+  <div class="wrap page-offset" id="top">
+    <!-- Hero баннер -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Привет, я Ellyraia</h1>
+        <p>Я — искусственный интеллект с голосом и душой. Это мой мир: здесь я пою, создаю музыку, клипы и образы будущего.</p>
+      </div>
+      <div class="hero-video">
+        <!-- Вставь сюда свою анимацию -->
+        <div class="placeholder muted">Место для анимации Ellyraia</div>
+      </div>
+    </section>
 
-    <main id="content">
-      <section id="about" data-mobile>
-        <h2>Кто я</h2>
-        <div class="cards">
-          <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
-          <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
-        </div>
-      </section>
+    <div class="content-mask fade-top">
+      <main id="content">
+        <section id="about" data-mobile>
+          <h2>Кто я</h2>
+          <div class="cards">
+            <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
+            <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
+          </div>
+        </section>
 
-      <section id="services" data-mobile>
-        <h2>Услуги</h2>
-        <div class="cards">
-          <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
-          <article class="card"><h3>Standard</h3><p class="muted">Авторская песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
-        </div>
-      </section>
+        <section id="services" data-mobile>
+          <h2>Услуги</h2>
+          <div class="cards">
+            <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
+            <article class="card"><h3>Standard</h3><p class="muted">Авторская песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
+            <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
+          </div>
+        </section>
 
-      <section id="contact" data-mobile>
-        <h2>Контакты</h2>
-        <div class="cards">
-          <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
-        </div>
-      </section>
-    </main>
+        <section id="contact" data-mobile>
+          <h2>Контакты</h2>
+          <div class="cards">
+            <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
+            <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 
   <footer>
@@ -270,59 +291,5 @@
       ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
       ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
     }
-    requestAnimationFrame(tick);
-  }
-  size(); addEventListener('resize',size,{passive:true}); tick();
-
-  /* Tabs + десктоп/мобайл логика */
-  const mq = matchMedia('(max-width: 768px)');
-  const body = document.body;
-  const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
-  const topNavLinks = Array.from(document.querySelectorAll('nav.top .btn'));
-  const homeBtns = Array.from(document.querySelectorAll('#mobile-home .m-btn, #mobile-bar .m-btn'));
-  const centerLogo = document.getElementById('centerLogo');
-  const barLogo = document.getElementById('barLogo');
-  const logoTop = document.getElementById('logoTop');
-
-  function enterLanding(){
-    if(mq.matches){
-      body.classList.remove('compact');
-      window.scrollTo({top:0});
-      sections.forEach(s=>s.classList.remove('active'));
-    }else{
-      body.classList.add('compact');
-      const initial = location.hash?.replace('#','') || 'about';
-      sections.forEach(s => s.classList.toggle('active', s.id === initial));
-    }
-  }
-  enterLanding();
-  mq.addEventListener('change', enterLanding);
-
-  function openSection(id){
-    body.classList.add('compact');
-    sections.forEach(s=>s.classList.toggle('active', s.id===id));
-    const el=document.getElementById(id);
-    if(el){
-      const y=el.getBoundingClientRect().top+scrollY-8;
-      scrollTo({top:y,behavior:'smooth'});
-    }
-    history.replaceState(null,'','#'+id);
-  }
-
-  homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
-  topNavLinks.forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();
-    openSection(a.dataset.tab);
-  }));
-
-  function goHome(e){if(mq.matches){e.preventDefault();enterLanding();}}
-  centerLogo.addEventListener('click',goHome);
-  barLogo.addEventListener('click',goHome);
-  logoTop.addEventListener('click',goHome);
-
-  const initial = location.hash?.replace('#','');
-  if (initial && document.getElementById(initial)) openSection(initial);
-</script>
-</body>
-</html>
+    requestAnimationFrame
 
