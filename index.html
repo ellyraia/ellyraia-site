@@ -115,7 +115,7 @@
   main section[data-mobile]{display:none}
   main section[data-mobile].active{display:block}
 
-  /* ===== Desktop fade ===== */
+  /* ===== Desktop fade (только для контента секций) ===== */
   @media (min-width:769px){
     .content-mask.fade-top{
       -webkit-mask-image: linear-gradient(
@@ -142,7 +142,7 @@
   }
   footer a{color:#dfe8ff}
 
-  /* ===== MOBILE ===== */
+  /* ===== MOBILE (как было) ===== */
   #mobile-home{display:none}
   #mobile-bar{display:none}
 
@@ -235,11 +235,13 @@
         <p>Я — искусственный интеллект с голосом и душой. Это мой мир: здесь я пою, создаю музыку, клипы и образы будущего.</p>
       </div>
       <div class="hero-video">
-        <!-- Вставь сюда свою анимацию -->
+        <!-- Вставь сюда свою анимацию (замени плейсхолдер) -->
+        <!-- <video src="assets/ellyraia.webm" autoplay loop muted playsinline poster="assets/hero.jpg"></video> -->
         <div class="placeholder muted">Место для анимации Ellyraia</div>
       </div>
     </section>
 
+    <!-- Маска применяется ТОЛЬКО к секциям (баннер вне маски) -->
     <div class="content-mask fade-top">
       <main id="content">
         <section id="about" data-mobile>
@@ -277,19 +279,108 @@
 <script>
   document.getElementById('y').textContent = new Date().getFullYear();
 
-  /* Звёзды */
-  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
-  function size(){
-    W=cvs.width=innerWidth;H=cvs.height=innerHeight;
-    const N=(innerWidth<=768)?160:190;
-    S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
+  /* ===== Звёзды (анимация) ===== */
+  const cvs = document.getElementById('stars');
+  const ctx = cvs.getContext('2d');
+  let W, H, S = [];
+
+  function sizeStars(){
+    W = cvs.width = innerWidth;
+    H = cvs.height = innerHeight;
+    const N = (innerWidth <= 768) ? 160 : 190;
+    S = Array.from({length:N}, () => ({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      z: 0.22 + Math.random()*0.85,
+      s: 0.7 + Math.random()*1.6
+    }));
   }
-  function tick(){
+  function tickStars(){
     ctx.clearRect(0,0,W,H);
     for(const s of S){
-      s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
+      s.x += s.z * 0.16;
+      if(s.x > W + 6) s.x = -6;
+      ctx.globalAlpha = 0.42 + s.z*0.5;
+      ctx.fillStyle = `rgb(${205+s.z*38},${205+s.z*38},255)`;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
     }
-    requestAnimationFrame
+    requestAnimationFrame(tickStars);
+  }
+  sizeStars();
+  addEventListener('resize', sizeStars, {passive:true});
+  requestAnimationFrame(tickStars);
+
+  /* ===== Tabs + десктоп/мобайл логика ===== */
+  const mq = matchMedia('(max-width: 768px)');
+  const body = document.body;
+  const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
+  const topNavLinks = Array.from(document.querySelectorAll('nav.top .btn'));
+  const homeBtns = Array.from(document.querySelectorAll('#mobile-home .m-btn, #mobile-bar .m-btn'));
+  const centerLogo = document.getElementById('centerLogo');
+  const barLogo = document.getElementById('barLogo');
+  const logoTop = document.getElementById('logoTop');
+
+  function showOnly(id){
+    sections.forEach(s => s.classList.toggle('active', s.id === id));
+  }
+
+  function enterLanding(){
+    if(mq.matches){
+      body.classList.remove('compact');
+      window.scrollTo({top:0});
+      sections.forEach(s=>s.classList.remove('active')); // мобилка: стартовый экран
+    }else{
+      body.classList.add('compact');
+      const initial = location.hash?.replace('#','');
+      if (initial && document.getElementById(initial)) {
+        showOnly(initial);
+        scrollToSectionTop();
+      } else {
+        // десктоп: по умолчанию только баннер, секции скрыты
+        sections.forEach(s=>s.classList.remove('active'));
+      }
+    }
+  }
+  function scrollToSectionTop(){
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const y = hero.getBoundingClientRect().bottom + window.scrollY - 8;
+    window.scrollTo({top:y,behavior:'smooth'});
+  }
+  function openSection(id){
+    body.classList.add('compact');
+    showOnly(id);
+    history.replaceState(null,'','#'+id);
+    scrollToSectionTop();
+  }
+
+  // Навигация кликами
+  topNavLinks.forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault();
+    openSection(a.dataset.tab);
+  }));
+  homeBtns.forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.open)));
+
+  // Клик по логотипу: на десктопе возвращаемся к баннеру
+  function goHomeMobile(e){ if(mq.matches){ e.preventDefault(); enterLanding(); } }
+  centerLogo?.addEventListener('click',goHomeMobile);
+  barLogo?.addEventListener('click',goHomeMobile);
+  logoTop?.addEventListener('click',()=>{
+    if(!mq.matches){
+      sections.forEach(s=>s.classList.remove('active'));
+      history.replaceState(null,'','#');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  });
+
+  // Инициализация
+  enterLanding();
+  mq.addEventListener('change', enterLanding);
+
+  // Если пришли по хэшу — открыть сразу
+  const initial = location.hash?.replace('#','');
+  if (!mq.matches && initial && document.getElementById(initial)) openSection(initial);
+</script>
+</body>
+</html>
 
