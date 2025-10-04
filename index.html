@@ -20,21 +20,25 @@
     --wrapW:1180px;
   }
 
-  /* ===== Cosmic background ===== */
+  /* ===== Cosmic background (переливы + анимация) ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
     background-image:
-      radial-gradient(1200px 700px at 12% 12%, rgba(102,52,200,.40), transparent 60%),
-      radial-gradient(1000px 600px at 85% 18%, rgba(255,120,220,.26), transparent 62%),
-      radial-gradient(1100px 650px at 18% 88%, rgba(60,160,255,.24), transparent 62%),
+      radial-gradient(1200px 700px at 10% 12%, rgba(150,80,255,.45), transparent 60%),
+      radial-gradient(1000px 600px at 88% 18%, rgba(255,120,230,.30), transparent 62%),
+      radial-gradient(1100px 650px at 15% 88%, rgba(70,170,255,.28), transparent 62%),
+      radial-gradient(900px 520px  at 85% 90%, rgba(255,210,140,.18), transparent 65%),
       linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
     animation: drift 25s ease-in-out infinite alternate;
+    filter:saturate(1.18) contrast(1.06);
   }
-  @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,0 0}}
+  @keyframes drift{to{background-position:12% 15%, 90% 10%, 12% 95%, 88% 88%, 0 0}}
+
+  /* ===== Stars (крупнее и ярче, лёгкое мерцание) ===== */
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header (transparent) ===== */
+  /* ===== Header (прозрачная) ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
     display:flex;align-items:center;justify-content:center;
@@ -53,34 +57,33 @@
     font-weight:600;letter-spacing:.2px;transition:all .25s ease}
   .btn:hover{transform:translateY(-2px);box-shadow:var(--hover)}
 
-  /* ===== Banner: left copy + right vertical video ===== */
+  /* ===== Banner: текст слева + видео справа ===== */
   .banner{
     margin-top:calc(var(--headerH) + 24px);
-    width:100%;max-width:var(--wrapW);margin-inline:auto;
-    padding:0 24px;
+    width:100%;max-width:var(--wrapW);margin-inline:auto;padding:0 24px;
     display:grid;grid-template-columns:1.1fr 0.9fr;align-items:center;gap:28px;
   }
-  .hero-copy h1{margin:0 0 12px;font-size:36px;line-height:1.2;text-shadow:0 0 12px rgba(0,0,0,.55)}
-  .hero-copy p{margin:0;color:#dfe4ff;max-width:48ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
+  .hero-copy h1{margin:0 0 12px;font-size:40px;line-height:1.2;text-shadow:0 0 12px rgba(0,0,0,.55)}
+  .hero-copy p{margin:0;color:#dfe4ff;max-width:52ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
   .hero-visual{display:flex;justify-content:flex-start}
   .hero-visual video{
     width:auto;height:72vh;max-height:860px;display:block;border-radius:28px;
     object-fit:contain;object-position:center top;
     box-shadow:0 0 28px rgba(120,160,255,.22);
-    /* растворение В ЗВЁЗДЫ по бокам + легкое сверху/снизу */
+    /* растворение по бокам + лёгкое сверху/снизу — в звёзды */
     -webkit-mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 30%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 30%, #000 100%);
+      linear-gradient(to top,   transparent 0%, #000 25%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 25%, #000 100%);
             mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 30%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 30%, #000 100%);
+      linear-gradient(to top,   transparent 0%, #000 25%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 25%, #000 100%);
     -webkit-mask-composite: source-in, source-in;
             mask-composite: intersect;
   }
 
-  /* Stack on small screens (не трогаем детально мобильную часть — мягкий фоллбек) */
+  /* Мобильный стек (минимальные правки) */
   @media (max-width: 900px){
     .banner{grid-template-columns:1fr;gap:18px}
     .hero-visual{justify-content:center}
@@ -183,22 +186,38 @@
   // год
   document.getElementById('y').textContent=new Date().getFullYear();
 
-  // ===== Stars =====
-  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
-  function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
-    const N=(innerWidth<=768)?150:200;
-    S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
+  // ===== Stars (крупнее и ярче + лёгкое мерцание) =====
+  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');
+  let W,H,STARS=[];
+  function size(){
+    W=cvs.width=innerWidth; H=cvs.height=innerHeight;
+    const N = innerWidth<=768 ? 160 : 240; // больше звёзд
+    STARS = Array.from({length:N},()=>({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      z:0.4+Math.random()*1.1,   // яркость/скорость
+      s:1.0+Math.random()*2.2,   // размер крупнее
+      t:Math.random()*Math.PI*2  // фаза мерцания
+    }));
   }
-  function tick(){
+  function tick(t){
     ctx.clearRect(0,0,W,H);
-    for(const s of S){
-      s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
+    for(const s of STARS){
+      // движение влево для «параллакса»
+      s.x += s.z*0.18;
+      if(s.x>W+8) s.x=-8;
+
+      // мерцание
+      s.t += 0.02 + s.z*0.005;
+      const tw = 0.75 + 0.25*Math.sin(s.t);
+
+      ctx.globalAlpha = (0.45 + s.z*0.45) * tw;
+      ctx.fillStyle = `rgb(${210+s.z*35},${205+s.z*25},255)`;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
     }
     requestAnimationFrame(tick);
   }
-  size();addEventListener('resize',size,{passive:true});tick();
+  size(); addEventListener('resize',size,{passive:true}); tick();
 
   // ===== Tabs & Home (logo) =====
   const sections=[...document.querySelectorAll('main section[data-mobile]')];
@@ -214,8 +233,6 @@
   }
   links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab)}));
   logoTop.addEventListener('click',e=>{e.preventDefault();show('')});
-
-  // старт — главная (баннер)
   show('');
 </script>
 </body>
