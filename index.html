@@ -76,17 +76,17 @@
   /* === Персонаж: виден ВЕСЬ + лёгкое растворение краёв === */
   .avatar{
     width:100%;height:auto;max-height:78vh;display:block;border-radius:28px;
-    object-fit:contain; /* показываем всю анимацию без обрезки */
+    object-fit:contain;           /* показываем всю анимацию без обрезки */
     object-position:center top;
     box-shadow:0 0 28px rgba(120,160,255,.22);
     -webkit-mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 20%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 20%, #000 100%);
+      linear-gradient(to top,   transparent 0%, #000 20%,  #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 20%,  #000 100%);
     mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 20%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 20%, #000 100%);
+      linear-gradient(to top,   transparent 0%, #000 20%,  #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 20%,  #000 100%);
   }
 
   /* ===== Левый контент ===== */
