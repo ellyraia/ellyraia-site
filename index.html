@@ -1,195 +1,222 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ellyraia — Music & Video</title>
-<link rel="icon" href="assets/Logo.jpg">
-<meta name="theme-color" content="#0b0d1b">
+<link rel="icon" href="assets/Logo.jpg" />
+<meta name="theme-color" content="#0b0d1b" />
 <style>
-/* === Base === */
-*,*::before,*::after{box-sizing:border-box;}
-html,body{height:100%;margin:0;padding:0;background:#0b0d1b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto;}
-a{text-decoration:none;color:inherit;}
-:root{
-  --headerH:90px;
-  --footerH:50px;
-  --radius:22px;
-  --border:rgba(255,255,255,.15);
-}
+  /* ===== Base ===== */
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%;margin:0;overflow-x:hidden;background:#0b0d1b;color:#eaf0ff;
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial}
+  :root{
+    --headerH:86px; --footerH:56px; --radius:22px;
+    --border:rgba(255,255,255,.18);
+    --glassH:rgba(255,255,255,.10); --glassL:rgba(255,255,255,.05);
+    --shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
+    --hover:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18);
+    --wrapW:1180px;
+  }
 
-/* === Background & stars === */
-.grad{
-  position:fixed;inset:-10%;z-index:-3;
-  background-image:
-    radial-gradient(800px 500px at 15% 20%,rgba(120,70,255,.35),transparent 70%),
-    radial-gradient(900px 500px at 85% 75%,rgba(255,130,240,.25),transparent 70%),
-    radial-gradient(1000px 600px at 50% 100%,rgba(60,120,255,.25),transparent 70%),
-    linear-gradient(180deg,#070914,#0b0d1b 60%,#090b16);
-  background-size:160% 160%;
-  animation: drift 25s ease-in-out infinite alternate;
-}
-@keyframes drift{to{background-position:10% 10%,90% 90%,50% 110%,0 0;}}
-#stars{position:fixed;inset:0;z-index:-2;pointer-events:none;}
+  /* ===== Cosmic background ===== */
+  .grad{
+    position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
+    background-size:160% 160%;
+    background-image:
+      radial-gradient(1200px 700px at 12% 12%, rgba(102,52,200,.40), transparent 60%),
+      radial-gradient(1000px 600px at 85% 18%, rgba(255,120,220,.26), transparent 62%),
+      radial-gradient(1100px 650px at 18% 88%, rgba(60,160,255,.24), transparent 62%),
+      linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
+    animation: drift 25s ease-in-out infinite alternate;
+  }
+  @keyframes drift{to{background-position:10% 15%,90% 10%,12% 95%,0 0}}
+  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-/* === Header === */
-header{
-  position:fixed;top:0;left:0;right:0;height:var(--headerH);
-  display:flex;align-items:center;justify-content:center;z-index:10;
-  background:rgba(10,10,25,0.2);backdrop-filter:blur(6px);
-}
-.head-inner{width:100%;max-width:1180px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
-.logo{
-  width:74px;height:74px;border-radius:50%;overflow:hidden;
-  box-shadow:0 0 28px rgba(155,120,255,.55);
-}
-.logo img{width:100%;height:100%;object-fit:cover;display:block;}
-nav.top{display:flex;gap:14px;}
-.btn{
-  padding:10px 18px;border-radius:18px;
-  background:rgba(255,255,255,.1);
-  border:1px solid var(--border);
-  backdrop-filter:blur(6px);
-  font-weight:600;transition:all .25s;
-}
-.btn:hover{background:rgba(255,255,255,.18);box-shadow:0 0 16px rgba(160,120,255,.4);}
+  /* ===== Header (transparent) ===== */
+  header.site{
+    position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
+    display:flex;align-items:center;justify-content:center;
+    background:transparent;backdrop-filter:none;box-shadow:none;
+  }
+  .head-inner{width:100%;max-width:var(--wrapW);padding:0 32px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo{width:72px;height:72px;border-radius:50%;overflow:hidden;
+    box-shadow:0 0 26px rgba(155,120,255,.55)}
+  .logo img{width:100%;height:100%;object-fit:cover;display:block}
+  nav.top{display:flex;gap:12px}
+  .btn{
+    padding:12px 18px;border-radius:16px;border:1px solid var(--border);
+    background:linear-gradient(180deg,var(--glassH),var(--glassL));
+    backdrop-filter:blur(6px);box-shadow:var(--shadow);
+    font-weight:600;letter-spacing:.2px;transition:all .25s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:var(--hover)}
 
-/* === Banner with animation === */
-.banner{
-  margin-top:calc(var(--headerH) + 20px);
-  display:flex;justify-content:center;align-items:center;
-  position:relative;overflow:hidden;
-  border-radius:var(--radius);
-}
-.banner video{
-  width:auto;
-  height:80vh;
-  object-fit:cover;
-  border-radius:var(--radius);
-  filter:brightness(1.05) contrast(1.05);
-  -webkit-mask-image: linear-gradient(to right,
-    transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
-  mask-image: linear-gradient(to right,
-    transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
-}
-.banner::before{
-  content:"";
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(11,13,27,.4),rgba(11,13,27,0) 20%,rgba(11,13,27,0) 80%,rgba(11,13,27,.4));
-  pointer-events:none;
-}
-.banner-text{
-  position:absolute;bottom:40px;text-align:center;width:100%;
-  color:#eaf0ff;text-shadow:0 0 12px rgba(0,0,0,.7);
-}
-.banner-text h1{margin:0;font-size:28px;}
-.banner-text p{margin:6px 0 0;font-size:18px;color:#cfd6ff;}
+  /* ===== Banner: left copy + right vertical video ===== */
+  .banner{
+    margin-top:calc(var(--headerH) + 24px);
+    width:100%;max-width:var(--wrapW);margin-inline:auto;
+    padding:0 24px;
+    display:grid;grid-template-columns:1.1fr 0.9fr;align-items:center;gap:28px;
+  }
+  .hero-copy h1{margin:0 0 12px;font-size:36px;line-height:1.2;text-shadow:0 0 12px rgba(0,0,0,.55)}
+  .hero-copy p{margin:0;color:#dfe4ff;max-width:48ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
+  .hero-visual{display:flex;justify-content:flex-start}
+  .hero-visual video{
+    width:auto;height:72vh;max-height:860px;display:block;border-radius:28px;
+    object-fit:contain;object-position:center top;
+    box-shadow:0 0 28px rgba(120,160,255,.22);
+    /* растворение В ЗВЁЗДЫ по бокам + легкое сверху/снизу */
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+      linear-gradient(to top, transparent 0%, #000 30%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 30%, #000 100%);
+            mask-image:
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+      linear-gradient(to top, transparent 0%, #000 30%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 30%, #000 100%);
+    -webkit-mask-composite: source-in, source-in;
+            mask-composite: intersect;
+  }
 
-/* === Sections === */
-main{max-width:1180px;margin:0 auto;padding:60px 24px;}
-section{display:none;margin:80px 0;}
-section.active{display:block;animation:fadeIn .8s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.cards{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:18px;
-}
-.card{
-  background:rgba(255,255,255,.08);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:22px;
-  box-shadow:inset 0 0 60px rgba(120,160,255,.08), 0 12px 40px rgba(0,0,0,.4);
-  backdrop-filter:blur(8px);
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.card:hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(150,120,255,.25);}
-.price{font-weight:800;margin-top:8px;}
+  /* Stack on small screens (не трогаем детально мобильную часть — мягкий фоллбек) */
+  @media (max-width: 900px){
+    .banner{grid-template-columns:1fr;gap:18px}
+    .hero-visual{justify-content:center}
+    .hero-visual video{height:56vh}
+    .hero-copy h1{font-size:28px}
+  }
 
-/* === Footer === */
-footer{
-  position:fixed;bottom:0;left:0;right:0;height:var(--footerH);
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  font-size:14px;color:#eaf0ff;
-  background:rgba(8,10,20,0.15);
-  backdrop-filter:blur(3px);
-  z-index:5;
-}
-footer a{color:#dfe8ff;}
+  /* ===== Sections / Cards ===== */
+  .wrap{max-width:var(--wrapW);margin:0 auto;padding:0 24px}
+  main{max-width:var(--wrapW);margin:0 auto}
+  section[data-mobile]{display:none;margin:72px 0;text-align:center}
+  section[data-mobile].active{display:block}
+  h2{margin:0 0 22px;font-size:28px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{
+    background:linear-gradient(180deg,var(--glassH),var(--glassL));
+    border:1px solid var(--border);border-radius:22px;padding:22px;
+    box-shadow:var(--shadow);backdrop-filter:blur(8px);
+    transition:transform .25s ease, box-shadow .25s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--hover)}
+  .muted{color:#a9b7dd}.price{font-weight:800;margin-top:8px}
+
+  /* мягкое растворение контента под шапкой (не влияет на звёзды) */
+  @media (min-width:769px){
+    .fade-top{
+      -webkit-mask-image:linear-gradient(to top,rgba(0,0,0,1) calc(var(--headerH) + 120px),rgba(0,0,0,0) calc(var(--headerH) + 200px));
+              mask-image:linear-gradient(to top,rgba(0,0,0,1) calc(var(--headerH) + 120px),rgba(0,0,0,0) calc(var(--headerH) + 200px));
+      -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    }
+  }
+
+  /* ===== Footer ===== */
+  footer{
+    position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:8;
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    font-size:14px;color:#eaf0ff;background:rgba(8,10,20,0.15);backdrop-filter:blur(3px)}
+  footer a{color:#dfe8ff}
 </style>
 </head>
 <body>
-<div class="grad"></div>
-<canvas id="stars"></canvas>
+  <div class="grad" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
 
-<header>
-  <div class="head-inner">
-    <a class="logo" href="#"><img src="assets/Logo.jpg" alt="Логотип"></a>
-    <nav class="top">
-      <a class="btn" data-tab="about">Обо мне</a>
-      <a class="btn" data-tab="services">Услуги</a>
-      <a class="btn" data-tab="contact">Контакты</a>
-    </nav>
+  <header class="site">
+    <div class="head-inner">
+      <a class="logo" href="#" id="logoTop"><img src="assets/Logo.jpg" alt="Логотип" /></a>
+      <nav class="top">
+        <a class="btn" href="#about" data-tab="about">Обо мне</a>
+        <a class="btn" href="#services" data-tab="services">Услуги</a>
+        <a class="btn" href="#contact" data-tab="contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Главная: текст слева, видео справа -->
+  <section class="banner" id="banner">
+    <div class="hero-copy">
+      <h1>Привет, я Ellyraia</h1>
+      <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.
+        Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
+    </div>
+    <div class="hero-visual">
+      <video src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </section>
+
+  <!-- Контентные разделы (звёзды видны под ними) -->
+  <div class="wrap fade-top">
+    <main id="content">
+      <section id="about" data-mobile>
+        <h2>Обо мне</h2>
+        <div class="cards">
+          <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
+          <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
+        </div>
+      </section>
+
+      <section id="services" data-mobile>
+        <h2>Услуги</h2>
+        <div class="cards">
+          <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
+          <article class="card"><h3>Standard</h3><p class="muted">Песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
+          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
+        </div>
+      </section>
+
+      <section id="contact" data-mobile>
+        <h2>Контакты</h2>
+        <div class="cards">
+          <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
+          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
+        </div>
+      </section>
+    </main>
   </div>
-</header>
 
-<!-- === Banner (главная) === -->
-<div class="banner" id="banner">
-  <video src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
-  <div class="banner-text">
-    <h1>Привет, я Ellyraia</h1>
-    <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.<br>Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
-  </div>
-</div>
-
-<main>
-  <section id="about">
-    <div class="cards">
-      <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
-      <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
-    </div>
-  </section>
-
-  <section id="services">
-    <div class="cards">
-      <article class="card"><h3>Mini</h3><p>Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
-      <article class="card"><h3>Standard</h3><p>Песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
-      <article class="card"><h3>Premium</h3><p>Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="cards">
-      <article class="card"><h3>Email</h3><p>ellyraia.official@gmail.com</p></article>
-      <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></p></article>
-    </div>
-  </section>
-</main>
-
-<footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
+  <footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
 
 <script>
-document.getElementById('y').textContent=new Date().getFullYear();
+  // год
+  document.getElementById('y').textContent=new Date().getFullYear();
 
-/* === Stars animation === */
-const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');
-let W,H,S=[];
-function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;S=Array.from({length:190},()=>({x:Math.random()*W,y:Math.random()*H,z:0.3+Math.random()*0.7,s:0.6+Math.random()*1.4}));}
-function tick(){ctx.clearRect(0,0,W,H);for(const s of S){s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;ctx.globalAlpha=0.4+s.z*0.5;ctx.fillStyle=`rgb(${200+s.z*40},${200+s.z*40},255)`;ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}requestAnimationFrame(tick);}
-size();addEventListener('resize',size,{passive:true});tick();
+  // ===== Stars =====
+  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
+  function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
+    const N=(innerWidth<=768)?150:200;
+    S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(const s of S){
+      s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
+      ctx.globalAlpha=0.42+s.z*0.5;ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  size();addEventListener('resize',size,{passive:true});tick();
 
-/* === Tabs === */
-const tabs=document.querySelectorAll('nav.top .btn');
-const sections=document.querySelectorAll('main section');
-const banner=document.getElementById('banner');
+  // ===== Tabs & Home (logo) =====
+  const sections=[...document.querySelectorAll('main section[data-mobile]')];
+  const links=[...document.querySelectorAll('nav.top .btn')];
+  const banner=document.getElementById('banner');
+  const logoTop=document.getElementById('logoTop');
 
-tabs.forEach(b=>b.addEventListener('click',()=>{
-  const id=b.dataset.tab;
-  sections.forEach(s=>s.classList.remove('active'));
-  const target=document.getElementById(id);
-  if(target){target.classList.add('active');}
-  banner.style.display=(id==='about'||id==='services'||id==='contact')?'none':'flex';
-}));
+  function show(id){
+    sections.forEach(s=>s.classList.toggle('active',s.id===id));
+    // баннер виден только на главной (id пустой)
+    banner.style.display = id ? 'none' : 'grid';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab)}));
+  logoTop.addEventListener('click',e=>{e.preventDefault();show('')});
+
+  // старт — главная (баннер)
+  show('');
 </script>
 </body>
 </html>
