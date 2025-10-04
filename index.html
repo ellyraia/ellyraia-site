@@ -13,7 +13,6 @@
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial}
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
-    /* стекло — оставляю как было в прошлой версии */
     --glassBorder:rgba(180,220,255,0.25);
     --glassBg:rgba(150,200,255,0.10);
     --glassInner:rgba(255,255,255,0.20);
@@ -49,7 +48,9 @@
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   nav.top{display:flex;gap:12px}
 
-  /* ===== Кнопки (оставляю текущий стеклянный стиль) ===== */
+  /* ===== Кнопки (стекло). Убрано подчёркивание везде ===== */
+  a{color:inherit;text-decoration:none}
+  .btn:link,.btn:visited,.btn:hover,.btn:active,.btn:focus{ text-decoration:none }
   .btn{
     color:#fff;padding:12px 18px;border-radius:16px;
     border:1px solid var(--glassBorder);
@@ -72,21 +73,20 @@
   .right{position:relative}
   .avatar-wrap{position:sticky;top:calc(var(--headerH) + 10px); z-index:2;}
 
-  /* === Главное: персонаж виден ВЕСЬ + мягкое растворение краёв === */
+  /* === Персонаж: виден ВЕСЬ + лёгкое растворение краёв === */
   .avatar{
     width:100%;height:auto;max-height:78vh;display:block;border-radius:28px;
-    object-fit:contain; /* <-- показываем всю анимацию без обрезки */
+    object-fit:contain; /* показываем всю анимацию без обрезки */
     object-position:center top;
     box-shadow:0 0 28px rgba(120,160,255,.22);
-    /* лёгкая маска: боковые и чуть верх/низ — растворяются в космос */
     -webkit-mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 22%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 22%, #000 100%);
+      linear-gradient(to top, transparent 0%, #000 20%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 20%, #000 100%);
     mask-image:
       linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
-      linear-gradient(to top, transparent 0%, #000 22%, #000 100%),
-      linear-gradient(to bottom,transparent 0%, #000 22%, #000 100%);
+      linear-gradient(to top, transparent 0%, #000 20%, #000 100%),
+      linear-gradient(to bottom,transparent 0%, #000 20%, #000 100%);
   }
 
   /* ===== Левый контент ===== */
@@ -97,11 +97,11 @@
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
 
-  /* Скрываем заголовок h2 у открытого раздела (кнопка и так подсвечена) */
+  /* Скрываем заголовок h2 у активного раздела (кнопка и так подсвечена) */
   .left section.active > h2,
   main section.active > h2{display:none}
 
-  /* ===== Карточки (оставляю текущий стеклянный стиль) ===== */
+  /* ===== Карточки (стекло) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
