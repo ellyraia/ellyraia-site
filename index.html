@@ -13,6 +13,7 @@
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial}
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
+    /* стекло — оставляю как было в прошлой версии */
     --glassBorder:rgba(180,220,255,0.25);
     --glassBg:rgba(150,200,255,0.10);
     --glassInner:rgba(255,255,255,0.20);
@@ -20,7 +21,7 @@
     --shadow:0 8px 30px rgba(0,0,0,.45);
   }
 
-  /* ===== Animated cosmic background ===== */
+  /* ===== Космический фон (переливы) — ВСЕГДА под всем ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
@@ -34,9 +35,10 @@
   }
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
 
+  /* Звёзды (яркие + мерцание) — ВСЕГДА под всем */
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header ===== */
+  /* ===== Header (прозрачный) ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
     display:flex;align-items:center;justify-content:center;background:transparent}
@@ -46,6 +48,8 @@
     box-shadow:0 0 26px rgba(155,120,255,.55)}
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   nav.top{display:flex;gap:12px}
+
+  /* ===== Кнопки (оставляю текущий стеклянный стиль) ===== */
   .btn{
     color:#fff;padding:12px 18px;border-radius:16px;
     border:1px solid var(--glassBorder);
@@ -60,28 +64,32 @@
     background:rgba(180,230,255,0.15);
   }
 
-  /* ===== Stage layout ===== */
+  /* ===== Сцена: слева контент, справа персонаж (sticky) ===== */
   .stage{max-width:var(--wrapW);margin:0 auto;padding:0 24px;
     display:grid;grid-template-columns:minmax(320px,1fr) 520px;gap:32px;
     margin-top:calc(var(--headerH) + 6px); position:relative; z-index:1;}
   .left{min-width:0}
   .right{position:relative}
   .avatar-wrap{position:sticky;top:calc(var(--headerH) + 10px); z-index:2;}
+
+  /* === Главное: персонаж виден ВЕСЬ + мягкое растворение краёв === */
   .avatar{
     width:100%;height:auto;max-height:78vh;display:block;border-radius:28px;
-    object-fit:cover;object-position:center top;
-    box-shadow:0 0 28px rgba(120,160,255,.25);
+    object-fit:contain; /* <-- показываем всю анимацию без обрезки */
+    object-position:center top;
+    box-shadow:0 0 28px rgba(120,160,255,.22);
+    /* лёгкая маска: боковые и чуть верх/низ — растворяются в космос */
     -webkit-mask-image:
-      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
       linear-gradient(to top, transparent 0%, #000 22%, #000 100%),
       linear-gradient(to bottom,transparent 0%, #000 22%, #000 100%);
     mask-image:
-      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
       linear-gradient(to top, transparent 0%, #000 22%, #000 100%),
       linear-gradient(to bottom,transparent 0%, #000 22%, #000 100%);
   }
 
-  /* ===== Sections ===== */
+  /* ===== Левый контент ===== */
   .welcome{margin:8px 0 26px}
   .welcome h1{font-size:40px;margin:0 0 10px;text-shadow:0 0 12px rgba(0,0,0,.55)}
   .welcome p{margin:0;color:#dfe4ff;max-width:54ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
@@ -89,26 +97,29 @@
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
 
+  /* Скрываем заголовок h2 у открытого раздела (кнопка и так подсвечена) */
+  .left section.active > h2,
+  main section.active > h2{display:none}
+
+  /* ===== Карточки (оставляю текущий стеклянный стиль) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
     background:rgba(180,230,255,0.08);
     border:1px solid rgba(180,230,255,0.25);
-    backdrop-filter:blur(14px) saturate(1.4);
-    box-shadow:
-      inset 0 0 8px rgba(255,255,255,0.15),
-      0 0 20px rgba(100,180,255,0.18);
+    backdrop-filter:blur(14px) saturate(1.3);
+    box-shadow:inset 0 0 10px rgba(255,255,255,0.15), 0 0 25px rgba(120,200,255,0.15);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .card:hover{
-    background:rgba(200,250,255,0.15);
-    box-shadow:0 0 35px rgba(150,220,255,0.35),inset 0 0 12px rgba(255,255,255,0.2);
+    background:rgba(200,250,255,0.12);
+    box-shadow:0 0 35px rgba(150,220,255,0.35), inset 0 0 12px rgba(255,255,255,0.25);
     transform:translateY(-4px);
   }
-
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
+  /* Мягкое растворение контента под шапкой (как было) */
   @media (min-width:769px){
     .left{ -webkit-mask-image:linear-gradient(to top,rgba(0,0,0,1) 78%,rgba(0,0,0,0) 100%);
            mask-image:linear-gradient(to top,rgba(0,0,0,1) 78%,rgba(0,0,0,0) 100%); }
@@ -132,8 +143,9 @@
 </style>
 </head>
 <body>
-  <div class="grad"></div>
-  <canvas id="stars"></canvas>
+  <!-- Космос + звёзды всегда под всем -->
+  <div class="grad" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
 
   <header class="site">
     <div class="head-inner">
@@ -147,13 +159,16 @@
   </header>
 
   <main class="stage" id="stage">
+    <!-- Левый столбец -->
     <div class="left" id="leftCol">
+      <!-- Домашний приветственный блок -->
       <section class="welcome" data-section id="home">
         <h1>Привет, я Ellyraia</h1>
         <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.
           Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
       </section>
 
+      <!-- Разделы -->
       <section id="about" data-section>
         <h2>Обо мне</h2>
         <div class="cards">
@@ -175,11 +190,12 @@
         <h2>Контакты</h2>
         <div class="cards">
           <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></p></article>
+          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
         </div>
       </section>
     </div>
 
+    <!-- Правый столбец: персонаж (всегда виден) -->
     <aside class="right">
       <div class="avatar-wrap">
         <video class="avatar" src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
@@ -190,46 +206,58 @@
   <footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
 
 <script>
-document.getElementById('y').textContent=new Date().getFullYear();
-const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,STARS=[];
-function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
-  const N=innerWidth<=768?150:230;
-  STARS=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,
-    z:0.4+Math.random()*1.1,s:1.1+Math.random()*2.1,t:Math.random()*6.28}));
-}
-function tick(){
-  ctx.clearRect(0,0,W,H);
-  for(const s of STARS){
-    s.x+=s.z*0.18;if(s.x>W+8)s.x=-8;
-    s.t+=0.02+s.z*0.004; const tw=0.75+0.25*Math.sin(s.t);
-    ctx.globalAlpha=(0.45+s.z*0.45)*tw;
-    ctx.fillStyle=`rgb(${210+s.z*35},${205+s.z*25},255)`;
-    ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
-  }
-  requestAnimationFrame(tick);
-}
-size();addEventListener('resize',size,{passive:true});tick();
+  // Год
+  document.getElementById('y').textContent=new Date().getFullYear();
 
-const sections=[...document.querySelectorAll('[data-section]')];
-const links=[...document.querySelectorAll('nav.top .btn')];
-const logoTop=document.getElementById('logoTop');
-function show(id){
-  sections.forEach(s=>{
-    if(id==='' && s.id==='home') s.classList.add('active');
-    else s.classList.toggle('active', s.id===id);
-    if(id!=='' && s.id==='home') s.classList.remove('active');
-  });
-  const left=document.getElementById('leftCol');
-  const top=left.getBoundingClientRect().top+scrollY-20;
-  scrollTo({top,behavior:'smooth'});
-}
-links.forEach(a=>a.addEventListener('click',e=>{
-  e.preventDefault(); show(a.dataset.tab);
-}));
-logoTop.addEventListener('click',e=>{e.preventDefault(); show(''); });
-show('');
+  // ===== Звёзды (яркие + мерцание) =====
+  (function(){
+    const cvs=document.getElementById('stars'); if(!cvs) return;
+    const ctx=cvs.getContext('2d'); let W,H,S=[];
+    function size(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight;
+      const N=innerWidth<=768?150:230;
+      S=Array.from({length:N},()=>({
+        x:Math.random()*W, y:Math.random()*H,
+        z:0.4+Math.random()*1.1, s:1.1+Math.random()*2.1, t:Math.random()*6.28
+      }));
+    }
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+      for(const s of S){
+        s.x+=s.z*0.18; if(s.x>W+8) s.x=-8;
+        s.t+=0.02+s.z*0.004; const tw=0.75+0.25*Math.sin(s.t);
+        ctx.globalAlpha=(0.45+s.z*0.45)*tw;
+        ctx.fillStyle=`rgb(${210+s.z*35},${205+s.z*25},255)`;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    size(); addEventListener('resize',size,{passive:true}); tick();
+  })();
+
+  // ===== Навигация: показываем один раздел; h2 скрывается у активного =====
+  const sections=[...document.querySelectorAll('[data-section]')];
+  const links=[...document.querySelectorAll('nav.top .btn')];
+  const logoTop=document.getElementById('logoTop');
+
+  function show(id){
+    sections.forEach(s=>{
+      if(id==='' && s.id==='home') s.classList.add('active');
+      else s.classList.toggle('active', s.id===id);
+      if(id!=='' && s.id==='home') s.classList.remove('active');
+    });
+    // прокрутка к началу левого столбца
+    const left=document.getElementById('leftCol');
+    const top=left.getBoundingClientRect().top+scrollY-20;
+    scrollTo({top,behavior:'smooth'});
+  }
+  links.forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault(); show(a.dataset.tab);
+  }));
+  logoTop.addEventListener('click',e=>{e.preventDefault(); show(''); });
+
+  // старт — приветственный блок
+  show('');
 </script>
 </body>
 </html>
-
 
