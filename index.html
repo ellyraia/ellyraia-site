@@ -1,222 +1,195 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ellyraia — Music & Video</title>
-<meta name="theme-color" content="#0b0d1b" />
-<link rel="icon" href="assets/Logo.jpg" />
+<link rel="icon" href="assets/Logo.jpg">
+<meta name="theme-color" content="#0b0d1b">
 <style>
-  *,*::before,*::after{box-sizing:border-box}
-  html,body{height:100%;margin:0;padding:0;}
-  body{
-    background:#0b0d1b;
-    color:#eaf0ff;
-    font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;
-    overflow-x:hidden;
-    padding-bottom:56px;
-  }
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1180px;margin:0 auto;padding:24px}
-  .page-offset{padding-top:calc(86px + 24px)}
+/* === Base === */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%;margin:0;padding:0;background:#0b0d1b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto;}
+a{text-decoration:none;color:inherit;}
+:root{
+  --headerH:90px;
+  --footerH:50px;
+  --radius:22px;
+  --border:rgba(255,255,255,.15);
+}
 
-  /* ===== Background ===== */
-  .grad{
-    position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
-    background-size:160% 160%;
-    background-image:
-      radial-gradient(1200px 700px at 10% 10%, rgba(102,52,200,.4), transparent 60%),
-      radial-gradient(1200px 700px at 80% 20%, rgba(255,120,220,.25), transparent 60%),
-      radial-gradient(1200px 700px at 20% 80%, rgba(180,80,255,.2), transparent 60%),
-      linear-gradient(180deg,#070914,#0b0d1b 55%,#0a0d18);
-    animation: drift 25s ease-in-out infinite alternate;
-  }
-  @keyframes drift{to{background-position:15% 20%,85% 15%,20% 85%,0 0}}
-  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+/* === Background & stars === */
+.grad{
+  position:fixed;inset:-10%;z-index:-3;
+  background-image:
+    radial-gradient(800px 500px at 15% 20%,rgba(120,70,255,.35),transparent 70%),
+    radial-gradient(900px 500px at 85% 75%,rgba(255,130,240,.25),transparent 70%),
+    radial-gradient(1000px 600px at 50% 100%,rgba(60,120,255,.25),transparent 70%),
+    linear-gradient(180deg,#070914,#0b0d1b 60%,#090b16);
+  background-size:160% 160%;
+  animation: drift 25s ease-in-out infinite alternate;
+}
+@keyframes drift{to{background-position:10% 10%,90% 90%,50% 110%,0 0;}}
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none;}
 
-  /* ===== Header ===== */
-  header.site{
-    position:fixed;top:0;left:0;right:0;height:86px;z-index:10;
-    display:flex;align-items:center;justify-content:center;
-    background:transparent;backdrop-filter:none;
-  }
-  .head-inner{
-    width:100%;max-width:1180px;padding:0 32px;
-    display:flex;align-items:center;justify-content:space-between;gap:16px
-  }
-  .logo{
-    width:72px;aspect-ratio:1/1;border-radius:50%;overflow:hidden;
-    box-shadow:0 0 26px rgba(155,120,255,.45)
-  }
-  .logo img{width:100%;height:100%;object-fit:cover;display:block}
-  nav.top{display:flex;gap:12px}
-  .btn{
-    padding:12px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.18);
-    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));
-    backdrop-filter:blur(6px);
-    box-shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
-    font-weight:600;letter-spacing:.2px;
-    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
-  }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18)}
-  .btn:active{transform:translateY(0)}
+/* === Header === */
+header{
+  position:fixed;top:0;left:0;right:0;height:var(--headerH);
+  display:flex;align-items:center;justify-content:center;z-index:10;
+  background:rgba(10,10,25,0.2);backdrop-filter:blur(6px);
+}
+.head-inner{width:100%;max-width:1180px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
+.logo{
+  width:74px;height:74px;border-radius:50%;overflow:hidden;
+  box-shadow:0 0 28px rgba(155,120,255,.55);
+}
+.logo img{width:100%;height:100%;object-fit:cover;display:block;}
+nav.top{display:flex;gap:14px;}
+.btn{
+  padding:10px 18px;border-radius:18px;
+  background:rgba(255,255,255,.1);
+  border:1px solid var(--border);
+  backdrop-filter:blur(6px);
+  font-weight:600;transition:all .25s;
+}
+.btn:hover{background:rgba(255,255,255,.18);box-shadow:0 0 16px rgba(160,120,255,.4);}
 
-  /* ===== Hero (баннер с персонажем) ===== */
-  .hero{
-    position:relative;
-    width:100%;
-    max-width:320px; /* уменьшен в 3 раза */
-    aspect-ratio:9 / 16;
-    margin:120px auto 28px;
-    border-radius:28px;
-    overflow:hidden;
-    box-shadow:0 0 28px rgba(120,160,255,0.25);
-  }
-  .hero video{
-    width:100%;height:100%;
-    object-fit:contain;object-position:center top;
-    display:block;
-    filter:brightness(1.05) contrast(1.03);
-  }
-  .hero-overlay{
-    position:absolute;inset:0;pointer-events:none;border-radius:28px;
-    background:
-      linear-gradient(to top, rgba(11,13,27,.35), rgba(11,13,27,0) 35%),
-      linear-gradient(to bottom, rgba(11,13,27,.35), rgba(11,13,27,0) 35%),
-      linear-gradient(to right, rgba(11,13,27,.35), rgba(11,13,27,0) 10%, rgba(11,13,27,0) 90%, rgba(11,13,27,.35));
-  }
+/* === Banner with animation === */
+.banner{
+  margin-top:calc(var(--headerH) + 20px);
+  display:flex;justify-content:center;align-items:center;
+  position:relative;overflow:hidden;
+  border-radius:var(--radius);
+}
+.banner video{
+  width:auto;
+  height:80vh;
+  object-fit:cover;
+  border-radius:var(--radius);
+  filter:brightness(1.05) contrast(1.05);
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
+}
+.banner::before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(11,13,27,.4),rgba(11,13,27,0) 20%,rgba(11,13,27,0) 80%,rgba(11,13,27,.4));
+  pointer-events:none;
+}
+.banner-text{
+  position:absolute;bottom:40px;text-align:center;width:100%;
+  color:#eaf0ff;text-shadow:0 0 12px rgba(0,0,0,.7);
+}
+.banner-text h1{margin:0;font-size:28px;}
+.banner-text p{margin:6px 0 0;font-size:18px;color:#cfd6ff;}
 
-  /* ===== Cards ===== */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-  .card{
-    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:22px;padding:22px;
-    box-shadow:0 12px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(120,160,255,.08);
-    transition:transform .25s ease, box-shadow .25s ease;
-  }
-  .card:hover{transform:translateY(-4px);box-shadow:0 18px 60px rgba(120,170,255,.22), 0 0 32px rgba(165,134,255,.18)}
-  .muted{color:#a9b7dd}
-  .price{font-weight:800;margin-top:8px}
+/* === Sections === */
+main{max-width:1180px;margin:0 auto;padding:60px 24px;}
+section{display:none;margin:80px 0;}
+section.active{display:block;animation:fadeIn .8s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+}
+.card{
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:inset 0 0 60px rgba(120,160,255,.08), 0 12px 40px rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(150,120,255,.25);}
+.price{font-weight:800;margin-top:8px;}
 
-  /* ===== Sections ===== */
-  section{margin:88px 0;text-align:center;}
-  h2{margin:0 0 22px;font-size:28px}
-
-  main section[data-mobile]{display:none}
-  main section[data-mobile].active{display:block}
-
-  /* ===== Fade ===== */
-  @media (min-width:769px){
-    .fade-top{
-      -webkit-mask-image:linear-gradient(to top,rgba(0,0,0,1) calc(86px + 140px),rgba(0,0,0,0) calc(86px + 220px));
-      mask-image:linear-gradient(to top,rgba(0,0,0,1) calc(86px + 140px),rgba(0,0,0,0) calc(86px + 220px));
-      -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-    }
-  }
-
-  footer{
-    position:fixed;left:0;right:0;bottom:0;height:56px;
-    display:flex;align-items:center;justify-content:center;gap:12px;
-    font-size:14px;z-index:8;color:#eaf0ff;
-    background:rgba(8,10,20,0.12);backdrop-filter:blur(3px);
-  }
-  footer a{color:#dfe8ff}
+/* === Footer === */
+footer{
+  position:fixed;bottom:0;left:0;right:0;height:var(--footerH);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:14px;color:#eaf0ff;
+  background:rgba(8,10,20,0.15);
+  backdrop-filter:blur(3px);
+  z-index:5;
+}
+footer a{color:#dfe8ff;}
 </style>
 </head>
 <body>
-  <div class="grad" aria-hidden="true"></div>
-  <canvas id="stars" aria-hidden="true"></canvas>
+<div class="grad"></div>
+<canvas id="stars"></canvas>
 
-  <header class="site">
-    <div class="head-inner">
-      <div class="brand">
-        <a class="logo" href="#" id="logoTop"><img src="assets/Logo.jpg" alt="Логотип" /></a>
-      </div>
-      <nav class="top">
-        <a class="btn" href="#about" data-tab="about">Обо мне</a>
-        <a class="btn" href="#services" data-tab="services">Услуги</a>
-        <a class="btn" href="#contact" data-tab="contact">Контакты</a>
-      </nav>
-    </div>
-  </header>
-
-  <div class="wrap page-offset fade-top" id="top">
-    <section class="hero" id="hero">
-      <video src="assets/ellyraia.mp4" autoplay loop muted playsinline></video>
-      <div class="hero-overlay"></div>
-    </section>
-
-    <main id="content">
-      <section id="about" data-mobile>
-        <h2>Привет, я Ellyraia</h2>
-        <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света. Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
-      </section>
-
-      <section id="services" data-mobile>
-        <h2>Услуги</h2>
-        <div class="cards">
-          <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
-          <article class="card"><h3>Standard</h3><p class="muted">Авторская песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
-          <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
-        </div>
-      </section>
-
-      <section id="contact" data-mobile>
-        <h2>Контакты</h2>
-        <div class="cards">
-          <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
-          <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
-        </div>
-      </section>
-    </main>
+<header>
+  <div class="head-inner">
+    <a class="logo" href="#"><img src="assets/Logo.jpg" alt="Логотип"></a>
+    <nav class="top">
+      <a class="btn" data-tab="about">Обо мне</a>
+      <a class="btn" data-tab="services">Услуги</a>
+      <a class="btn" data-tab="contact">Контакты</a>
+    </nav>
   </div>
+</header>
 
-  <footer>
-    © <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a>
-  </footer>
+<!-- === Banner (главная) === -->
+<div class="banner" id="banner">
+  <video src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
+  <div class="banner-text">
+    <h1>Привет, я Ellyraia</h1>
+    <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.<br>Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
+  </div>
+</div>
+
+<main>
+  <section id="about">
+    <div class="cards">
+      <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
+      <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="cards">
+      <article class="card"><h3>Mini</h3><p>Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
+      <article class="card"><h3>Standard</h3><p>Песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
+      <article class="card"><h3>Premium</h3><p>Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="cards">
+      <article class="card"><h3>Email</h3><p>ellyraia.official@gmail.com</p></article>
+      <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank">Ellyraia.official</a></p></article>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
 
 <script>
-  document.getElementById('y').textContent = new Date().getFullYear();
+document.getElementById('y').textContent=new Date().getFullYear();
 
-  // ===== Stars animation =====
-  const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');let W,H,S=[];
-  function size(){
-    W=cvs.width=innerWidth;H=cvs.height=innerHeight;
-    const N=(innerWidth<=768)?160:200;
-    S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.22+Math.random()*0.85,s:0.7+Math.random()*1.6}));
-  }
-  function tick(){
-    ctx.clearRect(0,0,W,H);
-    for(const s of S){
-      s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;
-      ctx.globalAlpha=0.42+s.z*0.5;
-      ctx.fillStyle=`rgb(${205+s.z*38},${205+s.z*38},255)`;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
-    }
-    requestAnimationFrame(tick);
-  }
-  size(); addEventListener('resize',size,{passive:true}); tick();
+/* === Stars animation === */
+const cvs=document.getElementById('stars'),ctx=cvs.getContext('2d');
+let W,H,S=[];
+function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;S=Array.from({length:190},()=>({x:Math.random()*W,y:Math.random()*H,z:0.3+Math.random()*0.7,s:0.6+Math.random()*1.4}));}
+function tick(){ctx.clearRect(0,0,W,H);for(const s of S){s.x+=s.z*0.16;if(s.x>W+6)s.x=-6;ctx.globalAlpha=0.4+s.z*0.5;ctx.fillStyle=`rgb(${200+s.z*40},${200+s.z*40},255)`;ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();}requestAnimationFrame(tick);}
+size();addEventListener('resize',size,{passive:true});tick();
 
-  // ===== Tabs behavior =====
-  const mq = matchMedia('(max-width: 768px)');
-  const body = document.body;
-  const sections = Array.from(document.querySelectorAll('main section[data-mobile]'));
-  const topNavLinks = Array.from(document.querySelectorAll('nav.top .btn'));
-  const hero = document.getElementById('hero');
+/* === Tabs === */
+const tabs=document.querySelectorAll('nav.top .btn');
+const sections=document.querySelectorAll('main section');
+const banner=document.getElementById('banner');
 
-  function openSection(id){
-    sections.forEach(s=>s.classList.toggle('active', s.id===id));
-    hero.style.display = (id==="services"||id==="contact") ? "none":"block";
-  }
-
-  topNavLinks.forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();
-    openSection(a.dataset.tab);
-  }));
-
-  // по умолчанию — только баннер
-  openSection('');
+tabs.forEach(b=>b.addEventListener('click',()=>{
+  const id=b.dataset.tab;
+  sections.forEach(s=>s.classList.remove('active'));
+  const target=document.getElementById(id);
+  if(target){target.classList.add('active');}
+  banner.style.display=(id==='about'||id==='services'||id==='contact')?'none':'flex';
+}));
 </script>
 </body>
 </html>
