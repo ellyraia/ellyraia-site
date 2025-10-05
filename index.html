@@ -4,18 +4,23 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ellyraia — Music & Video</title>
-<link rel="icon" href="assets/Logo.jpg" />
+<link rel="icon" href="assets/Logo.jpg?v=3" />
 <meta name="theme-color" content="#0b0d1b" />
 <style>
-  /* ===== Base ===== */
   *,*::before,*::after{box-sizing:border-box}
-  html,body{height:100%;margin:0;overflow-x:hidden;background:#0b0d1b;color:#fff;
-    font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial}
+  html,body{
+    height:100%;margin:0;overflow-x:hidden;color:#fff;
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;
+    background:transparent;
+  }
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
-    --glassBorder:rgba(180,220,255,0.25);
-    --glassBg:rgba(150,200,255,0.10);
-    --glassInner:rgba(255,255,255,0.20);
+
+    /* стеклянные токены (сделали прозрачнее) */
+    --glassBorder:rgba(180,220,255,0.15); /* было 0.25 */
+    --glassBgBtn:rgba(150,200,255,0.06); /* было 0.10 */
+    --glassBgCard:rgba(180,230,255,0.05); /* было 0.08 */
+    --glassInner:rgba(255,255,255,0.18);
     --glow:rgba(120,190,255,0.35);
   }
 
@@ -27,77 +32,85 @@
       radial-gradient(1200px 700px at 10% 12%, rgba(150,80,255,.45), transparent 70%),
       radial-gradient(900px 600px at 85% 18%, rgba(255,100,220,.35), transparent 70%),
       radial-gradient(1100px 620px at 20% 85%, rgba(80,180,255,.32), transparent 65%),
-      linear-gradient(180deg,#080a16,#0b0d1b 55%,#0a0d18);
+      linear-gradient(180deg,#0a0c19,#0b0d1b 55%,#0a0d18);
     animation: drift 40s ease-in-out infinite alternate;
     filter:saturate(1.15) contrast(1.06);
   }
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header (прозрачный) ===== */
+  /* ===== Header ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
     display:flex;align-items:center;justify-content:center;background:transparent}
-  .head-inner{width:100%;max-width:var(--wrapW);padding:0 32px;
-    display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .logo{width:96px;height:96px;border-radius:50%;overflow:hidden;cursor:pointer;
-    box-shadow:0 0 28px rgba(155,120,255,.6)}
+  .head-inner{
+    width:100%;max-width:var(--wrapW);
+    padding:0 8px; /* меньше паддинг слева */
+    display:flex;align-items:center;justify-content:space-between;gap:12px
+  }
+  /* ЛОГО: крупнее и у самого левого верхнего края, с отступами */
+  .logo{
+    width:110px;height:110px;border-radius:50%;overflow:hidden;cursor:pointer;
+    margin-left:6px;margin-top:6px;
+    box-shadow:0 0 28px rgba(155,120,255,.6)
+  }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
-  nav.top{display:flex;gap:12px;align-items:center}
 
-  /* ===== Кнопки (белый текст, без подчёркиваний) ===== */
+  /* ===== Кнопки (стекло, прозрачнее) ===== */
   a{color:inherit;text-decoration:none}
-  .btn:link,.btn:visited,.btn:hover,.btn:active,.btn:focus{ text-decoration:none }
+  nav.top{display:flex;gap:10px;align-items:center}
   .btn{
-    color:#fff;padding:12px 18px;border-radius:16px;
+    color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;
     border:1px solid var(--glassBorder);
-    background:var(--glassBg);
+    background:var(--glassBgBtn);
     backdrop-filter:blur(10px) saturate(1.2);
     box-shadow:inset 0 0 8px var(--glassInner), 0 0 12px rgba(120,200,255,0.12);
-    font-weight:600;letter-spacing:.3px;transition:all .25s ease; display:inline-flex;align-items:center;gap:8px
+    font-weight:600;letter-spacing:.2px;transition:all .25s ease; display:inline-flex;align-items:center;gap:8px
   }
   .btn:hover{
     transform:translateY(-2px);
-    box-shadow:0 0 25px var(--glow),inset 0 0 10px var(--glassInner);
-    background:rgba(180,230,255,0.15);
+    box-shadow:0 0 22px var(--glow),inset 0 0 10px var(--glassInner);
+    background:rgba(180,230,255,0.12); /* при ховере немного плотнее */
   }
-  .btn.active{ background:rgba(180,230,255,0.28); box-shadow:0 0 22px rgba(150,220,255,0.35) }
+  .btn.active{ background:rgba(180,230,255,0.20); box-shadow:0 0 20px rgba(150,220,255,0.30) }
 
-  /* ===== Сцена ===== */
-  .stage{max-width:var(--wrapW);margin:0 auto;padding:0 24px;
-    display:grid;grid-template-columns:minmax(320px,1fr) 520px;gap:32px;
-    margin-top:calc(var(--headerH) + 6px); position:relative; z-index:1;}
+  /* ===== Макет ===== */
+  .stage{
+    max-width:var(--wrapW);
+    margin:0 auto;
+    padding:0 24px 120px; /* запас снизу, чтобы футер не перекрывал карточки */
+    display:grid;
+    grid-template-columns:minmax(320px,1fr) 520px;
+    gap:32px;
+    margin-top:calc(var(--headerH) + 8px);
+    position:relative;
+    z-index:1;
+  }
   .left{min-width:0}
   .right{position:relative}
-  .avatar-wrap{position:sticky;top:calc(var(--headerH) + 10px); z-index:2;}
-
-  /* === Новый вариант без mask — мягкое затемнение краёв === */
-  .avatar-mask{
-    position:relative;
-    border-radius:28px;
-    overflow:hidden;
-  }
-  .avatar-mask::after{
-    content:"";
-    position:absolute; inset:-1px; pointer-events:none;
-    border-radius:inherit;
-    background:
-      radial-gradient(120% 140% at 50% 50%,
-        rgba(11,13,27,0) 60%,
-        rgba(11,13,27,.35) 80%,
-        rgba(11,13,27,.65) 100%
-      ),
-      linear-gradient(to top, rgba(11,13,27,0) 70%, rgba(11,13,27,.55) 100%),
-      linear-gradient(to bottom, rgba(11,13,27,0) 70%, rgba(11,13,27,.55) 100%),
-      linear-gradient(to left, rgba(11,13,27,0) 72%, rgba(11,13,27,.55) 100%),
-      linear-gradient(to right, rgba(11,13,27,0) 72%, rgba(11,13,27,.55) 100%);
-    mix-blend-mode:normal;
+  .avatar-wrap{
+    position:sticky;
+    top:calc(var(--headerH) + 12px);
+    z-index:2;
   }
 
+  /* === Видео персонажа: мягкое «перо» по краям (вплавление) === */
   .avatar{
-    width:100%;height:auto;max-height:78vh;display:block;border-radius:28px;
-    object-fit:contain;object-position:center top;
+    width:100%;
+    height:auto;
+    max-height:78vh;
+    display:block;
+    object-fit:contain;
+    object-position:center top;
+    border-radius:24px;
     box-shadow:0 0 28px rgba(120,160,255,.22);
+    background:transparent;
+    /* мягкий fade по периметру */
+    -webkit-mask-image:
+      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
+            mask-image:
+      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   }
 
   /* ===== Левый контент ===== */
@@ -105,34 +118,37 @@
   .welcome h1{font-size:40px;margin:0 0 10px;text-shadow:0 0 12px rgba(0,0,0,.55)}
   .welcome p{margin:0;color:#dfe4ff;max-width:54ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
 
+  /* показываем один раздел за раз */
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
-  .left section.active > h2, main section.active > h2{display:none}
+  .left section.active > h2,
+  main section.active > h2{display:none}
 
-  /* ===== Карточки ===== */
+  /* ===== Карточки (ещё прозрачнее, стекло) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:rgba(180,230,255,0.08);
-    border:1px solid rgba(180,230,255,0.25);
+    background:var(--glassBgCard);
+    border:1px solid var(--glassBorder);
     backdrop-filter:blur(14px) saturate(1.3);
-    box-shadow:inset 0 0 10px rgba(255,255,255,0.15), 0 0 25px rgba(120,200,255,0.15);
+    box-shadow:inset 0 0 10px rgba(255,255,255,0.14), 0 0 25px rgba(120,200,255,0.12);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .card:hover{
-    background:rgba(200,250,255,0.12);
-    box-shadow:0 0 35px rgba(150,220,255,0.35), inset 0 0 12px rgba(255,255,255,0.25);
+    background:rgba(200,250,255,0.09);
+    box-shadow:0 0 35px rgba(150,220,255,0.28), inset 0 0 12px rgba(255,255,255,0.22);
     transform:translateY(-4px);
   }
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
-  /* ===== Footer (прозрачный) ===== */
+  /* ===== Footer ===== */
   footer{
-    position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:5;
+    position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;color:#fff;
-    background:rgba(8,10,20,0.05);backdrop-filter:blur(2px)
+    background:rgba(8,10,20,0.05); /* очень прозрачный, чтобы не «съедал» текст */
+    backdrop-filter:blur(1.5px)
   }
   footer a{color:#fff}
 
@@ -146,12 +162,14 @@
 </style>
 </head>
 <body>
+  <!-- Космос и звёзды -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
+  <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
-      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg" alt="Логотип" /></a>
+      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=3" alt="Логотип" /></a>
       <nav class="top" aria-label="Основная навигация">
         <a class="btn" href="#about" data-tab="about">Обо мне</a>
         <a class="btn" href="#services" data-tab="services">Услуги</a>
@@ -160,6 +178,7 @@
     </div>
   </header>
 
+  <!-- Две колонки: слева разделы, справа персонаж -->
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
       <section class="welcome" data-section id="home">
@@ -196,9 +215,7 @@
 
     <aside class="right">
       <div class="avatar-wrap">
-        <div class="avatar-mask">
-          <video class="avatar" src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
-        </div>
+        <video class="avatar" src="assets/ellyraia.mp4?v=4" autoplay muted loop playsinline></video>
       </div>
     </aside>
   </main>
@@ -208,49 +225,46 @@
 <script>
   document.getElementById('y').textContent=new Date().getFullYear();
 
+  /* Звёзды — без изменений */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
-    function size(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight;
+    function size(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;
       const N=innerWidth<=768?150:230;
-      S=Array.from({length:N},()=>({
-        x:Math.random()*W, y:Math.random()*H,
-        z:0.4+Math.random()*1.1, s:1.1+Math.random()*2.1, t:Math.random()*6.28
-      }));
+      S=Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,z:0.4+Math.random()*1.1,s:1.1+Math.random()*2.1,t:Math.random()*6.28}));
     }
     function tick(){
       ctx.clearRect(0,0,W,H);
       for(const s of S){
-        s.x+=s.z*0.18; if(s.x>W+8) s.x=-8;
-        s.t+=0.02+s.z*0.004; const tw=0.75+0.25*Math.sin(s.t);
+        s.x+=s.z*0.18;if(s.x>W+8)s.x=-8;
+        s.t+=0.02+s.z*0.004;const tw=0.75+0.25*Math.sin(s.t);
         ctx.globalAlpha=(0.45+s.z*0.45)*tw;
         ctx.fillStyle=`rgb(${210+s.z*35},${205+s.z*25},255)`;
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.s,0,Math.PI*2); ctx.fill();
+        ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);ctx.fill();
       }
       requestAnimationFrame(tick);
     }
-    size(); addEventListener('resize',size,{passive:true}); tick();
+    size();addEventListener('resize',size,{passive:true});tick();
   })();
 
+  /* Навигация — 1 раздел за раз, логотип = домой */
   const sections=[...document.querySelectorAll('[data-section]')];
   const links=[...document.querySelectorAll('nav.top .btn')];
   const logoTop=document.getElementById('logoTop');
 
-  function setActiveNav(id){links.forEach(a=>a.classList.toggle('active', a.dataset.tab===id));}
+  function setActiveNav(id){links.forEach(a=>a.classList.toggle('active',a.dataset.tab===id));}
   function show(id){
     sections.forEach(s=>{
-      if(id==='' && s.id==='home') s.classList.add('active');
-      else s.classList.toggle('active', s.id===id);
-      if(id!=='' && s.id==='home') s.classList.remove('active');
+      if(id===''&&s.id==='home')s.classList.add('active');
+      else s.classList.toggle('active',s.id===id);
+      if(id!==''&&s.id==='home')s.classList.remove('active');
     });
     setActiveNav(id);
     const left=document.getElementById('leftCol');
     const top=left.getBoundingClientRect().top+scrollY-20;
     scrollTo({top,behavior:'smooth'});
   }
-  links.forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault(); show(a.dataset.tab);
-  }));
+  links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab);}));
   logoTop.addEventListener('click',e=>{e.preventDefault();show('');});
   show('');
 </script>
