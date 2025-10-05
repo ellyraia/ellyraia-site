@@ -22,7 +22,7 @@
   }
   body{padding-bottom:var(--footerH);}
 
-  /* ===== Космос под всем ===== */
+  /* ===== Космос под всем (как было) ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
@@ -41,14 +41,20 @@
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
     display:flex;align-items:center;justify-content:center;background:transparent}
-  .head-inner{width:100%;max-width:var(--wrapW);padding:0 18px;
-    display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .logo{width:96px;height:96px;border-radius:50%;overflow:hidden;cursor:pointer;
-    margin-left:-8px; margin-top:8px;
-    box-shadow:0 0 28px rgba(155,120,255,.6)}
+  .head-inner{
+    width:100%;max-width:var(--wrapW);
+    padding:0 8px 0 8px; /* меньше паддинг слева */
+    display:flex;align-items:center;justify-content:space-between;gap:12px
+  }
+  /* ЛОГО: крупнее и реально в самый левый верх с отступами */
+  .logo{
+    width:110px;height:110px;border-radius:50%;overflow:hidden;cursor:pointer;
+    margin-left:6px;margin-top:6px; /* небольшой отступ от краёв */
+    box-shadow:0 0 28px rgba(155,120,255,.6)
+  }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* ===== Кнопки ===== */
+  /* ===== Кнопки (не меняла цвета/стили) ===== */
   a{color:inherit;text-decoration:none}
   nav.top{display:flex;gap:10px;align-items:center}
   .btn{
@@ -66,11 +72,11 @@
   }
   .btn.active{ background:rgba(180,230,255,0.28); box-shadow:0 0 20px rgba(150,220,255,0.35) }
 
-  /* ===== Макет ===== */
+  /* ===== Макет (как был) ===== */
   .stage{
     max-width:var(--wrapW);
     margin:0 auto;
-    padding:0 24px;
+    padding:0 24px 120px; /* нижний паддинг => карточки не касаются футера */
     display:grid;
     grid-template-columns:minmax(320px,1fr) 520px;
     gap:32px;
@@ -86,7 +92,7 @@
     z-index:2;
   }
 
-  /* === Видео персонажа с мягким рассеиванием === */
+  /* === Видео персонажа с мягким рассеиванием по краям (без чёрных масок) === */
   .avatar{
     width:100%;
     height:auto;
@@ -97,10 +103,12 @@
     border-radius:24px;
     box-shadow:0 0 28px rgba(120,160,255,.22);
     background:transparent;
-    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 75%, transparent 100%);
-            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 75%, transparent 100%);
-    -webkit-mask-repeat:no-repeat;
-            mask-repeat:no-repeat;
+    /* мягкий fade по периметру: не влияет на фон, не даёт чёрного */
+    -webkit-mask-image:
+      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
+            mask-image:
+      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   }
 
   /* ===== Левый контент ===== */
@@ -113,7 +121,7 @@
   .left section.active > h2,
   main section.active > h2{display:none}
 
-  /* ===== Карточки ===== */
+  /* ===== Карточки (как были) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
@@ -131,11 +139,13 @@
   }
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
-  /* ===== Footer ===== */
+  /* ===== Footer — прозрачнее и не мешает карточкам ===== */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
     display:flex;align-items:center;justify-content:center;gap:12px;
-    font-size:14px;color:#fff;background:rgba(8,10,20,0.10);backdrop-filter:blur(3px)}
+    font-size:14px;color:#fff;background:rgba(8,10,20,0.06); /* прозрачнее */
+    backdrop-filter:blur(2px)
+  }
   footer a{color:#fff}
 
   @media (max-width: 900px){
@@ -148,9 +158,11 @@
 </style>
 </head>
 <body>
+  <!-- Космос и звёзды -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
+  <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
       <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg" alt="Логотип" /></a>
@@ -162,6 +174,7 @@
     </div>
   </header>
 
+  <!-- Две колонки: слева разделы, справа персонаж -->
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
       <section class="welcome" data-section id="home">
@@ -207,6 +220,8 @@
 
 <script>
   document.getElementById('y').textContent=new Date().getFullYear();
+
+  /* Звёзды — как были */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
@@ -228,6 +243,7 @@
     size();addEventListener('resize',size,{passive:true});tick();
   })();
 
+  /* Навигация — 1 раздел за раз, логотип = домой */
   const sections=[...document.querySelectorAll('[data-section]')];
   const links=[...document.querySelectorAll('nav.top .btn')];
   const logoTop=document.getElementById('logoTop');
