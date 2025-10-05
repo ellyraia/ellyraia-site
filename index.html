@@ -21,7 +21,7 @@
     --glow:rgba(120,190,255,0.35);
   }
   body{padding-bottom:var(--footerH);}
-
+ 
   /* ===== Космос под всем (как было) ===== */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
@@ -36,7 +36,7 @@
   }
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
-
+ 
   /* ===== Header ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
@@ -53,7 +53,7 @@
     box-shadow:0 0 28px rgba(155,120,255,.6)
   }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
-
+ 
   /* ===== Кнопки (не меняла цвета/стили) ===== */
   a{color:inherit;text-decoration:none}
   nav.top{display:flex;gap:10px;align-items:center}
@@ -71,7 +71,7 @@
     background:rgba(180,230,255,0.15);
   }
   .btn.active{ background:rgba(180,230,255,0.28); box-shadow:0 0 20px rgba(150,220,255,0.35) }
-
+ 
   /* ===== Макет (как был) ===== */
   .stage{
     max-width:var(--wrapW);
@@ -91,7 +91,7 @@
     top:calc(var(--headerH) + 12px);
     z-index:2;
   }
-
+ 
   /* === Видео персонажа с мягким рассеиванием по краям (без чёрных масок) === */
   .avatar{
     width:100%;
@@ -110,17 +110,17 @@
       radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   }
-
+ 
   /* ===== Левый контент ===== */
   .welcome{margin:8px 0 26px}
   .welcome h1{font-size:40px;margin:0 0 10px;text-shadow:0 0 12px rgba(0,0,0,.55)}
   .welcome p{margin:0;color:#dfe4ff;max-width:54ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
-
+ 
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
   .left section.active > h2,
   main section.active > h2{display:none}
-
+ 
   /* ===== Карточки (как были) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
@@ -138,7 +138,7 @@
     transform:translateY(-4px);
   }
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
-
+ 
   /* ===== Footer — прозрачнее и не мешает карточкам ===== */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
@@ -147,7 +147,7 @@
     backdrop-filter:blur(2px)
   }
   footer a{color:#fff}
-
+ 
   @media (max-width: 900px){
     .stage{grid-template-columns:1fr;gap:18px}
     .avatar-wrap{position:relative;top:auto}
@@ -161,7 +161,7 @@
   <!-- Космос и звёзды -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
-
+ 
   <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
@@ -173,7 +173,7 @@
       </nav>
     </div>
   </header>
-
+ 
   <!-- Две колонки: слева разделы, справа персонаж -->
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
@@ -182,7 +182,7 @@
         <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.
           Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
       </section>
-
+ 
       <section id="about" data-section>
         <h2>Обо мне</h2>
         <div class="cards">
@@ -190,7 +190,7 @@
           <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
         </div>
       </section>
-
+ 
       <section id="services" data-section>
         <h2>Услуги</h2>
         <div class="cards">
@@ -199,7 +199,7 @@
           <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
         </div>
       </section>
-
+ 
       <section id="contact" data-section>
         <h2>Контакты</h2>
         <div class="cards">
@@ -208,19 +208,19 @@
         </div>
       </section>
     </div>
-
+ 
     <aside class="right">
       <div class="avatar-wrap">
         <video class="avatar" src="assets/ellyraia.mp4" autoplay muted loop playsinline></video>
       </div>
     </aside>
   </main>
-
+ 
   <footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
-
+ 
 <script>
   document.getElementById('y').textContent=new Date().getFullYear();
-
+ 
   /* Звёзды — как были */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
@@ -242,12 +242,12 @@
     }
     size();addEventListener('resize',size,{passive:true});tick();
   })();
-
+ 
   /* Навигация — 1 раздел за раз, логотип = домой */
   const sections=[...document.querySelectorAll('[data-section]')];
   const links=[...document.querySelectorAll('nav.top .btn')];
   const logoTop=document.getElementById('logoTop');
-
+ 
   function setActiveNav(id){links.forEach(a=>a.classList.toggle('active',a.dataset.tab===id));}
   function show(id){
     sections.forEach(s=>{
@@ -266,4 +266,5 @@
 </script>
 </body>
 </html>
+ 
 
