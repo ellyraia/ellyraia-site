@@ -4,9 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ellyraia — Music & Video</title>
-<link rel="icon" href="assets/Logo.jpg?v=4" />
+<link rel="icon" href="assets/Logo.jpg?v=5" />
 <meta name="theme-color" content="#0b0d1b" />
-<!-- ELLYRAIA BUILD: 2025-10-05 20:10 (compat vars added) -->
 <style>
   *,*::before,*::after{box-sizing:border-box}
   html,body{
@@ -14,21 +13,23 @@
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;
     background:transparent;
   }
+
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
 
-    /* ↓ Новые токены (прозрачнее стекло) */
-    --glassBorder:rgba(180,220,255,0.15);
-    --glassBgBtn:rgba(150,200,255,0.06);
-    --glassBgCard:rgba(180,230,255,0.05);
-    --glassInner:rgba(255,255,255,0.18);
-    --glow:rgba(120,190,255,0.35);
+    /* Стекло — прозрачнее */
+    --glassBorder:rgba(190,230,255,0.18);
+    --glassBgBtn:rgba(180,230,255,0.05);
+    --glassBgCard:rgba(200,245,255,0.04);
+    --glassInner:rgba(255,255,255,0.16);
+    --glow:rgba(140,210,255,0.30);
 
-    /* ↓ Совместимость со старыми правилами (если где-то ещё использовался --glassBg) */
+    /* Совместимость */
     --glassBg: var(--glassBgBtn);
   }
-  /* доп. запас снизу, чтобы футер не накрывал контент */
-  body{ padding-bottom: calc(var(--footerH) + 28px); }
+
+  /* Больше места снизу, чтобы футер не перекрывал контент */
+  body{ padding-bottom: calc(var(--footerH) + 72px); }
 
   /* ===== Космос под всем ===== */
   .grad{
@@ -51,40 +52,43 @@
     display:flex;align-items:center;justify-content:center;background:transparent}
   .head-inner{
     width:100%;max-width:var(--wrapW);
-    padding:0 8px;
-    display:flex;align-items:center;justify-content:space-between;gap:12px
+    padding:0 24px;
+    display:flex;align-items:center;gap:18px
   }
-  /* ЛОГО: левый верх, больше и с отступами */
+
+  /* ЛОГО — «планета» слева, крупнее и с отступами */
   .logo{
-    width:110px;height:110px;border-radius:50%;overflow:hidden;cursor:pointer;
-    margin-left:6px;margin-top:6px;
-    box-shadow:0 0 28px rgba(155,120,255,.6)
+    width:128px;height:128px;border-radius:50%;overflow:hidden;cursor:pointer;
+    margin-left:8px;margin-top:6px; flex:0 0 auto;
+    box-shadow:0 0 34px rgba(165,130,255,.55), 0 0 12px rgba(165,130,255,.35) inset;
   }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* ===== Кнопки (стекло, прозрачнее) ===== */
+  /* Навигация правее */
+  nav.top{margin-left:auto;display:flex;gap:12px;align-items:center}
+
+  /* ===== Кнопки (тонкое стекло) ===== */
   a{color:inherit;text-decoration:none}
-  nav.top{display:flex;gap:10px;align-items:center}
   .btn{
     color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;
     border:1px solid var(--glassBorder);
-    background:var(--glassBgBtn); /* ← новый токен */
-    backdrop-filter:blur(10px) saturate(1.2);
-    box-shadow:inset 0 0 8px var(--glassInner), 0 0 12px rgba(120,200,255,0.12);
+    background:var(--glassBgBtn);
+    backdrop-filter:blur(8px) saturate(1.15);
+    box-shadow:inset 0 0 8px var(--glassInner), 0 0 10px rgba(140,210,255,0.12);
     font-weight:600;letter-spacing:.2px;transition:all .25s ease; display:inline-flex;align-items:center;gap:8px
   }
   .btn:hover{
     transform:translateY(-2px);
     box-shadow:0 0 22px var(--glow),inset 0 0 10px var(--glassInner);
-    background:rgba(180,230,255,0.12);
+    background:rgba(190,240,255,0.10);
   }
-  .btn.active{ background:rgba(180,230,255,0.20); box-shadow:0 0 20px rgba(150,220,255,0.30) }
+  .btn.active{ background:rgba(190,240,255,0.16); box-shadow:0 0 20px rgba(150,220,255,0.28) }
 
   /* ===== Макет ===== */
   .stage{
     max-width:var(--wrapW);
     margin:0 auto;
-    padding:0 24px 120px; /* запас снизу вместо налезания на футер */
+    padding:0 24px 160px; /* большой запас до футера */
     display:grid;
     grid-template-columns:minmax(320px,1fr) 520px;
     gap:32px;
@@ -100,7 +104,7 @@
     z-index:2;
   }
 
-  /* === Видео персонажа: мягкое «перо» по краям === */
+  /* === Видео персонажа: мягкое перо по всему периметру === */
   .avatar{
     width:100%;
     height:auto;
@@ -111,10 +115,9 @@
     border-radius:24px;
     box-shadow:0 0 28px rgba(120,160,255,.22);
     background:transparent;
-    -webkit-mask-image:
-      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
-            mask-image:
-      radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
+    /* более мягкое и широкое перо */
+    -webkit-mask-image: radial-gradient(135% 135% at 50% 50%, #000 60%, rgba(0,0,0,0) 100%);
+            mask-image: radial-gradient(135% 135% at 50% 50%, #000 60%, rgba(0,0,0,0) 100%);
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   }
 
@@ -129,34 +132,37 @@
   .left section.active > h2,
   main section.active > h2{display:none}
 
-  /* ===== Карточки (стекло ещё прозрачнее) ===== */
+  /* ===== Карточки (холодное стекло, ещё прозрачнее) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:var(--glassBgCard); /* ← новый токен */
+    background:var(--glassBgCard);
     border:1px solid var(--glassBorder);
-    backdrop-filter:blur(14px) saturate(1.3);
-    box-shadow:inset 0 0 10px rgba(255,255,255,0.14), 0 0 25px rgba(120,200,255,0.12);
+    backdrop-filter:blur(16px) saturate(1.25);
+    box-shadow:
+      inset 0 0 10px rgba(255,255,255,0.12),
+      0 0 24px rgba(140,210,255,0.12);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .card:hover{
-    background:rgba(200,250,255,0.09);
-    box-shadow:0 0 35px rgba(150,220,255,0.28), inset 0 0 12px rgba(255,255,255,0.22);
+    background:rgba(210,250,255,0.08);
+    box-shadow:0 0 32px rgba(160,230,255,0.28), inset 0 0 12px rgba(255,255,255,0.20);
     transform:translateY(-4px);
   }
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
-  /* ===== Footer (едва заметный, не накрывает карточки) ===== */
+  /* ===== Footer (очень прозрачный, без blur) ===== */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;color:#fff;
-    background:rgba(8,10,20,0.05);
-    backdrop-filter:blur(1.5px);
+    background:rgba(8,10,20,0.02); /* почти прозрачно */
+    /* убрали backdrop-filter, чтобы не размывал карточки */
   }
   footer a{color:#fff}
 
+  /* ===== Mobile ===== */
   @media (max-width: 900px){
     .stage{grid-template-columns:1fr;gap:18px}
     .avatar-wrap{position:relative;top:auto}
@@ -174,7 +180,7 @@
   <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
-      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=4" alt="Логотип" /></a>
+      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=5" alt="Логотип" /></a>
       <nav class="top" aria-label="Основная навигация">
         <a class="btn" href="#about" data-tab="about">Обо мне</a>
         <a class="btn" href="#services" data-tab="services">Услуги</a>
@@ -220,7 +226,7 @@
 
     <aside class="right">
       <div class="avatar-wrap">
-        <video class="avatar" src="assets/ellyraia.mp4?v=5" autoplay muted loop playsinline></video>
+        <video class="avatar" src="assets/ellyraia.mp4?v=6" autoplay muted loop playsinline></video>
       </div>
     </aside>
   </main>
@@ -228,9 +234,10 @@
   <footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
 
 <script>
+  // год
   document.getElementById('y').textContent=new Date().getFullYear();
 
-  /* Звёзды */
+  /* Звёзды (как было) */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
@@ -252,7 +259,7 @@
     size();addEventListener('resize',size,{passive:true});tick();
   })();
 
-  /* Навигация — 1 раздел за раз, логотип = домой */
+  /* Навигация — один раздел за раз, логотип = домой */
   const sections=[...document.querySelectorAll('[data-section]')];
   const links=[...document.querySelectorAll('nav.top .btn')];
   const logoTop=document.getElementById('logoTop');
@@ -275,5 +282,4 @@
 </script>
 </body>
 </html>
-
 
