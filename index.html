@@ -16,16 +16,20 @@
 
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
+
+    /* стекло (чуть прозрачнее по умолчанию) */
     --glassBorder:rgba(190,230,255,0.18);
     --glassBgBtn:rgba(180,230,255,0.05);
-    --glassBgCard:rgba(200,245,255,0.04);
+    --glassBgCard:rgba(200,245,255,0.02); /* было 0.04 → стало тоньше */
     --glassInner:rgba(255,255,255,0.16);
     --glow:rgba(140,210,255,0.30);
+
     --glassBg: var(--glassBgBtn);
   }
 
   body{ padding-bottom: calc(var(--footerH) + 72px); }
 
+  /* Космос и звёзды — без изменений */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
@@ -40,6 +44,7 @@
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
+  /* Header */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
     display:flex;align-items:center;justify-content:center;background:transparent}
@@ -49,22 +54,22 @@
     display:flex;align-items:center;gap:18px
   }
 
-  /* === Логотип в левом верхнем углу с отступом === */
+  /* ЛОГО: «между краем и карточками» */
   .logo{
     position:fixed;
-    top:20px;left:20px;
-    width:104px;height:104px;
-    border-radius:50%;overflow:hidden;
-    cursor:pointer;z-index:50;
-    box-shadow:0 0 20px rgba(160,130,255,.45);
+    top:20px; left:90px; /* <- ключевой отступ; можно подстроить 80–110px */
+    width:104px; height:104px;
+    border-radius:50%; overflow:hidden;
+    cursor:pointer; z-index:50;
+    box-shadow:0 0 20px rgba(0,0,0,.35);
   }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
-  @media(max-width:600px){
-    .logo{width:76px;height:76px;top:12px;left:12px}
+  @media (max-width: 600px){
+    .logo{ left:12px; top:12px; width:76px; height:76px } /* мобильную пока не трогаем, просто safety */
   }
 
+  /* Навигация */
   nav.top{margin-left:auto;display:flex;gap:12px;align-items:center}
-
   a{color:inherit;text-decoration:none}
   .btn{
     color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;
@@ -81,6 +86,7 @@
   }
   .btn.active{ background:rgba(190,240,255,0.16); box-shadow:0 0 20px rgba(150,220,255,0.28) }
 
+  /* Макет */
   .stage{
     max-width:var(--wrapW);
     margin:0 auto;
@@ -100,60 +106,59 @@
     z-index:2;
   }
 
-  /* === Видео персонажа с мягким пером и неоновым свечением === */
+  /* ВИДЕО: мягкие углы + равномерное рассеивание (перо ~ в 2 раза меньше) */
   .avatar{
-    width:100%;
-    height:auto;
-    max-height:78vh;
-    display:block;
-    object-fit:contain;
-    object-position:center top;
+    width:100%; height:auto; max-height:78vh;
+    display:block; object-fit:contain; object-position:center top;
     border-radius:24px;
-    -webkit-mask-image: radial-gradient(140% 140% at 50% 48%, #000 58%, transparent 100%);
-            mask-image: radial-gradient(140% 140% at 50% 48%, #000 58%, transparent 100%);
+
+    /* равномерная маска: чёткая форма + тонкий периметр растворения */
+    -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 75%, transparent 100%);
+            mask-image: radial-gradient(120% 120% at 50% 50%, #000 75%, transparent 100%);
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+
+    /* лёгкая общая мягкость + деликатная подсветка (без рамки) */
     filter:
-      blur(0.6px)
-      drop-shadow(0 0 18px rgba(150,255,220,0.28))
-      drop-shadow(0 0 28px rgba(160,180,255,0.18));
+      blur(0.4px)
+      drop-shadow(0 0 16px rgba(150,255,220,0.22))
+      drop-shadow(0 0 22px rgba(160,180,255,0.16));
   }
 
+  /* приглушённая «звёздная» дымка позади видео (не рамка) */
   .avatar-wrap::before{
     content:"";
-    position:absolute;
-    inset:-14px;
-    border-radius:28px;
-    pointer-events:none;
-    z-index:0;
+    position:absolute; inset:-10px;
+    border-radius:28px; pointer-events:none; z-index:0;
     background:
-      radial-gradient(100% 140% at 50% 40%,
-        rgba(120,200,255,.18) 0%,
-        rgba(64,255,200,.14) 40%,
-        rgba(255,120,255,.10) 65%,
-        transparent 85%);
-    filter:blur(12px);
+      radial-gradient(100% 140% at 50% 50%,
+        rgba(120,200,255,.14) 0%,
+        rgba(64,255,200,.12) 38%,
+        rgba(255,120,255,.08) 60%,
+        transparent 82%);
+    filter: blur(10px);
   }
 
+  /* Контент слева */
   .welcome{margin:8px 0 26px}
   .welcome h1{font-size:40px;margin:0 0 10px;text-shadow:0 0 12px rgba(0,0,0,.55)}
   .welcome p{margin:0;color:#dfe4ff;max-width:54ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
 
+  /* секции */
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
-  .left section.active > h2,
-  main section.active > h2{display:none}
+  .left section.active > h2, main section.active > h2{display:none}
 
-  /* === Карточки — холодное стекло, прозрачнее === */
+  /* КАРТОЧКИ: спокойное стекло (прозрачнее). hover — оставить как было */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:rgba(200,245,255,0.025);
+    background:var(--glassBgCard); /* 0.02 — звёзды слегка просвечивают */
     border:1px solid rgba(190,230,255,0.10);
     backdrop-filter:blur(18px) saturate(1.25);
     -webkit-backdrop-filter:blur(18px) saturate(1.25);
     box-shadow:
-      inset 0 0 6px rgba(255,255,255,0.07),
-      0 0 18px rgba(140,210,255,0.08);
+      inset 0 0 6px rgba(255,255,255,0.06),
+      0 0 16px rgba(140,210,255,0.08);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
@@ -165,6 +170,7 @@
 
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
+  /* Footer */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
     display:flex;align-items:center;justify-content:center;gap:12px;
@@ -173,6 +179,7 @@
   }
   footer a{color:#fff}
 
+  /* Mobile — не трогаем в рамках задач, только safety */
   @media (max-width: 900px){
     .stage{grid-template-columns:1fr;gap:18px}
     .avatar-wrap{position:relative;top:auto}
@@ -183,9 +190,11 @@
 </style>
 </head>
 <body>
+  <!-- Космос и звёзды -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
+  <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
       <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=5" alt="Логотип" /></a>
@@ -197,6 +206,7 @@
     </div>
   </header>
 
+  <!-- Две колонки -->
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
       <section class="welcome" data-section id="home">
@@ -241,8 +251,10 @@
   <footer>© <span id="y"></span> Ellyraia · <a href="#">RU</a> | <a href="#">EN</a></footer>
 
 <script>
+  // год
   document.getElementById('y').textContent=new Date().getFullYear();
 
+  // звёзды
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
@@ -264,6 +276,7 @@
     size();addEventListener('resize',size,{passive:true});tick();
   })();
 
+  // навигация (как было)
   const sections=[...document.querySelectorAll('[data-section]')];
   const links=[...document.querySelectorAll('nav.top .btn')];
   const logoTop=document.getElementById('logoTop');
