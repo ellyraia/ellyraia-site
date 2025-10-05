@@ -4,8 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ellyraia — Music & Video</title>
-<link rel="icon" href="assets/Logo.jpg?v=3" />
+<link rel="icon" href="assets/Logo.jpg?v=4" />
 <meta name="theme-color" content="#0b0d1b" />
+<!-- ELLYRAIA BUILD: 2025-10-05 20:10 (compat vars added) -->
 <style>
   *,*::before,*::after{box-sizing:border-box}
   html,body{
@@ -16,13 +17,18 @@
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
 
-    /* стеклянные токены (сделали прозрачнее) */
-    --glassBorder:rgba(180,220,255,0.15); /* было 0.25 */
-    --glassBgBtn:rgba(150,200,255,0.06); /* было 0.10 */
-    --glassBgCard:rgba(180,230,255,0.05); /* было 0.08 */
+    /* ↓ Новые токены (прозрачнее стекло) */
+    --glassBorder:rgba(180,220,255,0.15);
+    --glassBgBtn:rgba(150,200,255,0.06);
+    --glassBgCard:rgba(180,230,255,0.05);
     --glassInner:rgba(255,255,255,0.18);
     --glow:rgba(120,190,255,0.35);
+
+    /* ↓ Совместимость со старыми правилами (если где-то ещё использовался --glassBg) */
+    --glassBg: var(--glassBgBtn);
   }
+  /* доп. запас снизу, чтобы футер не накрывал контент */
+  body{ padding-bottom: calc(var(--footerH) + 28px); }
 
   /* ===== Космос под всем ===== */
   .grad{
@@ -45,10 +51,10 @@
     display:flex;align-items:center;justify-content:center;background:transparent}
   .head-inner{
     width:100%;max-width:var(--wrapW);
-    padding:0 8px; /* меньше паддинг слева */
+    padding:0 8px;
     display:flex;align-items:center;justify-content:space-between;gap:12px
   }
-  /* ЛОГО: крупнее и у самого левого верхнего края, с отступами */
+  /* ЛОГО: левый верх, больше и с отступами */
   .logo{
     width:110px;height:110px;border-radius:50%;overflow:hidden;cursor:pointer;
     margin-left:6px;margin-top:6px;
@@ -62,7 +68,7 @@
   .btn{
     color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;
     border:1px solid var(--glassBorder);
-    background:var(--glassBgBtn);
+    background:var(--glassBgBtn); /* ← новый токен */
     backdrop-filter:blur(10px) saturate(1.2);
     box-shadow:inset 0 0 8px var(--glassInner), 0 0 12px rgba(120,200,255,0.12);
     font-weight:600;letter-spacing:.2px;transition:all .25s ease; display:inline-flex;align-items:center;gap:8px
@@ -70,7 +76,7 @@
   .btn:hover{
     transform:translateY(-2px);
     box-shadow:0 0 22px var(--glow),inset 0 0 10px var(--glassInner);
-    background:rgba(180,230,255,0.12); /* при ховере немного плотнее */
+    background:rgba(180,230,255,0.12);
   }
   .btn.active{ background:rgba(180,230,255,0.20); box-shadow:0 0 20px rgba(150,220,255,0.30) }
 
@@ -78,7 +84,7 @@
   .stage{
     max-width:var(--wrapW);
     margin:0 auto;
-    padding:0 24px 120px; /* запас снизу, чтобы футер не перекрывал карточки */
+    padding:0 24px 120px; /* запас снизу вместо налезания на футер */
     display:grid;
     grid-template-columns:minmax(320px,1fr) 520px;
     gap:32px;
@@ -94,7 +100,7 @@
     z-index:2;
   }
 
-  /* === Видео персонажа: мягкое «перо» по краям (вплавление) === */
+  /* === Видео персонажа: мягкое «перо» по краям === */
   .avatar{
     width:100%;
     height:auto;
@@ -105,7 +111,6 @@
     border-radius:24px;
     box-shadow:0 0 28px rgba(120,160,255,.22);
     background:transparent;
-    /* мягкий fade по периметру */
     -webkit-mask-image:
       radial-gradient(120% 120% at 50% 50%, #000 72%, rgba(0,0,0,0) 100%);
             mask-image:
@@ -118,17 +123,17 @@
   .welcome h1{font-size:40px;margin:0 0 10px;text-shadow:0 0 12px rgba(0,0,0,.55)}
   .welcome p{margin:0;color:#dfe4ff;max-width:54ch;text-shadow:0 0 10px rgba(0,0,0,.5)}
 
-  /* показываем один раздел за раз */
+  /* один раздел за раз */
   section[data-section]{display:none;margin:10px 0}
   section[data-section].active{display:block}
   .left section.active > h2,
   main section.active > h2{display:none}
 
-  /* ===== Карточки (ещё прозрачнее, стекло) ===== */
+  /* ===== Карточки (стекло ещё прозрачнее) ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:var(--glassBgCard);
+    background:var(--glassBgCard); /* ← новый токен */
     border:1px solid var(--glassBorder);
     backdrop-filter:blur(14px) saturate(1.3);
     box-shadow:inset 0 0 10px rgba(255,255,255,0.14), 0 0 25px rgba(120,200,255,0.12);
@@ -142,13 +147,13 @@
   }
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
-  /* ===== Footer ===== */
+  /* ===== Footer (едва заметный, не накрывает карточки) ===== */
   footer{
     position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;color:#fff;
-    background:rgba(8,10,20,0.05); /* очень прозрачный, чтобы не «съедал» текст */
-    backdrop-filter:blur(1.5px)
+    background:rgba(8,10,20,0.05);
+    backdrop-filter:blur(1.5px);
   }
   footer a{color:#fff}
 
@@ -169,7 +174,7 @@
   <!-- Шапка -->
   <header class="site">
     <div class="head-inner">
-      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=3" alt="Логотип" /></a>
+      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=4" alt="Логотип" /></a>
       <nav class="top" aria-label="Основная навигация">
         <a class="btn" href="#about" data-tab="about">Обо мне</a>
         <a class="btn" href="#services" data-tab="services">Услуги</a>
@@ -215,7 +220,7 @@
 
     <aside class="right">
       <div class="avatar-wrap">
-        <video class="avatar" src="assets/ellyraia.mp4?v=4" autoplay muted loop playsinline></video>
+        <video class="avatar" src="assets/ellyraia.mp4?v=5" autoplay muted loop playsinline></video>
       </div>
     </aside>
   </main>
@@ -225,7 +230,7 @@
 <script>
   document.getElementById('y').textContent=new Date().getFullYear();
 
-  /* Звёзды — без изменений */
+  /* Звёзды */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
@@ -270,4 +275,5 @@
 </script>
 </body>
 </html>
+
 
