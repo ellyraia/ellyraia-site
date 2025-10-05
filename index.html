@@ -17,10 +17,10 @@
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
 
-    /* стекло (чуть прозрачнее по умолчанию) */
+    /* стекло */
     --glassBorder:rgba(190,230,255,0.18);
     --glassBgBtn:rgba(180,230,255,0.05);
-    --glassBgCard:rgba(200,245,255,0.02); /* было 0.04 → стало тоньше */
+    --glassBgCard:rgba(200,245,255,0.02); /* прозрачнее */
     --glassInner:rgba(255,255,255,0.16);
     --glow:rgba(140,210,255,0.30);
 
@@ -29,7 +29,7 @@
 
   body{ padding-bottom: calc(var(--footerH) + 72px); }
 
-  /* Космос и звёзды — без изменений */
+  /* Космос и звёзды */
   .grad{
     position:fixed;inset:-20vh -20vw;z-index:-3;pointer-events:none;
     background-size:160% 160%;
@@ -54,18 +54,22 @@
     display:flex;align-items:center;gap:18px
   }
 
-  /* ЛОГО: «между краем и карточками» */
+  /* ЛОГО: со свечением, центр между краем и карточками (позицию задаст JS) */
   .logo{
     position:fixed;
-    top:20px; left:90px; /* <- ключевой отступ; можно подстроить 80–110px */
+    top:20px; left:20px; /* JS пересчитает left на десктопе */
     width:104px; height:104px;
     border-radius:50%; overflow:hidden;
     cursor:pointer; z-index:50;
-    box-shadow:0 0 20px rgba(0,0,0,.35);
+    /* мягкое космическое свечение (не кислотное) */
+    filter:
+      drop-shadow(0 6px 20px rgba(0,0,0,.35))
+      drop-shadow(0 0 28px rgba(160,130,255,.45))
+      drop-shadow(0 0 18px rgba(90,200,255,.35));
   }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
   @media (max-width: 600px){
-    .logo{ left:12px; top:12px; width:76px; height:76px } /* мобильную пока не трогаем, просто safety */
+    .logo{ left:12px; top:12px; width:76px; height:76px }
   }
 
   /* Навигация */
@@ -106,36 +110,35 @@
     z-index:2;
   }
 
-  /* ВИДЕО: мягкие углы + равномерное рассеивание (перо ~ в 2 раза меньше) */
+  /* ВИДЕО: мягкие углы + равномерное перо (вдвое меньше) */
   .avatar{
     width:100%; height:auto; max-height:78vh;
     display:block; object-fit:contain; object-position:center top;
     border-radius:24px;
 
-    /* равномерная маска: чёткая форма + тонкий периметр растворения */
-    -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 75%, transparent 100%);
-            mask-image: radial-gradient(120% 120% at 50% 50%, #000 75%, transparent 100%);
+    /* равномерное растворение по периметру */
+    -webkit-mask-image: radial-gradient(115% 115% at 50% 50%, #000 82%, transparent 100%);
+            mask-image: radial-gradient(115% 115% at 50% 50%, #000 82%, transparent 100%);
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 
-    /* лёгкая общая мягкость + деликатная подсветка (без рамки) */
+    /* лёгкая мягкость и деликатная подсветка (не рамка) */
     filter:
-      blur(0.4px)
-      drop-shadow(0 0 16px rgba(150,255,220,0.22))
-      drop-shadow(0 0 22px rgba(160,180,255,0.16));
+      blur(0.35px)
+      drop-shadow(0 0 14px rgba(150,255,220,0.18))
+      drop-shadow(0 0 18px rgba(160,180,255,0.14));
   }
 
-  /* приглушённая «звёздная» дымка позади видео (не рамка) */
+  /* приглушённая «звёздная» дымка позади видео */
   .avatar-wrap::before{
     content:"";
-    position:absolute; inset:-10px;
-    border-radius:28px; pointer-events:none; z-index:0;
-    background:
-      radial-gradient(100% 140% at 50% 50%,
-        rgba(120,200,255,.14) 0%,
-        rgba(64,255,200,.12) 38%,
-        rgba(255,120,255,.08) 60%,
-        transparent 82%);
-    filter: blur(10px);
+    position:absolute; inset:-8px;
+    border-radius:26px; pointer-events:none; z-index:0;
+    background: radial-gradient(100% 140% at 50% 50%,
+                rgba(120,200,255,.12) 0%,
+                rgba(64,255,200,.10) 38%,
+                rgba(255,120,255,.07) 60%,
+                transparent 82%);
+    filter: blur(9px);
   }
 
   /* Контент слева */
@@ -148,17 +151,18 @@
   section[data-section].active{display:block}
   .left section.active > h2, main section.active > h2{display:none}
 
-  /* КАРТОЧКИ: спокойное стекло (прозрачнее). hover — оставить как было */
+  /* КАРТОЧКИ: «тонкое стекло». Hover — как было */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:var(--glassBgCard); /* 0.02 — звёзды слегка просвечивают */
+    background:var(--glassBgCard); /* 0.02 — звёзды видны, но текст читаем */
     border:1px solid rgba(190,230,255,0.10);
-    backdrop-filter:blur(18px) saturate(1.25);
-    -webkit-backdrop-filter:blur(18px) saturate(1.25);
+    backdrop-filter:blur(20px) saturate(1.2);
+    -webkit-backdrop-filter:blur(20px) saturate(1.2);
+    background-clip: padding-box;
     box-shadow:
-      inset 0 0 6px rgba(255,255,255,0.06),
-      0 0 16px rgba(140,210,255,0.08);
+      inset 0 0 4px rgba(255,255,255,0.05),
+      0 0 12px rgba(140,210,255,0.06);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
@@ -179,7 +183,7 @@
   }
   footer a{color:#fff}
 
-  /* Mobile — не трогаем в рамках задач, только safety */
+  /* Mobile — не трогаем (safety) */
   @media (max-width: 900px){
     .stage{grid-template-columns:1fr;gap:18px}
     .avatar-wrap{position:relative;top:auto}
@@ -254,7 +258,7 @@
   // год
   document.getElementById('y').textContent=new Date().getFullYear();
 
-  // звёзды
+  // звёзды (как было)
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
@@ -296,6 +300,24 @@
   links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab);}));
   logoTop.addEventListener('click',e=>{e.preventDefault();show('');});
   show('');
+
+  // позиционирование ЛОГО: центр между левым краем и началом колонki карточек (десктоп)
+  (function(){
+    const mql = window.matchMedia('(min-width:1024px)');
+    const logo = document.getElementById('logoTop');
+    const leftCol = document.getElementById('leftCol');
+    function placeLogo(){
+      if(!mql.matches || !logo || !leftCol) return;
+      const rect = leftCol.getBoundingClientRect();
+      const gap = rect.left; // расстояние от левого края до карточек
+      const logoW = logo.getBoundingClientRect().width || 104;
+      const left = Math.max(16, (gap - logoW)/2); // центр между краем и карточками
+      logo.style.left = left + 'px';
+    }
+    window.addEventListener('resize', placeLogo, {passive:true});
+    window.addEventListener('load', placeLogo);
+    setTimeout(placeLogo, 300);
+  })();
 </script>
 </body>
 </html>
