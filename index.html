@@ -20,15 +20,13 @@
     /* стекло */
     --glassBorder:rgba(190,230,255,0.14);
     --glassBgBtn:rgba(180,230,255,0.045);
-    --glassBgCard:rgba(200,245,255,0.010); /* очень тонкое стекло */
+    --glassBgCard:rgba(200,245,255,0.010); /* тонкое холодное стекло */
     --glassInner:rgba(255,255,255,0.10);
 
-    /* видео-портал */
-    --avatarGlowOuter: rgba(160,230,255,.30); /* чуть ярче, «портал» */
-    --avatarGlowInner: rgba(255,255,255,.12);
-    --avatarZoom: .92; /* отдаление кадра */
-    --avatarColW: 480px; /* сузили правую колонку */
-    --avatarAspect: 9 / 16; /* вертикальное видео */
+    /* портал для видео */
+    --portalOuter: rgba(160,230,255,.30);
+    --portalInner: rgba(255,255,255,.12);
+    --avatarColMaxW: 520px; /* максимум ширины колонки с видео */
   }
 
   body{ padding-bottom: calc(var(--footerH) + 72px); }
@@ -48,13 +46,13 @@
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header (без изменений) ===== */
+  /* ===== Header (как есть) ===== */
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:20;
     display:flex;align-items:center;justify-content:center;background:transparent}
   .head-inner{width:100%;max-width:var(--wrapW);padding:0 24px;display:flex;align-items:center;gap:18px}
 
-  /* ЛОГО */
+  /* ЛОГО (со свечением; позиция центруется JS) */
   .logo{
     position:fixed; top:20px; left:20px;
     width:104px; height:104px; border-radius:50%; overflow:hidden;
@@ -66,7 +64,7 @@
   }
   .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* Навигация */
+  /* Навигация (как была) */
   nav.top{margin-left:auto;display:flex;gap:12px;align-items:center}
   a{color:inherit;text-decoration:none}
   .btn{
@@ -85,43 +83,42 @@
   }
   .btn.active{ background:rgba(190,240,255,0.16); box-shadow:0 0 20px rgba(150,220,255,0.26) }
 
-  /* ===== Макет ===== */
+  /* ===== Верхний fade, чтобы контент УХОДИЛ под хедер (сам хедер не меняем) ===== */
+  .top-fade{
+    position:fixed;left:0;right:0;top:0;height:110px;z-index:15;pointer-events:none;
+    background:linear-gradient(#0b0d1b 0%, rgba(11,13,27,0.82) 45%, rgba(11,13,27,0) 100%);
+  }
+
+  /* ===== Макет: контент НАЧИНАЕТСЯ НИЖЕ кнопок ===== */
   .stage{
     max-width:var(--wrapW);
     margin:0 auto;
-    padding:0 24px 160px;
+    padding: calc(var(--headerH) + 20px) 24px 160px; /* <— ниже хедера */
     display:grid;
-    grid-template-columns:minmax(320px,1fr) var(--avatarColW);
+    grid-template-columns:minmax(320px,1fr) minmax(360px,var(--avatarColMaxW));
     gap:32px;
-
-    /* контент проходит ПОД фикс-хедером */
-    margin-top:0;
-    padding-top:8px;
-
     position:relative; z-index:10;
   }
   .left{min-width:0}
-  .right{position:relative}
+  .right{position:relative; display:flex; justify-content:flex-start}
 
-  /* === ВИДЕО = «карточка», без обрезки; постоянное свечение === */
+  /* === ВИДЕО: рамка подгоняется под ФАКТИЧЕСКИЙ кадр === */
   .avatar-wrap{
-    position:relative; /* убран sticky → без прыжков */
-    aspect-ratio: var(--avatarAspect);
+    position:relative;
     border-radius:var(--radius);
     border:1px solid rgba(190,230,255,0.10);
     overflow:hidden;
     box-shadow:
-      0 0 36px var(--avatarGlowOuter),
-      inset 0 0 12px var(--avatarGlowInner);
-    isolation:isolate;
+      0 0 34px var(--portalOuter),
+      inset 0 0 12px var(--portalInner);
+    max-width:100%;
+    /* авто-высота ниже задаётся из JS по соотношению сторон видео */
   }
   .avatar{
     display:block; width:100%; height:100%;
     max-height:78vh;
-    object-fit:contain; object-position:center top; /* НЕ режем видео */
-    transform: scale(var(--avatarZoom));
-    transform-origin:center top;
-    border:none; box-shadow:none; -webkit-mask-image:none; mask-image:none;
+    object-fit:contain; object-position:center top; /* не режем кадр */
+    border:none; box-shadow:none;
   }
 
   /* ===== Контент ===== */
@@ -133,24 +130,27 @@
   section[data-section].active{display:block}
   .left section.active > h2, main section.active > h2{display:none}
 
-  /* ===== Карточки: «холодное стекло», blur=6px ===== */
+  /* ===== Карточки: действительно стеклянные + лёгкое статичное свечение ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:var(--glassBgCard) !important; /* чтобы точно просвечивали */
+    background:var(--glassBgCard) !important;
     border:1px solid rgba(190,230,255,0.08);
     backdrop-filter:blur(6px) saturate(1.1);
     -webkit-backdrop-filter:blur(6px) saturate(1.1);
     background-clip:padding-box;
+    /* лёгкое статичное освещение */
     box-shadow:
-      inset 0 0 4px rgba(255,255,255,0.05),
-      0 0 10px rgba(140,210,255,0.05);
+      0 0 18px rgba(160,230,255,0.08),
+      inset 0 0 6px rgba(255,255,255,0.06);
     padding:22px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
   }
   .card:hover{
     background:rgba(210,250,255,0.07);
-    box-shadow:0 0 24px rgba(160,230,255,0.22);
+    box-shadow:
+      0 0 24px rgba(160,230,255,0.22),
+      inset 0 0 10px rgba(255,255,255,0.10);
     transform:translateY(-3px);
   }
 
@@ -178,7 +178,7 @@
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
-  <!-- Шапка -->
+  <!-- Шапка (без изменений) -->
   <header class="site">
     <div class="head-inner">
       <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=5" alt="Логотип" /></a>
@@ -189,6 +189,8 @@
       </nav>
     </div>
   </header>
+  <!-- Fade, чтобы контент уходил ПОД хедер без наложений -->
+  <div class="top-fade" aria-hidden="true"></div>
 
   <!-- Контент -->
   <main class="stage" id="stage">
@@ -226,8 +228,8 @@
     </div>
 
     <aside class="right">
-      <div class="avatar-wrap">
-        <video class="avatar" src="assets/ellyraia.mp4?v=6" autoplay muted loop playsinline></video>
+      <div class="avatar-wrap" id="avatarWrap">
+        <video class="avatar" id="videoEl" src="assets/ellyraia.mp4?v=6" autoplay muted loop playsinline></video>
       </div>
     </aside>
   </main>
@@ -272,16 +274,15 @@
       if(id!==''&&s.id==='home')s.classList.remove('active');
     });
     setActiveNav(id);
-    // позволяем контенту проходить под хедер — без дополнительного смещения
     const left=document.getElementById('leftCol');
     const top=left.getBoundingClientRect().top+scrollY;
-    scrollTo({top,behavior:'smooth'});
+    scrollTo({top,behavior:'smooth'}); // контент уходит под хедер
   }
   links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab);}));
   logoTop.addEventListener('click',e=>{e.preventDefault();show('');});
   show('');
 
-  /* Центр лого между левым краем и колонкой карточек (десктоп) */
+  /* Центрируем логотип между левым краем и колонкой карточек (десктоп) */
   (function(){
     const mql = window.matchMedia('(min-width:1024px)');
     const logo = document.getElementById('logoTop');
@@ -291,12 +292,43 @@
       const rect = leftCol.getBoundingClientRect();
       const gap = rect.left;
       const logoW = logo.getBoundingClientRect().width || 104;
-      const left = Math.max(16, (gap - logoW)/2);
+      const left = Math.max(16, (gap - logoW)/2 + 12); // небольшой визуальный запас
       logo.style.left = left + 'px';
     }
     window.addEventListener('resize', placeLogo, {passive:true});
     window.addEventListener('load', placeLogo);
     setTimeout(placeLogo, 300);
+  })();
+
+  /* Подгоняем карточку-портал под РЕАЛЬНЫЕ размеры видео */
+  (function(){
+    const video = document.getElementById('videoEl');
+    const wrap = document.getElementById('avatarWrap');
+    if(!video || !wrap) return;
+
+    function fitPortal(){
+      const maxW = parseFloat(getComputedStyle(document.documentElement)
+                      .getPropertyValue('--avatarColMaxW')) || 520;
+      const maxH = Math.min(window.innerHeight * 0.78, 900); // как и было max-height:78vh
+      const vw = video.videoWidth || 9; // значения по умолчанию на случай раннего вызова
+      const vh = video.videoHeight || 16;
+      const ratio = vw / vh;
+
+      // считаем размер рамки, НЕ обрезая кадр (contain)
+      let w = Math.min(maxW, ratio * maxH);
+      let h = w / ratio;
+      // ограничим по доступной ширине колонки
+      const rightCol = wrap.parentElement.getBoundingClientRect().width;
+      w = Math.min(w, rightCol); h = w / ratio;
+
+      wrap.style.width = Math.round(w) + 'px';
+      wrap.style.height = Math.round(h) + 'px';
+    }
+
+    video.addEventListener('loadedmetadata', fitPortal);
+    window.addEventListener('resize', fitPortal, {passive:true});
+    // на случай мгновенной загрузки
+    setTimeout(fitPortal, 200);
   })();
 </script>
 </body>
