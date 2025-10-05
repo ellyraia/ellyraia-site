@@ -17,10 +17,10 @@
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
 
-    /* Стекло */
+    /* стекло */
     --glassBorder:rgba(190,230,255,0.18);
     --glassBgBtn:rgba(180,230,255,0.05);
-    --glassBgCard:rgba(200,245,255,0.015); /* ПРОЗРАЧНЕЕ стекло для карточек */
+    --glassBgCard:rgba(200,245,255,0.012); /* ещё прозрачнее — звёзды видны */
     --glassInner:rgba(255,255,255,0.16);
     --glow:rgba(140,210,255,0.30);
 
@@ -44,9 +44,9 @@
   @keyframes drift{to{background-position:20% 15%,80% 20%,15% 90%,0 0}}
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-  /* ===== Header ===== */
+  /* ===== Header (без изменений) ===== */
   header.site{
-    position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:10;
+    position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:20;
     display:flex;align-items:center;justify-content:center;background:transparent}
   .head-inner{
     width:100%;max-width:var(--wrapW);
@@ -54,7 +54,7 @@
     display:flex;align-items:center;gap:18px
   }
 
-  /* ЛОГО (оставляем как было: со свечением; позицию центрует JS) */
+  /* ЛОГО: со свечением, позиция пересчитывается JS */
   .logo{
     position:fixed; top:20px; left:20px;
     width:104px; height:104px; border-radius:50%; overflow:hidden;
@@ -87,6 +87,23 @@
   }
   .btn.active{ background:rgba(190,240,255,0.16); box-shadow:0 0 20px rgba(150,220,255,0.28) }
 
+  /* ===== Плавное растворение под хедер и футер (оверлеи) ===== */
+  body::before, body::after{
+    content:""; position:fixed; left:0; right:0; z-index: nine; pointer-events:none;
+  }
+  /* сверху — fade под хедер; сам хедер не меняем */
+  body::before{
+    top:0; height:110px;
+    background:linear-gradient(#0b0d1b 0%, rgba(11,13,27,0.82) 45%, rgba(11,13,27,0) 100%);
+  }
+  /* снизу — fade под футер */
+  body::after{
+    bottom:0; height:120px;
+    background:linear-gradient(rgba(11,13,27,0) 0%, rgba(11,13,27,0.82) 60%, #0b0d1b 100%);
+  }
+  /* z-index helper */
+  :root{ --z-fade:9 } body::before, body::after{ z-index: var(--z-fade); }
+
   /* ===== Макет ===== */
   .stage{
     max-width:var(--wrapW);
@@ -97,35 +114,32 @@
     gap:32px;
     margin-top:calc(var(--headerH) + 8px);
     position:relative;
-    z-index:1;
+    z-index:10; /* над космосом, под оверлеем и хедером */
   }
   .left{min-width:0}
   .right{position:relative}
+
+  /* Убираем прыжок — БЕЗ sticky */
   .avatar-wrap{
-    position:sticky;
-    top:calc(var(--headerH) + 12px);
-    z-index:2;
-  }
-
-  /* === ВИДЕО КАК «КАРТОЧКА»: мягкие углы + постоянное мягкое свечение === */
-  .avatar{
-    width:100%; height:auto; max-height:78vh;
-    display:block; object-fit:contain; object-position:center top;
-
-    /* форма как у карточки/кнопки */
-    border-radius: var(--radius);
-    border: 1px solid rgba(190,230,255,0.10);
-
-    /* БЕЗ масок/градиентов/перьев */
-    -webkit-mask-image: none; mask-image: none;
-
-    /* постоянное мягкое свечение в духе hover-карточки (без неона) */
+    position:relative; /* было sticky */
+    top:auto;
+    /* переносим «карточный» вид на контейнер */
+    border-radius:var(--radius);
+    border:1px solid rgba(190,230,255,0.10);
+    overflow:hidden;
     box-shadow:
       0 0 24px rgba(160,230,255,0.22),
       inset 0 0 10px rgba(255,255,255,0.10);
   }
-  /* Убираем старые подсветки вокруг контейнера, чтобы не было «ореола» */
-  .avatar-wrap::before{ content:none !important; }
+
+  /* Видео: заполняет контейнер без пустот, форма = как у карточки */
+  .avatar{
+    display:block; width:100%; height:100%;
+    max-height:78vh; object-fit:cover; object-position:center top;
+    border-radius:0; /* форму даёт контейнер */
+    -webkit-mask-image:none; mask-image:none;
+    box-shadow:none; /* свечение уже на контейнере */
+  }
 
   /* ===== Контент ===== */
   .welcome{margin:8px 0 26px}
@@ -136,11 +150,11 @@
   section[data-section].active{display:block}
   .left section.active > h2, main section.active > h2{display:none}
 
-  /* ===== Карточки: прозрачное «холодное стекло» ===== */
+  /* ===== Карточки: реальное «холодное стекло» ===== */
   .cards{display:grid;grid-template-columns:1fr;gap:16px;max-width:620px}
   .card{
     border-radius:var(--radius);
-    background:var(--glassBgCard) !important; /* гарантируем прозрачность */
+    background:var(--glassBgCard) !important; /* гарантия прозрачности */
     border:1px solid rgba(190,230,255,0.08);
     backdrop-filter:blur(20px) saturate(1.2);
     -webkit-backdrop-filter:blur(20px) saturate(1.2);
@@ -159,20 +173,18 @@
 
   .muted{color:#d0e4ff}.price{font-weight:800;margin-top:8px}
 
-  /* ===== Footer ===== */
+  /* ===== Footer (как было) ===== */
   footer{
-    position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:1;
+    position:fixed;left:0;right:0;bottom:0;height:var(--footerH);z-index:15;
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;color:#fff;
     background:rgba(8,10,20,0.02);
   }
   footer a{color:#fff}
 
-  /* ===== Mobile safety (не трогаем) ===== */
+  /* ===== Mobile safety (не трогаем поведение) ===== */
   @media (max-width: 900px){
     .stage{grid-template-columns:1fr;gap:18px}
-    .avatar-wrap{position:relative;top:auto}
-    .avatar{max-height:56vh}
     nav.top{display:none}
     .welcome h1{font-size:28px}
   }
@@ -183,7 +195,7 @@
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
 
-  <!-- Шапка -->
+  <!-- Шапка (без изменений) -->
   <header class="site">
     <div class="head-inner">
       <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=5" alt="Логотип" /></a>
@@ -195,7 +207,7 @@
     </div>
   </header>
 
-  <!-- Две колонки -->
+  <!-- Контент -->
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
       <section class="welcome" data-section id="home">
@@ -242,7 +254,7 @@
 <script>
   document.getElementById('y').textContent=new Date().getFullYear();
 
-  /* Звёзды (как было) */
+  /* Звёзды */
   (function(){
     const cvs=document.getElementById('stars'); if(!cvs) return;
     const ctx=cvs.getContext('2d'); let W,H,S=[];
