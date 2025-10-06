@@ -62,14 +62,11 @@
   header.site{
     position:fixed;top:0;left:0;right:0;height:var(--headerH);z-index:30;
     background:transparent; display:flex; justify-content:center; align-items:center;
-    pointer-events:none; /* клики проходят в сцену; логотип включим отдельно */
+    pointer-events:none;
   }
-  .head-inner{
-    width:100%; max-width:var(--wrapW);
-    padding:0 var(--pagePadX);
-  }
+  .head-inner{ width:100%; max-width:var(--wrapW); padding:0 var(--pagePadX); }
 
-  /* ЛОГО — чуть крупнее; живое свечение; кликабельно */
+  /* ЛОГО — чуть крупнее; свечение */
   .logo{
     position:fixed; top:18px; left:18px;
     width:120px; height:120px; border-radius:50%; overflow:hidden;
@@ -101,9 +98,13 @@
   .local-nav{
     position:sticky; top:calc(var(--headerH) + 10px); z-index:12;
     display:flex; gap:12px; flex-wrap:wrap; align-items:center;
-    background:transparent; /* без подложек, сидит прямо на звёздах */
-    padding-bottom:6px;
+    background:transparent; padding-bottom:6px;
   }
+
+  /* Кнопки */
+  a{color:inherit; text-decoration:none;}
+  a:visited, a:hover, a:active { text-decoration:none; } /* ← подчёркивание OFF */
+
   .btn{
     color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;
     border:1px solid var(--glassBorder);
@@ -129,7 +130,7 @@
       to bottom,
       rgba(0,0,0,0) 0,
       rgba(0,0,0,1) 28px
-    ); /* плавное появление из-под кнопок */
+    );
     mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,1) 28px);
   }
   .left-scroll::-webkit-scrollbar{width:0;height:0}
@@ -187,7 +188,7 @@
     display:flex;align-items:center;justify-content:center;gap:12px;
     font-size:14px;color:#fff;background:rgba(8,10,20,0.02);
   }
-  footer a{color:#fff}
+  footer a{color:#fff; text-decoration:none;}
 
   /* ==== Desktop: правая статична, прокрутка только слева (полоса скрыта) ==== */
   @media (min-width:1024px){
@@ -201,11 +202,16 @@
       padding-top:calc(var(--headerH) + 12px);
       height:calc(100vh - var(--footerH));
     }
+
+    /*  ПРАВАЯ КОЛОНКА по правому краю ЦЕНТРИРОВАННОЙ сцены — чисто CSS */
     .right{
-      position:fixed; top:calc(var(--headerH) + 20px);
-      width:var(--avatarColMaxW); pointer-events:none;
+      position: fixed;
+      top: calc(var(--headerH) + 20px);
+      right: calc( (100vw - min(100vw, var(--wrapW))) / 2 + var(--pagePadX) );
+      width: auto;
+      pointer-events:none;
     }
-    .right .avatar-wrap{pointer-events:auto}
+    .right .avatar-wrap{ pointer-events:auto; }
   }
 
   @media (max-width:900px){
@@ -318,7 +324,6 @@
       if(id!==''&&s.id==='home')s.classList.remove('active');
     });
     setActiveNav(id);
-    // скроллим левую колонку вверх под меню
     const scroller=document.getElementById('leftScroll');
     if(scroller){ scroller.scrollTo({top:0, behavior:'smooth'}); }
   }
@@ -326,53 +331,36 @@
   logoTop.addEventListener('click',e=>{e.preventDefault();show('');});
   show('');
 
-  /* Фиксация правой колонки по правому краю сцены и синхронизация высот */
+  /* Подгон портала и высоты карточек под реальную высоту видео */
   (function(){
     const mql=window.matchMedia('(min-width:1024px)');
-    const stage=document.getElementById('stage');
-    const right=document.querySelector('.right');
     const wrap=document.getElementById('avatarWrap');
     const video=document.getElementById('videoEl');
 
-    function placeRight(){
-      if(!mql.matches||!stage||!right)return;
-      const rect=stage.getBoundingClientRect();
-      const rightW=right.getBoundingClientRect().width||
-        parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--avatarColMaxW'))||520;
-      const innerPadding=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pagePadX'))||24;
-      const left=Math.round(rect.left + rect.width - rightW - innerPadding);
-      right.style.position='fixed';
-      right.style.left=left+'px';
-      right.style.top='calc(var(--headerH) + 20px)';
-      right.style.width='var(--avatarColMaxW)';
-    }
-
-    function syncHeights(){
-      if(!mql.matches||!wrap)return;
-      const h = wrap.getBoundingClientRect().height;
-      document.documentElement.style.setProperty('--cardsH', Math.max(240, Math.round(h)) + 'px');
-    }
-
-    function fitPortal(){
+    function fitPortalAndCards(){
       if(!mql.matches || !wrap || !video) return;
+
       const maxH = Math.min(window.innerHeight * 0.78, 900);
       const vw = video.videoWidth || 9, vh = video.videoHeight || 16;
       const ratio = vw / vh;
+
       const rightColW = wrap.parentElement.getBoundingClientRect().width;
       let w = Math.min(rightColW, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--avatarColMaxW')) || 520);
       let h = Math.min(maxH, w / ratio);
       w = h * ratio;
+
       wrap.style.width = Math.round(w) + 'px';
       wrap.style.height= Math.round(h) + 'px';
-      syncHeights();
+
+      document.documentElement.style.setProperty('--cardsH', Math.max(240, Math.round(h)) + 'px');
     }
 
-    ['load','resize'].forEach(ev=>window.addEventListener(ev,()=>{placeRight();fitPortal();},{passive:true}));
     if(video){
-      video.addEventListener('loadedmetadata', fitPortal);
-      if(video.readyState>=1) setTimeout(fitPortal,50);
+      video.addEventListener('loadedmetadata', fitPortalAndCards);
+      if(video.readyState >= 1) setTimeout(fitPortalAndCards, 50);
     }
-    setTimeout(()=>{placeRight();fitPortal();},200);
+    ['load','resize'].forEach(ev=>window.addEventListener(ev, fitPortalAndCards, {passive:true}));
+    setTimeout(fitPortalAndCards, 200);
   })();
 </script>
 </body>
