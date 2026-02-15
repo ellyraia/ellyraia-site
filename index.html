@@ -13,7 +13,40 @@
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial;
     background:transparent;
   }
+ <!-- INTRO OVERLAY: INITIALIZE -->
+<div id="intro" class="intro" aria-hidden="false">
+  <!-- Background (subtle) -->
+  <div class="intro__bg"></div>
 
+  <!-- Orbit map overlay -->
+  <div class="intro__map" aria-hidden="true">
+    <div class="intro__orbits"></div>
+    <div class="intro__links"></div>
+    <div class="intro__glow"></div>
+  </div>
+
+  <!-- UI -->
+  <div class="intro__ui" role="dialog" aria-label="Initialize">
+    <div class="intro__title">UNIVERSE MAP</div>
+    <button id="introBtn" class="intro__btn" type="button">
+      INITIALIZE
+    </button>
+    <div class="intro__hint">tap to observe</div>
+
+    <label class="intro__skip">
+      <input id="introSkip" type="checkbox" />
+      Skip next time
+    </label>
+  </div>
+
+  <!-- Optional audio (put your files in these paths or remove this block) -->
+  <audio id="introSfx" preload="auto">
+    <source src="assets/sfx/initialize.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="introLoop" preload="auto" loop>
+    <source src="assets/audio/loop.mp3" type="audio/mpeg" />
+  </audio>
+</div>
   :root{
     --headerH:86px; --footerH:56px; --radius:22px; --wrapW:1180px;
 
@@ -219,6 +252,184 @@
     .local-nav{position:static}
     .welcome h1{font-size:30px}
   }
+  /* ===== INTRO OVERLAY (Initialize) ===== */
+.intro{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background: radial-gradient(900px 600px at 50% 60%, rgba(120,180,255,.08), transparent 60%),
+              radial-gradient(700px 500px at 25% 30%, rgba(255,120,200,.06), transparent 55%),
+              #05060a; /* near-black */
+}
+
+.intro__bg{
+  position:absolute;
+  inset:-20%;
+  background:
+    radial-gradient(900px 500px at 50% 55%, rgba(255,255,255,0.06), transparent 60%),
+    radial-gradient(1200px 900px at 50% 50%, rgba(0,0,0,0.10), rgba(0,0,0,0.70));
+  pointer-events:none;
+}
+
+/* Map overlay */
+.intro__map{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* Soft center glow (green appears ONLY on init) */
+.intro__glow{
+  position:absolute;
+  left:50%;
+  top:58%;
+  width:min(900px, 120vw);
+  height:min(600px, 90vh);
+  transform:translate(-50%,-50%);
+  background:
+    radial-gradient(closest-side at 50% 50%, rgba(110,255,200,0.00), transparent 65%),
+    radial-gradient(closest-side at 50% 50%, rgba(255,255,255,0.07), transparent 70%);
+  opacity:.55;
+  filter: blur(0.5px);
+}
+
+/* Orbits: subtle, glassy lines */
+.intro__orbits{
+  position:absolute;
+  left:50%;
+  top:56%;
+  width:min(1100px, 140vw);
+  height:min(700px, 110vh);
+  transform:translate(-50%,-50%);
+  opacity:.22;
+  filter: blur(.2px);
+  background:
+    radial-gradient(closest-side, transparent 58%, rgba(255,255,255,0.10) 59%, transparent 60%),
+    radial-gradient(closest-side, transparent 46%, rgba(255,255,255,0.08) 47%, transparent 48%),
+    radial-gradient(closest-side, transparent 35%, rgba(255,255,255,0.06) 36%, transparent 37%),
+    radial-gradient(closest-side, transparent 25%, rgba(255,255,255,0.05) 26%, transparent 27%),
+    radial-gradient(closest-side, rgba(255,255,255,0.04), transparent 60%);
+  border-radius: 999px;
+  mask-image: radial-gradient(circle at 50% 55%, rgba(0,0,0,1), rgba(0,0,0,.6) 55%, rgba(0,0,0,0) 100%);
+}
+
+/* Links overlay: thin connecting lines look */
+.intro__links{
+  position:absolute;
+  left:50%;
+  top:56%;
+  width:min(1100px, 140vw);
+  height:min(700px, 110vh);
+  transform:translate(-50%,-50%);
+  opacity:.14;
+  background:
+    linear-gradient(15deg, transparent 0 49%, rgba(255,255,255,.10) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 0 49%, rgba(255,255,255,.08) 50%, transparent 51%),
+    linear-gradient(75deg, transparent 0 49%, rgba(255,255,255,.07) 50%, transparent 51%),
+    radial-gradient(closest-side at 50% 50%, transparent 62%, rgba(255,255,255,0.06) 63%, transparent 64%);
+  border-radius:999px;
+  filter: blur(.25px);
+  mask-image: radial-gradient(circle at 50% 55%, rgba(0,0,0,0.9), rgba(0,0,0,.45) 55%, rgba(0,0,0,0) 100%);
+}
+
+/* UI */
+.intro__ui{
+  position:relative;
+  width:min(520px, 88vw);
+  padding:22px 18px 16px;
+  border-radius:18px;
+  text-align:center;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.55);
+}
+
+.intro__title{
+  font-size:12px;
+  letter-spacing: .26em;
+  font-weight:700;
+  color: rgba(255,255,255,0.80);
+  margin-bottom:14px;
+}
+
+/* The button: glass + subtle green edge */
+.intro__btn{
+  appearance:none;
+  border:0;
+  width:min(340px, 78vw);
+  padding:14px 16px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:800;
+  letter-spacing:.18em;
+  color: rgba(255,255,255,0.92);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    0 18px 55px rgba(0,0,0,0.50),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    0 0 0 1px rgba(120,255,210,0.10);
+  transition: transform 160ms ease, filter 160ms ease, box-shadow 220ms ease;
+}
+
+.intro__btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 22px 65px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 0 0 1px rgba(120,255,210,0.16),
+    0 0 26px rgba(120,255,210,0.12);
+}
+
+.intro__btn:active{
+  transform: translateY(0px) scale(0.99);
+}
+
+.intro__hint{
+  margin-top:10px;
+  font-size:12px;
+  color: rgba(255,255,255,0.58);
+}
+
+.intro__skip{
+  margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  color: rgba(255,255,255,0.62);
+}
+
+/* ===== States ===== */
+/* During initialize: lines become clearer + subtle green presence */
+.intro.is-active .intro__orbits{ opacity:.55; }
+.intro.is-active .intro__links{ opacity:.30; }
+.intro.is-active .intro__glow{
+  background:
+    radial-gradient(closest-side at 50% 50%, rgba(110,255,200,0.22), transparent 58%),
+    radial-gradient(closest-side at 50% 50%, rgba(255,255,255,0.10), transparent 72%);
+  opacity: .85;
+  filter: blur(.2px);
+}
+
+/* Fade out overlay */
+.intro.is-fade{
+  opacity:0;
+  transition: opacity 520ms ease;
+  pointer-events:none;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce){
+  .intro__btn{ transition:none; }
+  .intro.is-fade{ transition:none; }
+}
 </style>
 </head>
 <body>
@@ -362,6 +573,66 @@
     ['load','resize'].forEach(ev=>window.addEventListener(ev, fitPortalAndCards, {passive:true}));
     setTimeout(fitPortalAndCards, 200);
   })();
+ (() => {
+  const intro = document.getElementById("intro");
+  const btn = document.getElementById("introBtn");
+  const skip = document.getElementById("introSkip");
+
+  const sfx = document.getElementById("introSfx");
+  const loop = document.getElementById("introLoop");
+
+  const KEY = "skip_intro";
+
+  // If user chose to skip next time
+  try {
+    if (localStorage.getItem(KEY) === "1") {
+      intro.remove();
+      return;
+    }
+  } catch (_) {}
+
+  // block scroll while intro is visible
+  const prevOverflow = document.documentElement.style.overflow;
+  document.documentElement.style.overflow = "hidden";
+
+  const safePlay = async (audioEl) => {
+    if (!audioEl) return;
+    try {
+      audioEl.currentTime = 0;
+      await audioEl.play();
+    } catch (_) {}
+  };
+
+  const finish = () => {
+    intro.classList.add("is-fade");
+    setTimeout(() => {
+      document.documentElement.style.overflow = prevOverflow || "";
+      intro.remove();
+    }, 560);
+  };
+
+  const run = async () => {
+    btn.disabled = true;
+
+    // remember skip setting
+    try {
+      localStorage.setItem(KEY, skip.checked ? "1" : "0");
+    } catch (_) {}
+
+    // sound + subtle activation
+    safePlay(sfx);
+    // start background loop after a click (browser policy allows)
+    setTimeout(() => safePlay(loop), 120);
+
+    intro.classList.add("is-active");
+
+    // keep the “structure reveal” short
+    // 0.9s reveal + 0.6s linger = ~1.5s total before fade
+    setTimeout(() => finish(), 1500);
+  };
+
+  btn.addEventListener("click", run);
+})();
 </script>
 </body>
 </html>
