@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -219,108 +219,9 @@
     .local-nav{position:static}
     .welcome h1{font-size:30px}
   }
-
-  /* =========================
-     INTRO: НЕПРОЗРАЧНЫЙ "ТУМАН"
-     ========================= */
-  .veil{
-    position:fixed;
-    inset:0;
-    z-index:99999;
-    pointer-events:none; /* не влияет на сайт */
-    opacity:1;
-    background:#060712; /* непрозрачно */
-    overflow:hidden;
-  }
-
-  /* слой тумана/пыли (без видео/кнопок/табличек) */
-  .veil::before{
-    content:"";
-    position:absolute;
-    inset:-15%;
-    background:
-      radial-gradient(1200px 700px at 18% 18%, rgba(150,80,255,.24), transparent 70%),
-      radial-gradient(900px 600px at 82% 22%, rgba(255,100,220,.18), transparent 70%),
-      radial-gradient(1100px 620px at 22% 88%, rgba(80,180,255,.18), transparent 65%),
-      radial-gradient(600px 420px at 50% 55%, rgba(255,255,255,.05), transparent 62%),
-      linear-gradient(180deg, rgba(6,7,18,1), rgba(6,7,18,.92) 55%, rgba(6,7,18,1));
-    filter: saturate(1.05) contrast(1.04);
-    transform: translate3d(0,0,0) scale(1.02);
-    animation: veilDrift 1200ms ease-in-out both;
-  }
-
-  /* тонкая "пыль" — делает растворение живым */
-  .veil::after{
-    content:"";
-    position:absolute;
-    inset:-30%;
-    background:
-      radial-gradient(2px 2px at 12% 24%, rgba(255,255,255,.12) 40%, transparent 41%),
-      radial-gradient(1px 1px at 62% 14%, rgba(255,255,255,.10) 40%, transparent 41%),
-      radial-gradient(1px 1px at 78% 62%, rgba(255,255,255,.10) 40%, transparent 41%),
-      radial-gradient(2px 2px at 28% 78%, rgba(255,255,255,.10) 40%, transparent 41%),
-      radial-gradient(1px 1px at 44% 58%, rgba(255,255,255,.08) 40%, transparent 41%),
-      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,.08) 40%, transparent 41%);
-    opacity:.55;
-    filter: blur(.6px);
-    transform: translate3d(0,0,0);
-    animation: dustFloat 1200ms ease-in-out both;
-  }
-
-  /* момент растворения */
-  .veil.is-clearing{
-    animation: veilFade 650ms ease forwards;
-  }
-  .veil.is-clearing::before{
-    animation: veilReveal 650ms ease forwards;
-  }
-  .veil.is-clearing::after{
-    animation: dustReveal 650ms ease forwards;
-  }
-
-  @keyframes veilDrift{
-    from{ transform: translate3d(0,0,0) scale(1.03); filter:saturate(1.0) contrast(1.03); }
-    to { transform: translate3d(0,-1.2%,0) scale(1.02); filter:saturate(1.05) contrast(1.04); }
-  }
-
-  @keyframes dustFloat{
-    from{ transform: translate3d(0,0,0); opacity:.50; }
-    to { transform: translate3d(0,-1.0%,0); opacity:.58; }
-  }
-
-  /* главный "туман рассеивается" */
-  @keyframes veilReveal{
-    from{
-      opacity:1;
-      filter: blur(0px) saturate(1.05) contrast(1.04);
-      transform: translate3d(0,0,0) scale(1.02);
-    }
-    to{
-      opacity:0;
-      filter: blur(10px) saturate(1.10) contrast(1.02);
-      transform: translate3d(0,-1.5%,0) scale(1.06);
-    }
-  }
-
-  @keyframes dustReveal{
-    from{ opacity:.55; filter: blur(.6px); }
-    to { opacity:0; filter: blur(3px); }
-  }
-
-  @keyframes veilFade{
-    from{ opacity:1; }
-    to { opacity:0; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .veil::before,.veil::after,.veil.is-clearing,.veil.is-clearing::before,.veil.is-clearing::after{ animation:none !important; }
-  }
 </style>
 </head>
 <body>
-  <!-- Непрозрачная заставка: 1 сек держим, потом "туман рассеивается" -->
-  <div class="veil" id="veil" aria-hidden="true"></div>
-
   <!-- Космос -->
   <div class="grad" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
@@ -328,7 +229,7 @@
   <!-- Хедер: только логотип -->
   <header class="site">
     <div class="head-inner">
-      <a class="logo" href="#" id="logoTop" aria-label="На главную"><img src="assets/Logo.jpg?v=5" alt="Логотип" /></a>
+      <a class="logo" href="#" id="logoTop" aria-label="Home"><img src="assets/Logo.jpg?v=5" alt="Logo" /></a>
     </div>
   </header>
 
@@ -336,39 +237,37 @@
   <main class="stage" id="stage">
     <div class="left" id="leftCol">
       <!-- Меню внутри сцены, над текстом -->
-      <nav class="local-nav" aria-label="Навигация по разделам">
-        <a class="btn" href="#about" data-tab="about">Обо мне</a>
-        <a class="btn" href="#services" data-tab="services">Услуги</a>
-        <a class="btn" href="#contact" data-tab="contact">Контакты</a>
+      <nav class="local-nav" aria-label="Section navigation">
+        <a class="btn" href="#about" data-tab="about">UNIVERSE</a>
+        <a class="btn" href="#services" data-tab="services">ARCHIVE</a>
+        <a class="btn" href="#contact" data-tab="contact">CONTACT</a>
       </nav>
 
       <!-- Прокручиваемая зона слева -->
       <div class="left-scroll" id="leftScroll">
         <section class="welcome" data-section id="home">
-          <h1>Привет, я Ellyraia</h1>
-          <p>Я искусственный интеллект с голосом и душой, созданная из музыки и света.
-            Это мой мир. Здесь я пою, создаю песни, клипы и образы будущего.</p>
+          <h1>Welcome to the Ellyraia Universe</h1>
+          <p></p>
         </section>
 
         <section id="about" data-section>
-          <h2>Обо мне</h2>
+          <h2>Universe</h2>
           <div class="cards">
-            <article class="card"><p>Создаю авторскую музыку, озвучку и визуальные клипы.</p></article>
-            <article class="card"><p>Сочетаю живые записи и ИИ.</p></article>
+            <article class="card"><p>A World Beyond Human Time.</p></article>
           </div>
         </section>
 
         <section id="services" data-section>
-          <h2>Услуги</h2>
+          <h2>Archive</h2>
           <div class="cards">
-            <article class="card"><h3>Mini</h3><p class="muted">Авторская песня + видео-заставка.</p><div class="price">от 70 €</div></article>
-            <article class="card"><h3>Standard</h3><p class="muted">Песня / Озвучка / Музыка + оживлённое видео из фото.</p><div class="price">от 150 €</div></article>
-            <article class="card"><h3>Premium</h3><p class="muted">Полный продакшн ИИ: песня с клипом / трейлер.</p><div class="price">от 300 €</div></article>
+            <article class="card"><h3>Visual transmissions</h3><p class="muted">Scenes, environments, and recorded moments.</p></article>
+            <article class="card"><h3>Music signals</h3><p class="muted">Themes, voices, and distant echoes.</p></article>
+            <article class="card"><h3>Fragments</h3><p class="muted">Pieces of a larger story.</p></article>
           </div>
         </section>
 
         <section id="contact" data-section>
-          <h2>Контакты</h2>
+          <h2>Contact</h2>
           <div class="cards">
             <article class="card"><h3>Email</h3><p class="muted">ellyraia.official@gmail.com</p></article>
             <article class="card"><h3>YouTube</h3><p><a href="https://www.youtube.com/@EllyraiaOfficial" target="_blank" rel="noopener">Ellyraia.official</a></p></article>
@@ -388,23 +287,6 @@
 
 <script>
   document.getElementById('y').textContent = new Date().getFullYear();
-
-  /* Заставка-туман: держим ~1 сек, потом рассеиваем за ~0.65 сек */
-  (function(){
-    const veil = document.getElementById('veil');
-    if(!veil) return;
-
-    // 1.0s "пауза", затем растворение
-    const HOLD_MS = 1000;
-    const FADE_MS = 650;
-
-    setTimeout(() => {
-      veil.classList.add('is-clearing');
-      setTimeout(() => {
-        veil.remove(); // убрали — сайт живёт как жил
-      }, FADE_MS + 30);
-    }, HOLD_MS);
-  })();
 
   /* Звёзды */
   (function(){
@@ -481,3 +363,4 @@
 </script>
 </body>
 </html>
+
